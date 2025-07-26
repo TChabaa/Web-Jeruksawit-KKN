@@ -27,6 +27,11 @@ Route::get('/destinations/{slug}/show', [DestinationController::class, 'show'])-
 
 Route::get('/galleries', [FrontendController::class, 'galleries'])->name('galleries');
 
+// Layanan Surat Menyurat Routes
+Route::get('/layanan-surat', [FrontendController::class, 'layananSurat'])->name('layanan-surat');
+Route::get('/layanan-surat/{type}/form', [FrontendController::class, 'layananSuratForm'])->name('layanan-surat.form');
+Route::post('/layanan-surat/{type}/submit', [FrontendController::class, 'layananSuratSubmit'])->name('layanan-surat.submit');
+
 Route::middleware([
     'auth',
     'verified'
@@ -68,6 +73,11 @@ Route::middleware([
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+        // Layanan Surat Menyurat
+        Route::get('/layanan-surat', [\App\Http\Controllers\LayananSuratController::class, 'index'])->name('layanan-surat');
+        Route::get('/layanan-surat/{type}/form', [\App\Http\Controllers\LayananSuratController::class, 'showForm'])->name('layanan-surat.form');
+        Route::post('/layanan-surat/{type}/submit', [\App\Http\Controllers\LayananSuratController::class, 'submitForm'])->name('layanan-surat.submit');
     });
 
     // Admin
@@ -103,10 +113,14 @@ Route::middleware([
             'show'
         ]);
 
-
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+        // Layanan Surat Menyurat
+        Route::get('/layanan-surat', [\App\Http\Controllers\LayananSuratController::class, 'index'])->name('layanan-surat');
+        Route::get('/layanan-surat/{type}/form', [\App\Http\Controllers\LayananSuratController::class, 'showForm'])->name('layanan-surat.form');
+        Route::post('/layanan-surat/{type}/submit', [\App\Http\Controllers\LayananSuratController::class, 'submitForm'])->name('layanan-surat.submit');
     });
 
     // owner
@@ -130,6 +144,11 @@ Route::middleware([
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+        // Layanan Surat Menyurat
+        Route::get('/layanan-surat', [\App\Http\Controllers\LayananSuratController::class, 'index'])->name('layanan-surat');
+        Route::get('/layanan-surat/{type}/form', [\App\Http\Controllers\LayananSuratController::class, 'showForm'])->name('layanan-surat.form');
+        Route::post('/layanan-surat/{type}/submit', [\App\Http\Controllers\LayananSuratController::class, 'submitForm'])->name('layanan-surat.submit');
     });
 
     // Writer
@@ -145,6 +164,11 @@ Route::middleware([
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+        // Layanan Surat Menyurat
+        Route::get('/layanan-surat', [\App\Http\Controllers\LayananSuratController::class, 'index'])->name('layanan-surat');
+        Route::get('/layanan-surat/{type}/form', [\App\Http\Controllers\LayananSuratController::class, 'showForm'])->name('layanan-surat.form');
+        Route::post('/layanan-surat/{type}/submit', [\App\Http\Controllers\LayananSuratController::class, 'submitForm'])->name('layanan-surat.submit');
     });
 });
 

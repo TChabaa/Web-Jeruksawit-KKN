@@ -1,4 +1,21 @@
-<?php
+InvalidArgumentException
+
+Cannot write to directory "public/storage/gallery"
+
+at vendor\fakerphp\faker\src\Faker\Provider\Image.php:129
+  125▕         $dir = null === $dir ? sys_get_temp_dir() : $dir; // GNU/Linux / OS X / Windows compatible
+  126▕
+  127▕         // Validate directory path
+  128▕         if (!is_dir($dir) || !is_writable($dir)) {
+➜ 129▕             throw new \InvalidArgumentException(sprintf('Cannot write to directory "%s"', $dir));
+  130▕         }
+  131▕
+  132▕         // Generate a random filename. Use the server address so that a file
+  133▕         // generated at the same time on a different server won't have a collision.
+
+1   vendor\fakerphp\faker\src\Faker\Generator.php:708
+    Faker\Provider\Image::image("public/storage/gallery")
+2   vendor\fakerphp\faker\src\Faker\Generator.php:708<?php
 
 namespace Database\Seeders;
 

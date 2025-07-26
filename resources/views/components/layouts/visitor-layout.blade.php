@@ -78,6 +78,11 @@
                                 class="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-green-new lg:p-0 {{ Route::current()->getName() == 'about-us' ? 'text-green-new' : '' }}">Tentang
                                 Kami</a>
                         </li>
+                        <li>
+                            <a href="{{ route('layanan-surat') }}"
+                                class="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-green-new lg:p-0 {{ Route::current()->getName() == 'layanan-surat' || str_starts_with(Route::current()->getName(), 'layanan-surat.') ? 'text-green-new' : '' }}">Layanan
+                                Surat</a>
+                        </li>
 
                         @auth
                             <li>
@@ -179,6 +184,11 @@
                             <a href="{{ route('about-us') }}"
                                 class=" cursor-pointer hover:text-green-new {{ Route::current()->getName() == 'about-us' ? 'text-green-new' : '' }}">Tentang
                                 Kami</a>
+                        </li>
+                        <li class="mt-3">
+                            <a href="{{ route('layanan-surat') }}"
+                                class=" cursor-pointer hover:text-green-new {{ Route::current()->getName() == 'layanan-surat' || str_starts_with(Route::current()->getName(), 'layanan-surat.') ? 'text-green-new' : '' }}">Layanan
+                                Surat</a>
                         </li>
                     </nav>
                 </div>
