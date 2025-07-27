@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Http\Requests\ArticleCreateRequest;
 use App\Http\Requests\ArticleUpdateRequest;
+use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
@@ -27,8 +28,8 @@ class ArticleController extends Controller
             $article = Article::with('user');
 
             // Jika pengguna memiliki peran 'writer', filter data berdasarkan author_id pengguna saat ini
-            if (auth()->user()->role === 'writer') {
-                $article->where('author_id', auth()->user()->id);
+            if (Auth::user()->role === 'writer') {
+                $article->where('author_id', Auth::user()->id);
             }
 
             // Mengurutkan data berdasarkan yang terbaru
@@ -41,7 +42,7 @@ class ArticleController extends Controller
                 })
                 // Menambahkan kolom aksi untuk setiap item
                 ->addColumn('action', function ($item) {
-                    $roleName = auth()->user()->role;
+                    $roleName = Auth::user()->role;
                     $editUrl = route("{$roleName}.articles.edit", $item->id);
                     $deleteUrl = route("{$roleName}.articles.destroy", $item->id);
 
@@ -80,7 +81,7 @@ class ArticleController extends Controller
     {
         $writers = [];
 
-        if (auth()->user()->role != 'writer') {
+        if (Auth::user()->role != 'writer') {
             $writers = User::where('role', 'writer')->get();
         }
         return view('components.pages.dashboard.admin.article.create', compact('writers'));
@@ -97,7 +98,7 @@ class ArticleController extends Controller
             $photo = $request->file('image');
             $path = $photo->storePublicly("gallery", "public");
             Article::create([
-                'author_id' => auth()->user()->role != "writer" ? $request->writer : auth()->user()->id,
+                'author_id' => Auth::user()->role != "writer" ? $request->writer : Auth::user()->id,
                 'title' => $request->title,
                 'content' => $request->content,
                 'image_url' => $path,
@@ -107,7 +108,7 @@ class ArticleController extends Controller
             DB::commit();
 
             Alert::toast('Sukses Menambahkan Artikel', 'success');
-            return redirect()->route(auth()->user()->role . '.articles.index');
+            return redirect()->route(Auth::user()->role . '.articles.index');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withErrors(['error' => 'Gagal Menambahkan Artikel: ' . $e->getMessage()]);
@@ -134,7 +135,7 @@ class ArticleController extends Controller
 
         $admins = [];
 
-        if (auth()->user()->role != 'writer') {
+        if (Auth::user()->role != 'writer') {
             $admins = User::where('role', 'writer')->get();
         }
 
@@ -161,7 +162,7 @@ class ArticleController extends Controller
             }
 
             $article->update([
-                'author_id' => auth()->user()->role != "writer" ? $request->writer : auth()->user()->id,
+                'author_id' => Auth::user()->role != "writer" ? $request->writer : Auth::user()->id,
                 'title' => $request->title,
                 'content' => $request->content,
                 'image_url' => $path,
@@ -171,7 +172,7 @@ class ArticleController extends Controller
             DB::commit();
 
             Alert::toast('Sukses Mengubah Artikel', 'success');
-            return redirect()->route(auth()->user()->role . '.articles.index');
+            return redirect()->route(Auth::user()->role . '.articles.index');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withErrors(['error' => 'Gagal Mengubah Artikel: ' . $e->getMessage()]);
@@ -185,6 +186,6 @@ class ArticleController extends Controller
     {
         $article->delete();
         Alert::toast('Sukses Menghapus Artikel', 'success');
-        return redirect()->route(auth()->user()->role . '.articles.index');
+        return redirect()->route(Auth::user()->role . '.articles.index');
     }
 }

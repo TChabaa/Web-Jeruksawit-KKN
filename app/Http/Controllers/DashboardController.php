@@ -7,15 +7,16 @@ use App\Models\Article;
 use App\Models\Destination;
 use App\Models\Event;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
     public function writer()
     {
-        $totalArticle = Article::where('author_id', auth()->user()->id)->count();
+        $totalArticle = Article::where('author_id', Auth::user()->id)->count();
 
         // Mengambil 5 artikel dengan views terbanyak
-        $articles = Article::where('author_id', auth()->user()->id)->orderBy('views', 'desc')->take(5)->get();
+        $articles = Article::where('author_id', Auth::user()->id)->orderBy('views', 'desc')->take(5)->get();
 
         $articleLabels = $articles->pluck('title');
         $articleData = $articles->pluck('views');
@@ -30,10 +31,10 @@ class DashboardController extends Controller
 
     public function owner()
     {
-        $totalDestination = Destination::where('owner_id', auth()->user()->id)->count();
+        $totalDestination = Destination::where('owner_id', Auth::user()->id)->count();
 
         // Mengambil 5 wisata dengan views terbanyak
-        $destinations = Destination::where('owner_id', auth()->user()->id)->orderBy('views', 'desc')->take(5)->get();
+        $destinations = Destination::where('owner_id', Auth::user()->id)->orderBy('views', 'desc')->take(5)->get();
 
         $destinationLabels = $destinations->pluck('name');
         $destinationData = $destinations->pluck('views');

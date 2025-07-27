@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Models\Accommodation;
 use App\Models\ContactDetail;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 use Yajra\DataTables\Facades\DataTables;
 use App\Http\Requests\DestinationCreateRequest;
@@ -25,19 +26,21 @@ class DestinationController extends Controller
     {
         if (request()->ajax()) {
             $destination = Destination::query();
-            if (auth()->user()->role === 'owner') {
-                $destination->where('owner_id', auth()->user()->id);
+            if (Auth::user()->role === 'owner') {
+                $destination->where('owner_id', Auth::user()->id);
             }
             $destination->get();
             return DataTables::of($destination)
                 ->addColumn('action', function ($item) {
-                    $roleName = auth()->user()->role;
-                    $editUrl = route("{$roleName}.destinations.edit", $item->id);
-                    $deleteUrl = route("{$roleName}.destinations.destroy", $item->id);
-
+                    $roleName = Auth::user()->role;
+                    // Ensure $roleName matches route group names: admin, owner, super_admin
+                    if (!in_array($roleName, ['admin', 'owner', 'super_admin'])) {
+                        $roleName = 'admin'; // fallback to admin if role is not recognized
+                    }
+                    $editUrl = route($roleName . '.destinations.edit', $item->id);
+                    $deleteUrl = route($roleName . '.destinations.destroy', $item->id);
                     return sprintf(
-                        '
-                        <div class="wrapper-action">
+                        '<div class="wrapper-action">
                             <a href="%s">Edit</a>
                             <div>
                                 <form action="%s" method="post">
@@ -65,7 +68,7 @@ class DestinationController extends Controller
     {
         $owners = [];
 
-        if (auth()->user()->role !== 'owner') {
+        if (Auth::user()->role !== 'owner') {
             $owners = User::where('role', 'owner')->get();
         }
         return view('components.pages.dashboard.admin.destination.create', compact('owners'));
@@ -100,7 +103,7 @@ class DestinationController extends Controller
             DB::commit();
 
             Alert::toast('Sukses Menambahkan Destinasi', 'success');
-            return redirect()->route(auth()->user()->role . '.destinations.index');
+            return redirect()->route(Auth::user()->role . '.destinations.index');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withErrors(['error' => 'Gagal Menambahkan Destinasi: ' . $e->getMessage()]);
@@ -110,7 +113,7 @@ class DestinationController extends Controller
     private function createDestination($request)
     {
         return Destination::create([
-            'owner_id' => auth()->user()->role != "owner" ? $request->owner : auth()->user()->id,
+            'owner_id' => Auth::user()->role != "owner" ? $request->owner : Auth::user()->id,
             'name' => $request->name_destination,
             'description' => $request->description,
             'location' => $request->location,
@@ -197,7 +200,7 @@ class DestinationController extends Controller
             DB::commit();
 
             Alert::toast('Sukses Menambahkan Photo', 'success');
-            return redirect()->route(auth()->user()->role . '.destinations.edit', $destination);
+            return redirect()->route(Auth::user()->role . '.destinations.edit', $destination);
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withErrors(['error' => 'Gagal Menambahkan Photo: ' . $e->getMessage()]);
@@ -221,7 +224,7 @@ class DestinationController extends Controller
             DB::commit();
 
             Alert::toast('Sukses Menambahkan Akomodasi', 'success');
-            return redirect()->route(auth()->user()->role . '.destinations.edit', $destination);
+            return redirect()->route(Auth::user()->role . '.destinations.edit', $destination);
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withErrors(['error' => 'Gagal Menambahkan Akomodasi: ' . $e->getMessage()]);
@@ -245,7 +248,7 @@ class DestinationController extends Controller
             DB::commit();
 
             Alert::toast('Sukses Menambahkan Fasilitas', 'success');
-            return redirect()->route(auth()->user()->role . '.destinations.edit', $destination);
+            return redirect()->route(Auth::user()->role . '.destinations.edit', $destination);
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withErrors(['error' => 'Gagal Menambahkan Fasilitas: ' . $e->getMessage()]);
@@ -276,7 +279,7 @@ class DestinationController extends Controller
 
         $owners = [];
 
-        if (auth()->user()->role !== 'owner') {
+        if (Auth::user()->role !== 'owner') {
             $owners = User::where('role', 'owner')->get();
         }
 
@@ -318,7 +321,7 @@ class DestinationController extends Controller
             $oldName = $destination->name;
 
             $destination->update([
-                'owner_id' => auth()->user()->role != "owner" ? $request->owner : auth()->user()->id,
+                'owner_id' => Auth::user()->role != "owner" ? $request->owner : Auth::user()->id,
                 'name' => $request->name_destination,
                 'description' => $request->description,
                 'location' => $request->location,
@@ -331,7 +334,7 @@ class DestinationController extends Controller
             DB::commit();
 
             Alert::toast('Sukses Mengubah Destinasi', 'success');
-            return redirect()->route(auth()->user()->role . '.destinations.edit', $destination);
+            return redirect()->route(Auth::user()->role . '.destinations.edit', $destination);
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withErrors(['error' => 'Gagal Mengubah Destinasi: ' . $e->getMessage()]);
@@ -359,7 +362,7 @@ class DestinationController extends Controller
             DB::commit();
 
             Alert::toast('Sukses Mengubah Kontak', 'success');
-            return redirect()->route(auth()->user()->role . '.destinations.edit', $destination);
+            return redirect()->route(Auth::user()->role . '.destinations.edit', $destination);
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withErrors(['error' => 'Gagal Mengubah Kontak: ' . $e->getMessage()]);
@@ -388,7 +391,7 @@ class DestinationController extends Controller
             DB::commit();
 
             Alert::toast('Sukses Mengubah Kontak', 'success');
-            return redirect()->route(auth()->user()->role . '.destinations.edit', $destination);
+            return redirect()->route(Auth::user()->role . '.destinations.edit', $destination);
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withErrors(['error' => 'Gagal Mengubah Kontak: ' . $e->getMessage()]);
@@ -403,7 +406,7 @@ class DestinationController extends Controller
         $destination->delete();
 
         Alert::toast('Berhasil menghapus data destinasi', 'success');
-        return redirect()->route(auth()->user()->role . '.destinations.index');
+        return redirect()->route(Auth::user()->role . '.destinations.index');
     }
 
     public function destroyGallery(string $destination, string $gallery)
@@ -412,7 +415,7 @@ class DestinationController extends Controller
         $destination->galleries()->findOrFail($gallery)->delete();
 
         Alert::toast('Berhasil menghapus data photo', 'success');
-        return redirect()->route(auth()->user()->role . '.destinations.edit', $destination);
+        return redirect()->route(Auth::user()->role . '.destinations.edit', $destination);
     }
 
     public function destroyFacility(string $destination, string $facility)
@@ -421,7 +424,7 @@ class DestinationController extends Controller
         $destination->facilities()->findOrFail($facility)->delete();
 
         Alert::toast('Berhasil menghapus data fasilitas', 'success');
-        return redirect()->route(auth()->user()->role . '.destinations.edit', $destination);
+        return redirect()->route(Auth::user()->role . '.destinations.edit', $destination);
     }
 
     public function destroyAccommodation(string $destination, string $accommodation)
@@ -430,6 +433,6 @@ class DestinationController extends Controller
         $destination->accommodations()->findOrFail($accommodation)->delete();
 
         Alert::toast('Berhasil menghapus data akomodasi', 'success');
-        return redirect()->route(auth()->user()->role . '.destinations.edit', $destination);
+        return redirect()->route(Auth::user()->role . '.destinations.edit', $destination);
     }
 }
