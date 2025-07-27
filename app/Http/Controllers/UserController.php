@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserUpdateRequest;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -31,9 +32,13 @@ class UserController extends Controller
                     }
                 })
                 ->addColumn('action', function ($item) {
-                    $roleName = auth()->user()->role;
-                    $editUrl = route("{$roleName}.users.edit", $item->id);
-                    $deleteUrl = route("{$roleName}.users.destroy", $item->id);
+                    $roleName = Auth::user()->role;
+                    // Ensure $roleName matches route group names: admin, owner, super_admin
+                    if (!in_array($roleName, ['admin', 'owner', 'super_admin'])) {
+                        $roleName = 'admin'; // fallback to admin if role is not recognized
+                    }
+                    $editUrl = route($roleName . '.users.edit', $item->id);
+                    $deleteUrl = route($roleName . '.users.destroy', $item->id);
                     $deleteButton = '
                         <div>
                             <form action="' . $deleteUrl . '" method="POST">
@@ -86,7 +91,7 @@ class UserController extends Controller
             DB::commit();
 
             Alert::toast('Sukses Menambahkan Pengguna', 'success');
-            return redirect()->route(auth()->user()->role . '.users.index');
+            return redirect()->route(Auth::user()->role . '.users.index');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withErrors(['error' => 'Gagal Menambahkan Pengguna: ' . $e->getMessage()]);
@@ -134,7 +139,7 @@ class UserController extends Controller
             DB::commit();
 
             Alert::toast('Sukses Mengubah Pengguna', 'success');
-            return redirect()->route(auth()->user()->role . '.users.index');
+            return redirect()->route(Auth::user()->role . '.users.index');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withErrors(['error' => 'Gagal Mengubah Pengguna: ' . $e->getMessage()]);
@@ -149,6 +154,6 @@ class UserController extends Controller
         $user->delete();
 
         Alert::toast('Sukses Menghapus Pengguna', 'success');
-        return redirect()->route(auth()->user()->role . '.users.index');
+        return redirect()->route(Auth::user()->role . '.users.index');
     }
 }

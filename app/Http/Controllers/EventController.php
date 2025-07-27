@@ -8,6 +8,7 @@ use App\Models\Event;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 use Yajra\DataTables\Facades\DataTables;
 use App\Http\Requests\EventCreateRequest;
@@ -26,8 +27,8 @@ class EventController extends Controller
             $orderDirection = request()->get('order')[0]['dir'];
 
             $events = Event::query();
-            if (auth()->user()->role === 'admin') {
-                $events->where('admin_id', auth()->user()->id);
+            if (Auth::user()->role === 'admin') {
+                $events->where('admin_id', Auth::user()->id);
             }
 
             $events->orderBy($orderColumn, $orderDirection);
@@ -50,13 +51,15 @@ class EventController extends Controller
                     }
             })
                 ->addColumn('action', function ($item) {
-                    $roleName = auth()->user()->role;
-                    $editUrl = route("{$roleName}.events.edit", $item->id);
-                    $deleteUrl = route("{$roleName}.events.destroy", $item->id);
-
+                    $roleName = Auth::user()->role;
+                    // Ensure $roleName matches route group names: admin, owner, super_admin
+                    if (!in_array($roleName, ['admin', 'owner', 'super_admin'])) {
+                        $roleName = 'admin'; // fallback to admin if role is not recognized
+                    }
+                    $editUrl = route($roleName . '.events.edit', $item->id);
+                    $deleteUrl = route($roleName . '.events.destroy', $item->id);
                     return sprintf(
-                        '
-                        <div class="wrapper-action">
+                        '<div class="wrapper-action">
                             <a href="%s">Edit</a>
                             <div>
                                 <form action="%s" method="post">
@@ -85,7 +88,7 @@ class EventController extends Controller
     {
         $admins = [];
 
-        if (auth()->user()->role == 'super_admin') {
+        if (Auth::user()->role == 'super_admin') {
             $admins = User::where('role', 'admin')->get();
         }
         return view('components.pages.dashboard.admin.event.create', compact('admins'));
@@ -103,7 +106,7 @@ class EventController extends Controller
             $path = $photo->storePublicly("gallery", "public");
 
             Event::create([
-                'admin_id' => auth()->user()->role == "super_admin" ? $request->admin : auth()->user()->id,
+                'admin_id' => Auth::user()->role == "super_admin" ? $request->admin : Auth::user()->id,
                 'image_url' => $path,
                 'name' => $request->name,
                 'description' => $request->description,
@@ -117,7 +120,7 @@ class EventController extends Controller
             DB::commit();
 
             Alert::toast('Sukses Menambahkan Acara', 'success');
-            return redirect()->route(auth()->user()->role . '.events.index');
+            return redirect()->route(Auth::user()->role . '.events.index');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withErrors(['error' => 'Gagal Menambahkan Acara: ' . $e->getMessage()]);
@@ -154,7 +157,7 @@ class EventController extends Controller
         $event = Event::findOrFail($id);
         $admins = [];
 
-        if (auth()->user()->role == 'super_admin') {
+        if (Auth::user()->role == 'super_admin') {
             $admins = User::where('role', 'admin')->get();
         }
         return view('components.pages.dashboard.admin.event.edit', compact('event', 'admins'));
@@ -181,7 +184,7 @@ class EventController extends Controller
             }
 
             $event->update([
-                'admin_id' => auth()->user()->role == "super_admin" ? $request->admin : auth()->user()->id,
+                'admin_id' => Auth::user()->role == "super_admin" ? $request->admin : Auth::user()->id,
                 'image_url' => $path,
                 'name' => $request->name,
                 'description' => $request->description,
@@ -195,7 +198,7 @@ class EventController extends Controller
             DB::commit();
 
             Alert::toast('Sukses Mengupdate Acara', 'success');
-            return redirect()->route(auth()->user()->role . '.events.index');
+            return redirect()->route(Auth::user()->role . '.events.index');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withErrors(['error' => 'Gagal Mengupdate Acara: ' . $e->getMessage()]);
@@ -210,6 +213,6 @@ class EventController extends Controller
         $event->delete();
 
         Alert::toast('Sukses Menghapus Acara', 'success');
-        return redirect()->route(auth()->user()->role . '.events.index');
+        return redirect()->route(Auth::user()->role . '.events.index');
     }
 }
