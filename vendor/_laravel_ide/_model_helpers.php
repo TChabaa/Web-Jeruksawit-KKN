@@ -284,8 +284,16 @@ namespace App\Models {
     /**
      * App\Models\AnggotaPindah
      *
+     * @property string $shdk
+     * @property mixed $id_pemohon
+     * @property mixed $id_detail_pindah
+     * @property int $id_anggota_pindah
      * @property-read \App\Models\DetailPindahKeluar $detailPindahKeluar
      * @property-read \App\Models\Pemohon $pemohon
+     * @method static \Illuminate\Database\Eloquent\Builder<AnggotaPindah>|AnggotaPindah whereIdAnggotaPindah($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<AnggotaPindah>|AnggotaPindah whereIdDetailPindah($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<AnggotaPindah>|AnggotaPindah whereIdPemohon($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<AnggotaPindah>|AnggotaPindah whereShdk($value)
      * @method static \Illuminate\Database\Eloquent\Builder<AnggotaPindah>|AnggotaPindah newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<AnggotaPindah>|AnggotaPindah newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<AnggotaPindah>|AnggotaPindah query()
@@ -1132,7 +1140,17 @@ namespace App\Models {
     /**
      * App\Models\ContactUmkm
      *
+     * @property string|null $sosial_media
+     * @property string|null $email
+     * @property string|null $nomor
+     * @property mixed $id_umkm
+     * @property int $id
      * @property-read \App\Models\Umkm $umkm
+     * @method static \Illuminate\Database\Eloquent\Builder<ContactUmkm>|ContactUmkm whereId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<ContactUmkm>|ContactUmkm whereIdUmkm($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<ContactUmkm>|ContactUmkm whereNomor($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<ContactUmkm>|ContactUmkm whereEmail($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<ContactUmkm>|ContactUmkm whereSosialMedia($value)
      * @method static \Illuminate\Database\Eloquent\Builder<ContactUmkm>|ContactUmkm newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<ContactUmkm>|ContactUmkm newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<ContactUmkm>|ContactUmkm query()
@@ -1711,7 +1729,13 @@ namespace App\Models {
     /**
      * App\Models\DetailBelumMenikah
      *
+     * @property string $keperluan
+     * @property mixed $id_surat
+     * @property int $id_detail_belum_menikah
      * @property-read \App\Models\Surat $surat
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailBelumMenikah>|DetailBelumMenikah whereIdDetailBelumMenikah($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailBelumMenikah>|DetailBelumMenikah whereIdSurat($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailBelumMenikah>|DetailBelumMenikah whereKeperluan($value)
      * @method static \Illuminate\Database\Eloquent\Builder<DetailBelumMenikah>|DetailBelumMenikah newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<DetailBelumMenikah>|DetailBelumMenikah newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<DetailBelumMenikah>|DetailBelumMenikah query()
@@ -1984,7 +2008,23 @@ namespace App\Models {
     /**
      * App\Models\DetailDomisiliInstansi
      *
+     * @property string|null $keterangan_lokasi
+     * @property string $alamat_instansi
+     * @property string|null $email_pimpinan
+     * @property string|null $nip_pimpinan
+     * @property string $nama_pimpinan
+     * @property string $nama_instansi
+     * @property mixed $id_surat
+     * @property int $id_detail_domisili_instansi
      * @property-read \App\Models\Surat $surat
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailDomisiliInstansi>|DetailDomisiliInstansi whereIdDetailDomisiliInstansi($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailDomisiliInstansi>|DetailDomisiliInstansi whereIdSurat($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailDomisiliInstansi>|DetailDomisiliInstansi whereNamaInstansi($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailDomisiliInstansi>|DetailDomisiliInstansi whereNamaPimpinan($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailDomisiliInstansi>|DetailDomisiliInstansi whereNipPimpinan($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailDomisiliInstansi>|DetailDomisiliInstansi whereEmailPimpinan($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailDomisiliInstansi>|DetailDomisiliInstansi whereAlamatInstansi($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailDomisiliInstansi>|DetailDomisiliInstansi whereKeteranganLokasi($value)
      * @method static \Illuminate\Database\Eloquent\Builder<DetailDomisiliInstansi>|DetailDomisiliInstansi newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<DetailDomisiliInstansi>|DetailDomisiliInstansi newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<DetailDomisiliInstansi>|DetailDomisiliInstansi query()
@@ -2257,7 +2297,25 @@ namespace App\Models {
     /**
      * App\Models\DetailDomisiliKelompok
      *
+     * @property string|null $keterangan_lokasi
+     * @property string $bendahara
+     * @property string $sekretaris
+     * @property string $ketua
+     * @property string $alamat_kelompok
+     * @property string|null $email_ketua
+     * @property string $nama_kelompok
+     * @property mixed $id_surat
+     * @property int $id_detail_domisili_kelompok
      * @property-read \App\Models\Surat $surat
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailDomisiliKelompok>|DetailDomisiliKelompok whereIdDetailDomisiliKelompok($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailDomisiliKelompok>|DetailDomisiliKelompok whereIdSurat($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailDomisiliKelompok>|DetailDomisiliKelompok whereNamaKelompok($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailDomisiliKelompok>|DetailDomisiliKelompok whereEmailKetua($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailDomisiliKelompok>|DetailDomisiliKelompok whereAlamatKelompok($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailDomisiliKelompok>|DetailDomisiliKelompok whereKetua($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailDomisiliKelompok>|DetailDomisiliKelompok whereSekretaris($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailDomisiliKelompok>|DetailDomisiliKelompok whereBendahara($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailDomisiliKelompok>|DetailDomisiliKelompok whereKeteranganLokasi($value)
      * @method static \Illuminate\Database\Eloquent\Builder<DetailDomisiliKelompok>|DetailDomisiliKelompok newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<DetailDomisiliKelompok>|DetailDomisiliKelompok newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<DetailDomisiliKelompok>|DetailDomisiliKelompok query()
@@ -2530,7 +2588,23 @@ namespace App\Models {
     /**
      * App\Models\DetailIzinKeramaian
      *
+     * @property mixed $jumlah_undangan
+     * @property string $tanggal_acara
+     * @property string $hari_acara
+     * @property string $tempat_acara
+     * @property string $jenis_hiburan
+     * @property string $keperluan
+     * @property mixed $id_surat
+     * @property int $id_detail_izin
      * @property-read \App\Models\Surat $surat
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailIzinKeramaian>|DetailIzinKeramaian whereIdDetailIzin($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailIzinKeramaian>|DetailIzinKeramaian whereIdSurat($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailIzinKeramaian>|DetailIzinKeramaian whereKeperluan($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailIzinKeramaian>|DetailIzinKeramaian whereJenisHiburan($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailIzinKeramaian>|DetailIzinKeramaian whereTempatAcara($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailIzinKeramaian>|DetailIzinKeramaian whereHariAcara($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailIzinKeramaian>|DetailIzinKeramaian whereTanggalAcara($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailIzinKeramaian>|DetailIzinKeramaian whereJumlahUndangan($value)
      * @method static \Illuminate\Database\Eloquent\Builder<DetailIzinKeramaian>|DetailIzinKeramaian newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<DetailIzinKeramaian>|DetailIzinKeramaian newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<DetailIzinKeramaian>|DetailIzinKeramaian query()
@@ -2803,7 +2877,23 @@ namespace App\Models {
     /**
      * App\Models\DetailKelahiran
      *
+     * @property string $penolong_kelahiran
+     * @property string $tempat_lahir
+     * @property string $tanggal_lahir
+     * @property string $hari_lahir
+     * @property mixed $jenis_kelamin_anak
+     * @property string $nama_anak
+     * @property mixed $id_surat
+     * @property int $id_detail_kelahiran
      * @property-read \App\Models\Surat $surat
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailKelahiran>|DetailKelahiran whereIdDetailKelahiran($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailKelahiran>|DetailKelahiran whereIdSurat($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailKelahiran>|DetailKelahiran whereNamaAnak($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailKelahiran>|DetailKelahiran whereJenisKelaminAnak($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailKelahiran>|DetailKelahiran whereHariLahir($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailKelahiran>|DetailKelahiran whereTanggalLahir($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailKelahiran>|DetailKelahiran whereTempatLahir($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailKelahiran>|DetailKelahiran wherePenolongKelahiran($value)
      * @method static \Illuminate\Database\Eloquent\Builder<DetailKelahiran>|DetailKelahiran newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<DetailKelahiran>|DetailKelahiran newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<DetailKelahiran>|DetailKelahiran query()
@@ -3076,7 +3166,31 @@ namespace App\Models {
     /**
      * App\Models\DetailKematian
      *
+     * @property string $hubungan_pelapor
+     * @property string $penyebab_kematian
+     * @property string $tempat_kematian
+     * @property string $tanggal_kematian
+     * @property string $hari_kematian
+     * @property mixed $umur
+     * @property string $alamat
+     * @property mixed $jenis_kelamin
+     * @property string $nik_almarhum
+     * @property string $nama_almarhum
+     * @property mixed $id_surat
+     * @property int $id_detail_kematian
      * @property-read \App\Models\Surat $surat
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailKematian>|DetailKematian whereIdDetailKematian($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailKematian>|DetailKematian whereIdSurat($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailKematian>|DetailKematian whereNamaAlmarhum($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailKematian>|DetailKematian whereNikAlmarhum($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailKematian>|DetailKematian whereJenisKelamin($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailKematian>|DetailKematian whereAlamat($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailKematian>|DetailKematian whereUmur($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailKematian>|DetailKematian whereHariKematian($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailKematian>|DetailKematian whereTanggalKematian($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailKematian>|DetailKematian whereTempatKematian($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailKematian>|DetailKematian wherePenyebabKematian($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailKematian>|DetailKematian whereHubunganPelapor($value)
      * @method static \Illuminate\Database\Eloquent\Builder<DetailKematian>|DetailKematian newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<DetailKematian>|DetailKematian newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<DetailKematian>|DetailKematian query()
@@ -3349,7 +3463,17 @@ namespace App\Models {
     /**
      * App\Models\DetailKeteranganUsaha
      *
+     * @property string $alamat_usaha
+     * @property string $jenis_usaha
+     * @property string $mulai_usaha
+     * @property mixed $id_surat
+     * @property int $id_detail_usaha
      * @property-read \App\Models\Surat $surat
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailKeteranganUsaha>|DetailKeteranganUsaha whereIdDetailUsaha($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailKeteranganUsaha>|DetailKeteranganUsaha whereIdSurat($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailKeteranganUsaha>|DetailKeteranganUsaha whereMulaiUsaha($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailKeteranganUsaha>|DetailKeteranganUsaha whereJenisUsaha($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailKeteranganUsaha>|DetailKeteranganUsaha whereAlamatUsaha($value)
      * @method static \Illuminate\Database\Eloquent\Builder<DetailKeteranganUsaha>|DetailKeteranganUsaha newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<DetailKeteranganUsaha>|DetailKeteranganUsaha newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<DetailKeteranganUsaha>|DetailKeteranganUsaha query()
@@ -3622,7 +3746,23 @@ namespace App\Models {
     /**
      * App\Models\DetailOrangYangSama
      *
+     * @property string $dasar_dokumen_2
+     * @property string $dasar_dokumen_1
+     * @property string $nama_ayah_2
+     * @property string $tanggal_lahir_2
+     * @property string $tempat_lahir_2
+     * @property string $nama_2
+     * @property mixed $id_surat
+     * @property int $id_detail_orang_sama
      * @property-read \App\Models\Surat $surat
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailOrangYangSama>|DetailOrangYangSama whereIdDetailOrangSama($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailOrangYangSama>|DetailOrangYangSama whereIdSurat($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailOrangYangSama>|DetailOrangYangSama whereNama2($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailOrangYangSama>|DetailOrangYangSama whereTempatLahir2($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailOrangYangSama>|DetailOrangYangSama whereTanggalLahir2($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailOrangYangSama>|DetailOrangYangSama whereNamaAyah2($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailOrangYangSama>|DetailOrangYangSama whereDasarDokumen1($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailOrangYangSama>|DetailOrangYangSama whereDasarDokumen2($value)
      * @method static \Illuminate\Database\Eloquent\Builder<DetailOrangYangSama>|DetailOrangYangSama newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<DetailOrangYangSama>|DetailOrangYangSama newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<DetailOrangYangSama>|DetailOrangYangSama query()
@@ -3895,9 +4035,19 @@ namespace App\Models {
     /**
      * App\Models\DetailPindahKeluar
      *
+     * @property string $tanggal_pindah
+     * @property string $alasan_pindah
+     * @property string $alamat_tujuan
+     * @property mixed $id_surat
+     * @property int $id_detail_pindah
      * @property-read \App\Models\Surat $surat
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AnggotaPindah> $anggotaPindah
      * @property-read int|null $anggotaPindah_count
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailPindahKeluar>|DetailPindahKeluar whereIdDetailPindah($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailPindahKeluar>|DetailPindahKeluar whereIdSurat($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailPindahKeluar>|DetailPindahKeluar whereAlamatTujuan($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailPindahKeluar>|DetailPindahKeluar whereAlasanPindah($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailPindahKeluar>|DetailPindahKeluar whereTanggalPindah($value)
      * @method static \Illuminate\Database\Eloquent\Builder<DetailPindahKeluar>|DetailPindahKeluar newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<DetailPindahKeluar>|DetailPindahKeluar newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<DetailPindahKeluar>|DetailPindahKeluar query()
@@ -4170,7 +4320,17 @@ namespace App\Models {
     /**
      * App\Models\DetailSkck
      *
+     * @property string $tanggal_akhir_berlaku
+     * @property string $tanggal_mulai_berlaku
+     * @property string $keperluan
+     * @property mixed $id_surat
+     * @property int $id_detail_skck
      * @property-read \App\Models\Surat $surat
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailSkck>|DetailSkck whereIdDetailSkck($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailSkck>|DetailSkck whereIdSurat($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailSkck>|DetailSkck whereKeperluan($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailSkck>|DetailSkck whereTanggalMulaiBerlaku($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailSkck>|DetailSkck whereTanggalAkhirBerlaku($value)
      * @method static \Illuminate\Database\Eloquent\Builder<DetailSkck>|DetailSkck newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<DetailSkck>|DetailSkck newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<DetailSkck>|DetailSkck query()
@@ -4443,7 +4603,13 @@ namespace App\Models {
     /**
      * App\Models\DetailSktm
      *
+     * @property string $pendidikan
+     * @property mixed $id_surat
+     * @property int $id_detail_sktm
      * @property-read \App\Models\Surat $surat
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailSktm>|DetailSktm whereIdDetailSktm($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailSktm>|DetailSktm whereIdSurat($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<DetailSktm>|DetailSktm wherePendidikan($value)
      * @method static \Illuminate\Database\Eloquent\Builder<DetailSktm>|DetailSktm newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<DetailSktm>|DetailSktm newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<DetailSktm>|DetailSktm query()
@@ -5577,7 +5743,19 @@ namespace App\Models {
     /**
      * App\Models\GambarKegiatan
      *
+     * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property \Illuminate\Support\Carbon|null $created_at
+     * @property string $link
+     * @property string|null $nama
+     * @property mixed $id_kegiatan
+     * @property int $id
      * @property-read \App\Models\KegiatanRutin $kegiatanRutin
+     * @method static \Illuminate\Database\Eloquent\Builder<GambarKegiatan>|GambarKegiatan whereId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<GambarKegiatan>|GambarKegiatan whereIdKegiatan($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<GambarKegiatan>|GambarKegiatan whereNama($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<GambarKegiatan>|GambarKegiatan whereLink($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<GambarKegiatan>|GambarKegiatan whereCreatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<GambarKegiatan>|GambarKegiatan whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<GambarKegiatan>|GambarKegiatan newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<GambarKegiatan>|GambarKegiatan newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<GambarKegiatan>|GambarKegiatan query()
@@ -5850,7 +6028,19 @@ namespace App\Models {
     /**
      * App\Models\GambarUmkm
      *
+     * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property \Illuminate\Support\Carbon|null $created_at
+     * @property string $link
+     * @property string|null $nama
+     * @property mixed $id_umkm
+     * @property int $id
      * @property-read \App\Models\Umkm $umkm
+     * @method static \Illuminate\Database\Eloquent\Builder<GambarUmkm>|GambarUmkm whereId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<GambarUmkm>|GambarUmkm whereIdUmkm($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<GambarUmkm>|GambarUmkm whereNama($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<GambarUmkm>|GambarUmkm whereLink($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<GambarUmkm>|GambarUmkm whereCreatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<GambarUmkm>|GambarUmkm whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<GambarUmkm>|GambarUmkm newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<GambarUmkm>|GambarUmkm newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<GambarUmkm>|GambarUmkm query()
@@ -6123,8 +6313,14 @@ namespace App\Models {
     /**
      * App\Models\JenisSurat
      *
+     * @property string|null $deskripsi
+     * @property string $nama_jenis
+     * @property int $id_jenis
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Surat> $surat
      * @property-read int|null $surat_count
+     * @method static \Illuminate\Database\Eloquent\Builder<JenisSurat>|JenisSurat whereIdJenis($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<JenisSurat>|JenisSurat whereNamaJenis($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<JenisSurat>|JenisSurat whereDeskripsi($value)
      * @method static \Illuminate\Database\Eloquent\Builder<JenisSurat>|JenisSurat newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<JenisSurat>|JenisSurat newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<JenisSurat>|JenisSurat query()
@@ -6397,9 +6593,21 @@ namespace App\Models {
     /**
      * App\Models\KegiatanRutin
      *
+     * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property \Illuminate\Support\Carbon|null $created_at
+     * @property mixed $created_by
+     * @property string $deskripsi
+     * @property string $nama
+     * @property int $id_kegiatan
      * @property-read \App\Models\User $creator
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\GambarKegiatan> $gambarKegiatan
      * @property-read int|null $gambarKegiatan_count
+     * @method static \Illuminate\Database\Eloquent\Builder<KegiatanRutin>|KegiatanRutin whereIdKegiatan($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<KegiatanRutin>|KegiatanRutin whereNama($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<KegiatanRutin>|KegiatanRutin whereDeskripsi($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<KegiatanRutin>|KegiatanRutin whereCreatedBy($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<KegiatanRutin>|KegiatanRutin whereCreatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<KegiatanRutin>|KegiatanRutin whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<KegiatanRutin>|KegiatanRutin newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<KegiatanRutin>|KegiatanRutin newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<KegiatanRutin>|KegiatanRutin query()
@@ -6955,7 +7163,17 @@ namespace App\Models {
     /**
      * App\Models\OpeningHourUmkm
      *
+     * @property string|null $close
+     * @property string|null $open
+     * @property mixed $day
+     * @property mixed $id_umkm
+     * @property int $id
      * @property-read \App\Models\Umkm $umkm
+     * @method static \Illuminate\Database\Eloquent\Builder<OpeningHourUmkm>|OpeningHourUmkm whereId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<OpeningHourUmkm>|OpeningHourUmkm whereIdUmkm($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<OpeningHourUmkm>|OpeningHourUmkm whereDay($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<OpeningHourUmkm>|OpeningHourUmkm whereOpen($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<OpeningHourUmkm>|OpeningHourUmkm whereClose($value)
      * @method static \Illuminate\Database\Eloquent\Builder<OpeningHourUmkm>|OpeningHourUmkm newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<OpeningHourUmkm>|OpeningHourUmkm newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<OpeningHourUmkm>|OpeningHourUmkm query()
@@ -7228,8 +7446,38 @@ namespace App\Models {
     /**
      * App\Models\Pemohon
      *
+     * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property \Illuminate\Support\Carbon|null $created_at
+     * @property string|null $alamat
+     * @property string|null $pekerjaan
+     * @property string|null $status_perkawinan
+     * @property string|null $agama
+     * @property string|null $kewarganegaraan
+     * @property mixed $jenis_kelamin
+     * @property string|null $tanggal_lahir
+     * @property string|null $tempat_lahir
+     * @property string|null $email
+     * @property string $nama_lengkap
+     * @property string $nomor_kk
+     * @property string $nik
+     * @property int $id_pemohon
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Surat> $surat
      * @property-read int|null $surat_count
+     * @method static \Illuminate\Database\Eloquent\Builder<Pemohon>|Pemohon whereIdPemohon($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Pemohon>|Pemohon whereNik($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Pemohon>|Pemohon whereNomorKk($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Pemohon>|Pemohon whereNamaLengkap($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Pemohon>|Pemohon whereEmail($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Pemohon>|Pemohon whereTempatLahir($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Pemohon>|Pemohon whereTanggalLahir($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Pemohon>|Pemohon whereJenisKelamin($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Pemohon>|Pemohon whereKewarganegaraan($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Pemohon>|Pemohon whereAgama($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Pemohon>|Pemohon whereStatusPerkawinan($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Pemohon>|Pemohon wherePekerjaan($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Pemohon>|Pemohon whereAlamat($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Pemohon>|Pemohon whereCreatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Pemohon>|Pemohon whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Pemohon>|Pemohon newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Pemohon>|Pemohon newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Pemohon>|Pemohon query()
@@ -7502,6 +7750,20 @@ namespace App\Models {
     /**
      * App\Models\PerangkatDesa
      *
+     * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property \Illuminate\Support\Carbon|null $created_at
+     * @property mixed $created_by
+     * @property string|null $gambar
+     * @property string $jabatan
+     * @property string $nama
+     * @property int $id_perangkat
+     * @method static \Illuminate\Database\Eloquent\Builder<PerangkatDesa>|PerangkatDesa whereIdPerangkat($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<PerangkatDesa>|PerangkatDesa whereNama($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<PerangkatDesa>|PerangkatDesa whereJabatan($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<PerangkatDesa>|PerangkatDesa whereGambar($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<PerangkatDesa>|PerangkatDesa whereCreatedBy($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<PerangkatDesa>|PerangkatDesa whereCreatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<PerangkatDesa>|PerangkatDesa whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<PerangkatDesa>|PerangkatDesa newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<PerangkatDesa>|PerangkatDesa newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<PerangkatDesa>|PerangkatDesa query()
@@ -7774,9 +8036,25 @@ namespace App\Models {
     /**
      * App\Models\Surat
      *
+     * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property \Illuminate\Support\Carbon|null $created_at
+     * @property mixed $created_by
+     * @property string $tanggal_surat
+     * @property string $nomor_surat
+     * @property mixed $id_jenis
+     * @property mixed $id_pemohon
+     * @property int $id_surat
      * @property-read \App\Models\Pemohon $pemohon
      * @property-read \App\Models\JenisSurat $jenisSurat
      * @property-read \App\Models\User $creator
+     * @method static \Illuminate\Database\Eloquent\Builder<Surat>|Surat whereIdSurat($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Surat>|Surat whereIdPemohon($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Surat>|Surat whereIdJenis($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Surat>|Surat whereNomorSurat($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Surat>|Surat whereTanggalSurat($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Surat>|Surat whereCreatedBy($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Surat>|Surat whereCreatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Surat>|Surat whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Surat>|Surat newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Surat>|Surat newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Surat>|Surat query()
@@ -8049,12 +8327,26 @@ namespace App\Models {
     /**
      * App\Models\Umkm
      *
+     * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property \Illuminate\Support\Carbon|null $created_at
+     * @property mixed $created_by
+     * @property string $deskripsi
+     * @property string $alamat
+     * @property string $nama
+     * @property int $id_umkm
      * @property-read \App\Models\User $creator
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\GambarUmkm> $gambarUmkm
      * @property-read int|null $gambarUmkm_count
      * @property-read \App\Models\ContactUmkm $contactUmkm
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\OpeningHourUmkm> $openingHours
      * @property-read int|null $openingHours_count
+     * @method static \Illuminate\Database\Eloquent\Builder<Umkm>|Umkm whereIdUmkm($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Umkm>|Umkm whereNama($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Umkm>|Umkm whereAlamat($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Umkm>|Umkm whereDeskripsi($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Umkm>|Umkm whereCreatedBy($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Umkm>|Umkm whereCreatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Umkm>|Umkm whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Umkm>|Umkm newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Umkm>|Umkm newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Umkm>|Umkm query()
