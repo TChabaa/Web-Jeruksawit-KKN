@@ -10,10 +10,13 @@ class Article extends Model
 {
     use HasFactory;
 
+    protected $table = 'umkm';
+    protected $primaryKey = 'id';
+    public $timestamps = true;
+
     protected $fillable = [
         'author_id',
         'title',
-        'image_url',
         'content',
         'views',
         'slug'
@@ -23,4 +26,10 @@ class Article extends Model
     {
         return $this->belongsTo(User::class, 'author_id');
     }
+
+    public function gambarArticle()
+    {
+        return $this->hasMany(GambarArticle::class, 'id');
+    }
+
 }
