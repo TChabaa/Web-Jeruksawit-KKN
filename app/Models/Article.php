@@ -3,16 +3,13 @@
 namespace App\Models;
 
 use App\Models\User;
+use App\Models\GambarArticle;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Article extends Model
 {
     use HasFactory;
-
-    protected $table = 'umkm';
-    protected $primaryKey = 'id';
-    public $timestamps = true;
 
     protected $fillable = [
         'author_id',
@@ -27,9 +24,9 @@ class Article extends Model
         return $this->belongsTo(User::class, 'author_id');
     }
 
-    public function gambarArticle()
-    {
-        return $this->hasMany(GambarArticle::class, 'id');
-    }
+    public function gambar_articles()
+{
+    return $this->hasMany(GambarArticle::class);
+}
 
 }

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Http\Requests\ArticleCreateRequest;
 use App\Http\Requests\ArticleUpdateRequest;
+use App\Models\GambarArticle;
 use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
@@ -95,15 +96,8 @@ class ArticleController extends Controller
         try {
             DB::beginTransaction();
 
-            $photo = $request->file('image');
-            $path = $photo->storePublicly("gallery", "public");
-            Article::create([
-                'author_id' => Auth::user()->role != "writer" ? $request->writer : Auth::user()->id,
-                'title' => $request->title,
-                'content' => $request->content,
-                'image_url' => $path,
-                'slug' => Str::slug($request->title . '-' . Str::ulid())
-            ]);
+            $article = $this->createArticle($request);
+            $this->storeGambars($request, $article);
 
             DB::commit();
 
@@ -115,12 +109,56 @@ class ArticleController extends Controller
         }
     }
 
+
+    private function createArticle($request)
+    {
+        return Article::create([
+            'author_id' => Auth::user()->role != "writer" ? $request->writer : Auth::user()->id,
+            'title' => $request->title,
+            'content' => $request->content,
+            'slug' => Str::slug($request->title . '-' . Str::ulid())
+        ]);
+    }
+
+    private function storeGambars($request, $article)
+    {
+        $photos = $request->file('gambar_articles');
+        foreach ($photos as $photo) {
+            $path = $photo->storePublicly("gambar_article", "public");
+            GambarArticle::create([
+                'article_id' => $article->id,
+                'image_url' => $path,
+            ]);
+        }
+    }
+
+    public function addGambar(Request $request, string $article)
+    {
+        try {
+            $request->validate([
+                'gambar_articles.*' => 'required|image|mimes:jpeg,png,jpg|max:1048|',
+            ]);
+
+            DB::beginTransaction();
+
+            $article = Article::with('gambar_articles')->findOrFail($article);
+            $this->storeGambars($request, $article);
+
+            DB::commit();
+
+            Alert::toast('Sukses Menambahkan Photo', 'success');
+            return redirect()->route(Auth::user()->role . '.articles.edit', $article);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->withErrors(['error' => 'Gagal Menambahkan Photo: ' . $e->getMessage()]);
+        }
+    }
     /**
      * Display the specified resource.
      */
     public function show(string $slug)
     {
-        $article = Article::with('user')->where('slug', $slug)->firstOrFail();
+        $article = Article::with(['user', "gambar_articles"])->where('slug', $slug)->firstOrFail();
         // Increment the views count
         $article->increment('views');
         return view('components.pages.frontend.detail-article', compact('article'));
@@ -131,7 +169,7 @@ class ArticleController extends Controller
      */
     public function edit(string $id)
     {
-        $article = Article::findOrFail($id);
+        $article =  Article::with( ["gambar_articles"])->findOrFail($id);
 
         $admins = [];
 
@@ -139,6 +177,9 @@ class ArticleController extends Controller
             $admins = User::where('role', 'writer')->get();
         }
 
+        $title = 'Hapus Foto Artikel!';
+        $text = "Apakah Anda yakin ingin menghapus?";
+        confirmDelete($title, $text);
         return view('components.pages.dashboard.admin.article.edit', compact('article', 'admins'));
     }
 
@@ -153,19 +194,10 @@ class ArticleController extends Controller
             $article = Article::findOrFail($id);
             $oldTitle = $article->title;
 
-            // Periksa apakah ada gambar baru yang diunggah
-            if ($request->hasFile('image')) {
-                $photo = $request->file('image');
-                $path = $photo->storePublicly("gallery", "public");
-            } else {
-                $path = $article->image_url;
-            }
-
             $article->update([
                 'author_id' => Auth::user()->role != "writer" ? $request->writer : Auth::user()->id,
                 'title' => $request->title,
                 'content' => $request->content,
-                'image_url' => $path,
                 'slug' => $request->title != $oldTitle ? Str::slug($request->title . '-' . Str::ulid()) : $article->slug
             ]);
 
@@ -187,5 +219,14 @@ class ArticleController extends Controller
         $article->delete();
         Alert::toast('Sukses Menghapus Artikel', 'success');
         return redirect()->route(Auth::user()->role . '.articles.index');
+    }
+
+    public function destroyGambar(string $article, string $gambar_article)
+    {
+        $article = Article::with('gambar_articles')->findOrFail($article);
+        $article->gambar_articles()->findOrFail($gambar_article)->delete();
+
+        Alert::toast('Berhasil menghapus data photo', 'success');
+        return redirect()->route(Auth::user()->role . '.articles.edit', $article);
     }
 }

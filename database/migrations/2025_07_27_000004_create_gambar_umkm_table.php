@@ -10,9 +10,8 @@ return new class extends Migration
     {
         Schema::create('gambar_umkm', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('id_umkm');
-            $table->string('nama')->nullable();
-            $table->string('link');
+            $table->unsignedInteger('id_umkm')->nullable(false);
+            $table->string('image_url')->nullable(false);
             $table->timestamps();
             $table->foreign('id_umkm')->references('id_umkm')->on('umkm')->cascadeOnDelete();
         });

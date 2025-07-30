@@ -14,20 +14,22 @@
     </nav>
 
     <form action="{{ route(strtolower(auth()->user()->role) . '.articles.store') }}" enctype="multipart/form-data"
-        method="POST" novalidate>
+        method="POST">
         @csrf
         <div class="form-1">
             <h1 class="mb-6 text-xl font-bold text-black-dashboard dark:text-white-dahsboard">Tambah Artikel</h1>
 
             <div class="px-6 py-6 mb-6 bg-white rounded-lg shadow-lg dark:bg-black">
-                <label for="image" class="block mb-2 text-sm font-medium text-black dark:text-white">
+                <label for="gambar_article" class="block mb-2 text-sm font-medium text-black dark:text-white">
                     Masukan Foto <span class="text-red-500">*</span>
                 </label>
+                <p class="text-xs font-medium text-gray-400">* Menambahkan foto bisa lebih dari satu</p>
                 <p class="text-xs font-medium text-gray-400">* Pastikan file bertipe jpeg, jpg, png</p>
                 <p class="text-xs font-medium text-gray-400">* Maksimal file 1MB</p>
                 <div id="imagePreviewContainer" class="flex flex-wrap gap-5 mt-3"></div>
-                <input type="file" accept="image/*" name="image" id="image" class="mt-3">
-                <x-partials.dashboard.input-error :messages="$errors->get('image')" />
+                <input type="file" required multiple accept="image/*" name="gambar_articles[]" id="gambar_articles"
+                    class="mt-3">
+                <x-partials.dashboard.input-error :messages="$errors->get('gambar_articles.')" />
             </div>
 
             <div class="px-6 py-6 mb-6 bg-white rounded-lg shadow-lg dark:bg-black">
@@ -111,20 +113,20 @@
     }); // by name bukan id CKeditor 4
 </script>
 <script>
-    document.getElementById('image').addEventListener('change', function(event) {
-        const files = event.target.files;
-        const imagePreviewContainer = document.getElementById('imagePreviewContainer');
-        imagePreviewContainer.innerHTML = ''; // Clear previous images
+        document.getElementById('gambar_article').addEventListener('change', function(event) {
+            const files = event.target.files;
+            const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+            imagePreviewContainer.innerHTML = ''; // Clear previous images
 
-        for (const file of files) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = document.createElement('img');
-                img.src = e.target.result;
-                img.className = 'w-32 h-32 object-cover rounded-lg';
-                imagePreviewContainer.appendChild(img);
+            for (const file of files) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'w-32 h-32 object-cover rounded-lg';
+                    imagePreviewContainer.appendChild(img);
+                }
+                reader.readAsDataURL(file);
             }
-            reader.readAsDataURL(file);
-        }
-    });
+        });
 </script>

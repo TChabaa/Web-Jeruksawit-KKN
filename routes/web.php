@@ -70,6 +70,9 @@ Route::middleware([
             'show'
         ]);
 
+        Route::post('/articles/{article}/gambar_articles', [ArticleController::class, 'addGambar'])->name('articles.addGambar');
+        Route::delete('/articles/{article}/gambar_articles/{gambar_article}', [ArticleController::class, 'destroyGambar'])->middleware('check.remaining.images.article')->name('articles.destroyGambar');
+
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -112,6 +115,9 @@ Route::middleware([
         Route::resource('articles', ArticleController::class)->except([
             'show'
         ]);
+        Route::post('/articles/{article}/gambar_articles', [ArticleController::class, 'addGambar'])->name('articles.addGambar');
+        Route::delete('/articles/{article}/gambar_articles/{gambar_article}', [ArticleController::class, 'destroyGambar'])->middleware('check.remaining.images')->name('articles.destroyGambar');
+
 
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -160,6 +166,9 @@ Route::middleware([
         Route::resource('articles', ArticleController::class)->except([
             'show'
         ]);
+        Route::post('/articles/{article}/gambar_articles', [ArticleController::class, 'addGambar'])->name('articles.addGambar');
+        Route::delete('/articles/{article}/gambar_articles/{gambar_article}', [ArticleController::class, 'destroyGambar'])->middleware('check.remaining.images')->name('articles.destroyGambar');
+
 
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

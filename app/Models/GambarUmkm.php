@@ -15,8 +15,7 @@ class GambarUmkm extends Model
 
     protected $fillable = [
         'id_umkm',
-        'nama',
-        'link',
+        'image_url',
     ];
 
     public function umkm()

@@ -15,8 +15,7 @@ class GambarKegiatan extends Model
 
     protected $fillable = [
         'id_kegiatan',
-        'nama',
-        'link',
+        'image_url',
     ];
 
     public function kegiatanRutin()

@@ -13,9 +13,8 @@ return new class extends Migration
     {
         Schema::create('gambar_articles', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('article_id');
-            $table->string('nama')->nullable();
-            $table->string('link');
+            $table->unsignedInteger('article_id')->nullable(false);
+            $table->string('image_url')->nullable(false);
             $table->timestamps();
             $table->foreign('article_id')->references('id')->on('articles')->cascadeOnDelete();
         });

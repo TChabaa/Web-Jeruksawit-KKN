@@ -25,7 +25,6 @@ class ArticleUpdateRequest extends FormRequest
         $rules = [
             'title' => 'required|string|max:75',
             'content' => 'required|string',
-            'image' => 'image|mimes:jpg,jpeg,png|max:1048'
         ];
 
         if (auth()->user()->role != 'writer') {

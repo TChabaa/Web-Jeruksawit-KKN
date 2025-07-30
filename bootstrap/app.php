@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\CheckRemainingImages;
+use App\Http\Middleware\CheckRemainingImagesArticle;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -18,7 +19,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'prevent.superadmin.update' => \App\Http\Middleware\PreventSuperAdminUpdate::class,
             'prevent.superadmin.create' => \App\Http\Middleware\PreventSuperAdminCreate::class,
             'check.destination.active' => \App\Http\Middleware\CheckDestinationActive::class,
-            'check.remaining.images' => \App\Http\Middleware\CheckRemainingImages::class
+            'check.remaining.images' => \App\Http\Middleware\CheckRemainingImages::class,
+            'check.remaining.images.article' => \App\Http\Middleware\CheckRemainingImagesArticle::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
