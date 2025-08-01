@@ -28,7 +28,7 @@ class ArticleCreateRequest extends FormRequest
             'gambar_articles.*' => 'image|mimes:jpg,jpeg,png|max:1048' // Validate each item in the array
         ];
 
-        if (auth()->user()->role != 'writer') {
+        if (Auth::user()->role != 'writer') {
             $rules['writer'] = 'required';
         }
 

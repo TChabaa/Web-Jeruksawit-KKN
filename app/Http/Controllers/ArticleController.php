@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
+use App\Models\GambarArticle;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use App\Models\Article;
-use App\Models\User;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Http\Requests\ArticleCreateRequest;
-use App\Http\Requests\ArticleUpdateRequest;
-use App\Models\GambarArticle;
 use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
@@ -44,8 +43,9 @@ class ArticleController extends Controller
                 // Menambahkan kolom aksi untuk setiap item
                 ->addColumn('action', function ($item) {
                     $roleName = Auth::user()->role;
-                    $editUrl = route("{$roleName}.articles.edit", $item->id);
-                    $deleteUrl = route("{$roleName}.articles.destroy", $item->id);
+                    $editUrl = route($roleName . '.articles.edit', $item->id);
+                    $deleteUrl = route($roleName . '.articles.destroy', $item->id);
+
 
                     // Membuat tombol edit dan hapus untuk setiap item
                     return sprintf(
@@ -169,7 +169,7 @@ class ArticleController extends Controller
      */
     public function edit(string $id)
     {
-        $article =  Article::with( ["gambar_articles"])->findOrFail($id);
+        $article =  Article::with(["gambar_articles"])->findOrFail($id);
 
         $admins = [];
 
@@ -186,7 +186,7 @@ class ArticleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ArticleUpdateRequest $request, string $id)
+    public function update(Request $request, string $id)
     {
         try {
             DB::beginTransaction();

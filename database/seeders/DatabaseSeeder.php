@@ -5,10 +5,12 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Models\Destination;
+use App\Models\JenisSurat;
 use Illuminate\Database\Seeder;
 use Database\Seeders\UserSeeder;
 use Database\Seeders\EventSeeder;
 use Database\Seeders\DestinationSeeder;
+use Database\Seeders\JenisSuratSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,7 +22,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             DestinationSeeder::class,
-            EventSeeder::class
+            EventSeeder::class,
+            JenisSuratSeeder::class,
         ]);
     }
 }

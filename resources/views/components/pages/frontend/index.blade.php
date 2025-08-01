@@ -28,6 +28,26 @@
         <x-partials.frontend.advantages-brand />
     </section>
 
+    <section class="font-inter">
+        <div class="mb-8 text-4xl font-extrabold text-center">
+            <h1 class="font-inter">UMKM Desa Wisata</h1>
+        </div>
+        <div class="flex flex-wrap items-center justify-center gap-4 px-4 md:px-0">
+            @forelse ($umkms as $umkm)
+                <div class="card-container">
+                    <x-partials.frontend.card-umkm :$umkm />
+                </div>
+            @empty
+                <p class="font-semibold text-center text-gray-500">Belum ada UMKM</p>
+            @endforelse
+        </div>
+        <div class="mt-10 text-center">
+            <a href="{{ route('umkm') }}"
+                class="px-4 py-2 text-black transition-transform duration-300 transform border-2 border-gray-600 rounded-md hover:shadow-lg ">Lihat
+                Semua</a>
+        </div>
+    </section>
+
     <section class="bg-green-new">
         <div class="grid py-20 mx-auto md:grid-cols-2 max-w-7xl">
             <div class="pl-10 mb-8 space-y-10 text-white text-balance ">
