@@ -12,9 +12,11 @@ return new class extends Migration
             $table->increments('id_umkm');
             $table->string('nama');
             $table->string('alamat');
+            $table->string('gmaps_url')->nullable(false);
             $table->text('deskripsi');
             $table->unsignedInteger('created_by');
             $table->timestamps();
+            $table->string('slug', 150)->nullable(false);
             $table->foreign('created_by')->references('id')->on('users')->cascadeOnDelete();
         });
     }
