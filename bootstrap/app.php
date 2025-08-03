@@ -21,6 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'check.destination.active' => \App\Http\Middleware\CheckDestinationActive::class,
             'check.remaining.images' => \App\Http\Middleware\CheckRemainingImages::class,
             'check.remaining.images.article' => \App\Http\Middleware\CheckRemainingImagesArticle::class,
+            'check.remaining.images.umkm' => \App\Http\Middleware\CheckRemainingImagesUmkm::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

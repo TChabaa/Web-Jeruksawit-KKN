@@ -32,7 +32,7 @@ class EventCreateRequest extends FormRequest
             'end_date' => 'required|date|after_or_equal:now'
         ];
 
-        if (auth()->user()->role === 'super_admin') {
+        if (Auth::user()->role->role === 'super_admin') {
             $rules['admin'] = 'required';
         }
 

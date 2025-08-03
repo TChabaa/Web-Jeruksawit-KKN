@@ -9,6 +9,7 @@ use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\DestinationController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UmkmController;
 
 Route::get('/articles', [FrontendController::class, 'articles'])->name('articles');
 Route::get('/articles/{slug}/show', [ArticleController::class, 'show'])->name('articles.show');
@@ -24,6 +25,9 @@ Route::view('/about-us', 'components.pages.frontend.about-us-page')->name('about
 Route::get('/', [FrontendController::class, 'index'])->name('index');
 Route::get('/destinations', [FrontendController::class, 'destinations'])->name('destinations');
 Route::get('/destinations/{slug}/show', [DestinationController::class, 'show'])->middleware('check.destination.active')->name('destinations.show');
+
+Route::get('/umkm', [FrontendController::class, 'umkm'])->name('umkm');
+Route::get('/umkm/{slug}/show', [UmkmController::class, 'show'])->name('umkm.show');
 
 Route::get('/galleries', [FrontendController::class, 'galleries'])->name('galleries');
 
@@ -63,7 +67,10 @@ Route::middleware([
         Route::put('/users/{user}', [UserController::class, 'update'])->middleware('prevent.superadmin.update')->name('users.update');
         Route::post('/users', [UserController::class, 'store'])->middleware('prevent.superadmin.create')->name('users.store');
         Route::resource('users', UserController::class)->except([
-            'show', 'edit', 'update', 'store'
+            'show',
+            'edit',
+            'update',
+            'store'
         ]);
 
         Route::resource('articles', ArticleController::class)->except([
@@ -72,6 +79,14 @@ Route::middleware([
 
         Route::post('/articles/{article}/gambar_articles', [ArticleController::class, 'addGambar'])->name('articles.addGambar');
         Route::delete('/articles/{article}/gambar_articles/{gambar_article}', [ArticleController::class, 'destroyGambar'])->middleware('check.remaining.images.article')->name('articles.destroyGambar');
+
+        Route::resource('umkm', UmkmController::class)->except([
+            'show'
+        ]);
+        Route::post('/umkm/{umkm}/galleries', [UmkmController::class, 'addGalleries'])->name('umkm.addGalleries');
+        Route::delete('/umkm/{umkm}/galleries/{gallery}', [UmkmController::class, 'destroyGallery'])->middleware('check.remaining.images.umkm')->name('umkm.destroyGallery');
+        Route::put('/umkm/{umkm}/contact', [UmkmController::class, 'updateContactDetail'])->name('umkm.updateContactDetail');
+        Route::put('/umkm/{umkm}/operational', [UmkmController::class, 'updateOperational'])->name('umkm.updateOperational');
 
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -109,7 +124,10 @@ Route::middleware([
         Route::put('/users/{user}', [UserController::class, 'update'])->middleware('prevent.superadmin.update')->name('users.update');
         Route::post('/users', [UserController::class, 'store'])->middleware('prevent.superadmin.create')->name('users.store');
         Route::resource('users', UserController::class)->except([
-            'show', 'edit', 'update', 'store'
+            'show',
+            'edit',
+            'update',
+            'store'
         ]);
 
         Route::resource('articles', ArticleController::class)->except([
@@ -118,6 +136,14 @@ Route::middleware([
         Route::post('/articles/{article}/gambar_articles', [ArticleController::class, 'addGambar'])->name('articles.addGambar');
         Route::delete('/articles/{article}/gambar_articles/{gambar_article}', [ArticleController::class, 'destroyGambar'])->middleware('check.remaining.images')->name('articles.destroyGambar');
 
+
+        Route::resource('umkm', UmkmController::class)->except([
+            'show'
+        ]);
+        Route::post('/umkm/{umkm}/galleries', [UmkmController::class, 'addGalleries'])->name('umkm.addGalleries');
+        Route::delete('/umkm/{umkm}/galleries/{gallery}', [UmkmController::class, 'destroyGallery'])->middleware('check.remaining.images.umkm')->name('umkm.destroyGallery');
+        Route::put('/umkm/{umkm}/contact', [UmkmController::class, 'updateContactDetail'])->name('umkm.updateContactDetail');
+        Route::put('/umkm/{umkm}/operational', [UmkmController::class, 'updateOperational'])->name('umkm.updateOperational');
 
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -146,6 +172,14 @@ Route::middleware([
         Route::resource('destinations', DestinationController::class)->except([
             'show'
         ]);
+
+        Route::resource('umkm', UmkmController::class)->except([
+            'show'
+        ]);
+        Route::post('/umkm/{umkm}/galleries', [UmkmController::class, 'addGalleries'])->name('umkm.addGalleries');
+        Route::delete('/umkm/{umkm}/galleries/{gallery}', [UmkmController::class, 'destroyGallery'])->middleware('check.remaining.images.umkm')->name('umkm.destroyGallery');
+        Route::put('/umkm/{umkm}/contact', [UmkmController::class, 'updateContactDetail'])->name('umkm.updateContactDetail');
+        Route::put('/umkm/{umkm}/operational', [UmkmController::class, 'updateOperational'])->name('umkm.updateOperational');
 
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

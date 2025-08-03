@@ -6,6 +6,7 @@ use App\Models\Event;
 use App\Models\Gallery;
 use App\Models\Destination;
 use App\Models\Article;
+use App\Models\Umkm;
 use App\Models\User;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -18,8 +19,9 @@ class FrontendController extends Controller
         $events = Event::limit(3)->latest()->get();
 
         $articles = Article::with('user')->limit(3)->latest()->get();
+        $umkms = Umkm::with('gambarUmkm')->limit(3)->latest()->get();
 
-        return view('components.pages.frontend.index', compact('destinations', 'events', 'articles'));
+        return view('components.pages.frontend.index', compact('destinations', 'events', 'articles', 'umkms'));
     }
 
     public function destinations(Request $request)
@@ -58,6 +60,17 @@ class FrontendController extends Controller
         return view('components.pages.frontend.article', compact('articles'));
     }
 
+    public function umkm(Request $request)
+    {
+        $umkms = Umkm::with(['gambarUmkm'])->latest();
+        if ($request->has('keyword')) {
+            $umkms = $umkms->where('nama', 'like', '%' . $request->keyword . '%');
+        }
+
+        $umkms = $umkms->paginate(8);
+        return view('components.pages.frontend.umkm', compact('umkms'));
+    }
+
     public function galleries()
     {
         $galleries = Gallery::with('destination')->latest()->paginate(8);
@@ -85,9 +98,17 @@ class FrontendController extends Controller
     {
         // Validate the surat type
         $validTypes = [
-            'skck', 'izin-keramaian', 'keterangan-usaha', 'sktm', 'belum-menikah',
-            'keterangan-kematian', 'keterangan-kelahiran', 'orang-yang-sama',
-            'pindah-keluar', 'domisili-instansi', 'domisili-kelompok'
+            'skck',
+            'izin-keramaian',
+            'keterangan-usaha',
+            'sktm',
+            'belum-menikah',
+            'keterangan-kematian',
+            'keterangan-kelahiran',
+            'orang-yang-sama',
+            'pindah-keluar',
+            'domisili-instansi',
+            'domisili-kelompok'
         ];
 
         if (!in_array($type, $validTypes)) {

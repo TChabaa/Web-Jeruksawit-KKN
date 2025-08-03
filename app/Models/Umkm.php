@@ -16,11 +16,20 @@ class Umkm extends Model
     protected $fillable = [
         'nama',
         'alamat',
+        'gmaps_url',
         'deskripsi',
+        'views',
+        'slug',
         'created_by',
     ];
 
+
     public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function user()
     {
         return $this->belongsTo(User::class, 'created_by');
     }

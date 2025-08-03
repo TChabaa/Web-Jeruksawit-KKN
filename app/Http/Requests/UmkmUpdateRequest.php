@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
-class EventUpdateRequest extends FormRequest
+class UmkmUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,17 +23,14 @@ class EventUpdateRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'name' => 'required|string|min:5|max:100',
+            'name_destination' => 'required|string|min:5|max:50',
             'description' => 'required|string',
             'location' => 'required|string',
             'gmaps_url' => 'required|string|url:http,https',
-            'image' => 'image|mimes:jpeg,png,jpg|max:1048|',
-            'start_date' => 'required|date|after_or_equal:now',
-            'end_date' => 'required|date|after_or_equal:now'
         ];
 
-        if (Auth::user()->role === 'super_admin') {
-            $rules['admin'] = 'required';
+        if (Auth::user()->role !== 'owner') {
+            $rules['owner'] = 'required';
         }
 
         return $rules;
@@ -42,8 +39,13 @@ class EventUpdateRequest extends FormRequest
     public function messages()
     {
         return [
-            'start_date.after_or_equal' => 'Tanggal dan waktu acara harus merupakan tanggal dan waktu setelah atau sama dengan sekarang',
-            'end_date.after_or_equal' => 'Tanggal dan waktu acara harus merupakan tanggal dan waktu setelah atau sama dengan sekarang',
+            'name_destination.required' => 'Nama UMKM harus diisi.',
+            'name_destination.min' => 'Nama UMKM minimal 5 karakter.',
+            'name_destination.max' => 'Nama UMKM maksimal 50 karakter.',
+            'description.required' => 'Deskripsi harus diisi.',
+            'location.required' => 'Lokasi harus diisi.',
+            'gmaps_url.required' => 'URL Google Maps harus diisi.',
+            'gmaps_url.url' => 'URL Google Maps harus berupa URL yang valid.',
         ];
     }
 }

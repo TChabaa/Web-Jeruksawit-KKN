@@ -26,13 +26,16 @@
                 </div>
             </form>
         </div>
-        <div class="grid gap-4 px-3 mx-auto mt-10 xl:grid-cols-4 lg:grid-cols-3 max-w-7xl justify-items-center">
+        <div
+            class="grid gap-6 px-3 mx-auto mt-10 xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 max-w-7xl justify-items-center">
             @forelse ($articles as $article)
-                <div class="">
+                <div class="w-full max-w-sm">
                     <x-partials.frontend.card-article :article="$article" />
                 </div>
             @empty
-                <p class="text-xl font-semibold text-center text-gray-600">Tidak ada Artikel</p>
+                <div class="col-span-full">
+                    <p class="text-xl font-semibold text-center text-gray-600">Tidak ada Artikel</p>
+                </div>
             @endforelse
         </div>
     </div>
