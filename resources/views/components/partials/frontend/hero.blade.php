@@ -6,10 +6,8 @@
             <h1 id="slogan"
                 class="max-w-2xl mb-4 text-4xl font-extrabold leading-none tracking-tight font-inter md:text-5xl xl:text-6xl S">
             </h1>
-            <p class="max-w-2xl mb-6 font-inter font-light text-gray-700 lg:mb-8 md:text-lg lg:text-xl">Desa Wisata Sukarame,
-                terletak di provinsi Jawa Barat, telah diakui sebagai salah satu Desa Wisata Indonesia. Julukan ini
-                tidak datang tanpa alasan. Desa ini menawarkan perpaduan sempurna antara keindahan alam yang memukau dan
-                kekayaan budaya yang mempesona.
+            <p class="max-w-2xl mb-6 font-inter font-light text-gray-700 lg:mb-8 md:text-lg lg:text-xl">Desa Jeruksawit,terletak di Kabupaten Karanganyar, Provinsi Jawa Tengah, Desa ini berada di wilayah strategis yang berbatasan langsung dengan Kota Surakarta, sehingga memiliki akses yang mudah menuju pusat kota maupun kawasan industri dan perdagangan sekitar.
+                Wilayah Desa Jeruksawit didominasi oleh lahan pertanian dan pemukiman, dengan penduduk yang sebagian besar bermata pencaharian sebagai buruh, petani, dan pelaku usaha kecil menengah (UKM).
             </p>
             <div class="space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
                 <a href="{{ route('destinations') }}"
@@ -33,7 +31,7 @@
         const myElement = document.getElementById('slogan');
 
         gsap.to(myElement, {
-            text: "Desa Wisata <br>Sukarame",
+            text: "Desa Jeruksawit",
             duration: 3,
             repeat: 0,
             ease: "none",

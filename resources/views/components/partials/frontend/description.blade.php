@@ -3,7 +3,7 @@
 
     <div class="items-center">
         <p class="font-bold text-center m-5 lg:mb-8 text-[22px] mb-0 lg:text-[25px]">
-            Visi Desa Sukarame
+            Visi Desa Jeruksawit
         </p>
         <p class="lg:px-5 text-[17px] m-10 mb-0 mt-5 text-center font-normal text-lg lg:mb-8 lg:text-[20px] ">
             Mewujudkan masyarakat yang tentram, makmur, dan berdaya saing Berlandaskan religius, kultural, dan
@@ -41,7 +41,7 @@
     </div>
 
     <p class="text-center font-bold text-lg text-[22px] lg:mb-8 lg:text-[25px]">
-        Misi Desa Sukarame
+        Misi Desa Jeruksawit
     </p>
     <div class="flex justify-center">
         <ol class="list-decimal text-[17px] mt-0 ml-8 p-7 text-pretty m-5 max-w-2xl lg:max-w-5xl mb-0 font-normal text-lg lg:mb-4 lg:text-[20px] font-inter">
@@ -67,10 +67,8 @@
         </div>
         <div class="flex p-3">
             <p class="p-2 pt-0 text-center mb-3 text-black-500 dark:text-gray-400 text-[17px] lg:text-[20px] lg:mb-6 font-inter">
-                Desa Sukarame berasal dari dua suku kata yaitu "suka" dan "rame". Konon menurut cerita rakyat bahwa
-                pemimpin pertama atau Kepala Desa Sukarame pertama adalah yang memberi nama tersebut yaitu Nyi Mas
-                Sairiningrum (1918-1925), bahwa dia suka akan keramaian disaat musyawarah dengan saudara-saudara dan
-                anaknya yang berada diluar desa.
+                Desa Jeruksawit adalah desa yang terletak di Kecamatan Gondang Rejo, Kabupaten Karanganyar. Desa Jeruksawit memiliki 17 dusun diantaranya Banyuurip, Banyubening, Blimbing, 
+                Depel, Jeruksawit, Dukuhan, Jenggrik, Jurangkambil, Karanglo, Bendorjo, Kedunggong, Mojorejo, Plosokerep, Banyuanyar, Sebrungan, Plosorejo, Watugajah.
             </p>
         </div>
     </div>
