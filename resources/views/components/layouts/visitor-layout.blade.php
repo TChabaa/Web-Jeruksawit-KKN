@@ -69,10 +69,7 @@
                                 class="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-green-new lg:p-0 {{ Route::current()->getName() == 'galleries' ? 'text-green-new' : '' }}">Galeri</a>
                         </li>
 
-                        <li>
-                            <a href="{{ route('events') }}"
-                                class="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-green-new lg:p-0 {{ in_array(Route::current()->getName(), ['events', 'events.show']) ? 'text-green-new' : '' }}">Acara</a>
-                        </li>
+
                         <li>
                             <a href="{{ route('articles') }}"
                                 class="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-green-new lg:p-0 {{ in_array(Route::current()->getName(), ['articles', 'articles.show']) ? 'text-green-new' : '' }} ">Artikel</a>
@@ -182,10 +179,7 @@
                 <div class="w-full px-4 md:w-1/2">
 
                     <nav class="mb-10 list-none text-md">
-                        <li class="mt-3">
-                            <a href="{{ route('events') }}"
-                                class=" cursor-pointer hover:text-green-new {{ in_array(Route::current()->getName(), ['events', 'events.show']) ? 'text-green-new' : '' }}">Acara</a>
-                        </li>
+
                         <li class="mt-3">
                             <a href="{{ route('articles') }}"
                                 class=" cursor-pointer hover:text-green-new {{ in_array(Route::current()->getName(), ['articles', 'articles.show']) ? 'text-green-new' : '' }}">Artikel</a>

@@ -17,11 +17,11 @@ class FrontendController extends Controller
     {
         $destinations = Destination::with('galleries')->limit(3)->latest()->get();
         $events = Event::limit(3)->latest()->get();
-
         $articles = Article::with('user')->limit(3)->latest()->get();
         $umkms = Umkm::with('gambarUmkm')->limit(3)->latest()->get();
+        $perangkatDesas = \App\Models\PerangkatDesa::limit(8)->latest()->get(); // For carousel
 
-        return view('components.pages.frontend.index', compact('destinations', 'events', 'articles', 'umkms'));
+        return view('components.pages.frontend.index', compact('destinations', 'events', 'articles', 'umkms', 'perangkatDesas'));
     }
 
     public function destinations(Request $request)
@@ -76,6 +76,13 @@ class FrontendController extends Controller
         $galleries = Gallery::with('destination')->latest()->paginate(8);
 
         return view('components.pages.frontend.gallery', compact('galleries'));
+    }
+
+    public function aboutUs()
+    {
+        $perangkatDesas = \App\Models\PerangkatDesa::latest()->get(); // For list display
+
+        return view('components.pages.frontend.about-us-page', compact('perangkatDesas'));
     }
 
     /**
