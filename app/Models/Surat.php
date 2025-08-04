@@ -19,6 +19,7 @@ class Surat extends Model
         'nomor_surat',
         'tanggal_surat',
         'created_by',
+        'status', // Added status field
     ];
 
     public function pemohon()

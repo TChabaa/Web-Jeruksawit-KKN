@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Event;
 use App\Models\Gallery;
 use App\Models\Destination;
 use App\Models\Article;
@@ -16,17 +15,15 @@ class FrontendController extends Controller
     public function index()
     {
         $destinations = Destination::with('galleries')->limit(3)->latest()->get();
-        $events = Event::limit(3)->latest()->get();
         $articles = Article::with('user')->limit(3)->latest()->get();
         $umkms = Umkm::with('gambarUmkm')->limit(3)->latest()->get();
         $perangkatDesas = \App\Models\PerangkatDesa::limit(8)->latest()->get(); // For carousel
 
-        return view('components.pages.frontend.index', compact('destinations', 'events', 'articles', 'umkms', 'perangkatDesas'));
+        return view('components.pages.frontend.index', compact('destinations', 'articles', 'umkms', 'perangkatDesas'));
     }
 
     public function destinations(Request $request)
     {
-
         $destinations = Destination::with(['galleries'])->latest();
         if ($request->has('keyword')) {
             $destinations = $destinations->where('name', 'like', '%' . $request->keyword . '%');
@@ -34,19 +31,6 @@ class FrontendController extends Controller
 
         $destinations = $destinations->paginate(8);
         return view('components.pages.frontend.destination', compact('destinations'));
-    }
-
-    public function events(Request $request)
-    {
-        $newEvents = Event::limit(5)->latest()->get();
-
-        $events = Event::query();
-        if ($request->has('keyword')) {
-            $events = $events->where('name', 'like', '%' . $request->keyword . '%');
-        }
-
-        $events = $events->paginate(8);
-        return view('components.pages.frontend.event', compact('newEvents', 'events'));
     }
 
     public function articles(Request $request)
@@ -164,11 +148,155 @@ class FrontendController extends Controller
             'attachment' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
 
-        // Process the form submission
-        // This is a placeholder for actual processing logic
+        try {
+            // Get or create pemohon
+            $pemohon = \App\Models\Pemohon::firstOrCreate(
+                ['nik' => $request->nik],
+                [
+                    'nama' => $request->name,
+                    'alamat' => $request->address,
+                    'no_hp' => $request->phone,
+                    'email' => $request->email,
+                ]
+            );
 
-        // Redirect back with success message
-        return redirect()->route('layanan-surat')
-            ->with('success', 'Permohonan surat berhasil diajukan. Kami akan memproses dan mengirimkan surat ke email Anda.');
+            // Handle file upload
+            $attachmentPath = null;
+            if ($request->hasFile('attachment')) {
+                $file = $request->file('attachment');
+                $filename = time() . '_' . $file->getClientOriginalName();
+                $attachmentPath = $file->storeAs('attachments', $filename, 'public');
+            }
+
+            // Get jenis surat ID based on type
+            $jenissuratMap = [
+                'skck' => 'SKCK',
+                'izin-keramaian' => 'Izin Keramaian',
+                'keterangan-usaha' => 'Keterangan Usaha',
+                'sktm' => 'SKTM',
+                'belum-menikah' => 'Belum Menikah',
+                'keterangan-kematian' => 'Keterangan Kematian',
+                'keterangan-kelahiran' => 'Keterangan Kelahiran',
+                'orang-yang-sama' => 'Orang yang Sama',
+                'pindah-keluar' => 'Pindah Keluar',
+                'domisili-instansi' => 'Domisili Instansi',
+                'domisili-kelompok' => 'Domisili Kelompok'
+            ];
+
+            $jenisSurat = \App\Models\JenisSurat::where('nama', $jenissuratMap[$type])->first();
+            if (!$jenisSurat) {
+                // Create jenis surat if it doesn't exist
+                $jenisSurat = \App\Models\JenisSurat::create([
+                    'nama' => $jenissuratMap[$type],
+                    'kode' => strtoupper(str_replace('-', '_', $type))
+                ]);
+            }
+
+            // Create surat record
+            $surat = \App\Models\Surat::create([
+                'pemohon_id' => $pemohon->id,
+                'jenis_surat_id' => $jenisSurat->id,
+                'tujuan' => $request->purpose,
+                'catatan' => $request->notes,
+                'lampiran' => $attachmentPath,
+                'status' => 'menunggu',
+                'tanggal_pengajuan' => now(),
+            ]);
+
+            // Create specific detail record based on type
+            $this->createDetailRecord($type, $surat->id, $request);
+
+            Alert::success('Berhasil', 'Permohonan surat berhasil diajukan. Kami akan memproses dan mengirimkan surat ke email Anda.');
+            
+        } catch (\Exception $e) {
+            Alert::error('Gagal', 'Terjadi kesalahan saat mengajukan permohonan. Silakan coba lagi.');
+        }
+
+        return redirect()->route('layanan-surat');
+    }
+
+    /**
+     * Create specific detail record based on surat type
+     */
+    private function createDetailRecord($type, $suratId, $request)
+    {
+        switch ($type) {
+            case 'sktm':
+                \App\Models\DetailSktm::create([
+                    'surat_id' => $suratId,
+                    'keperluan' => $request->purpose,
+                ]);
+                break;
+            
+            case 'belum-menikah':
+                \App\Models\DetailBelumMenikah::create([
+                    'surat_id' => $suratId,
+                    'keperluan' => $request->purpose,
+                ]);
+                break;
+            
+            case 'keterangan-kematian':
+                \App\Models\DetailKematian::create([
+                    'surat_id' => $suratId,
+                    'keperluan' => $request->purpose,
+                ]);
+                break;
+            
+            case 'keterangan-kelahiran':
+                \App\Models\DetailKelahiran::create([
+                    'surat_id' => $suratId,
+                    'keperluan' => $request->purpose,
+                ]);
+                break;
+            
+            case 'orang-yang-sama':
+                \App\Models\DetailOrangYangSama::create([
+                    'surat_id' => $suratId,
+                    'keperluan' => $request->purpose,
+                ]);
+                break;
+            
+            case 'pindah-keluar':
+                \App\Models\DetailPindahKeluar::create([
+                    'surat_id' => $suratId,
+                    'keperluan' => $request->purpose,
+                ]);
+                break;
+            
+            case 'domisili-instansi':
+                \App\Models\DetailDomisiliInstansi::create([
+                    'surat_id' => $suratId,
+                    'keperluan' => $request->purpose,
+                ]);
+                break;
+            
+            case 'domisili-kelompok':
+                \App\Models\DetailDomisiliKelompok::create([
+                    'surat_id' => $suratId,
+                    'keperluan' => $request->purpose,
+                ]);
+                break;
+            
+            case 'skck':
+                \App\Models\DetailSkck::create([
+                    'surat_id' => $suratId,
+                    'keperluan' => $request->purpose,
+                ]);
+                break;
+            
+            case 'izin-keramaian':
+                \App\Models\DetailIzinKeramaian::create([
+                    'surat_id' => $suratId,
+                    'keperluan' => $request->purpose,
+                ]);
+                break;
+            
+            case 'keterangan-usaha':
+                \App\Models\DetailKeteranganUsaha::create([
+                    'surat_id' => $suratId,
+                    'keperluan' => $request->purpose,
+                ]);
+                break;
+        }
     }
 }
