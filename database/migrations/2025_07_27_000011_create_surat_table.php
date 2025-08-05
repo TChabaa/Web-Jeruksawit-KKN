@@ -12,9 +12,10 @@ return new class extends Migration
             $table->increments('id_surat');
             $table->unsignedInteger('id_pemohon');
             $table->unsignedInteger('id_jenis');
-            $table->string('nomor_surat');
-            $table->date('tanggal_surat');
+            $table->string('nomor_surat')->nullable();
+            $table->date('tanggal_surat')->nullable();
             $table->unsignedInteger('created_by');
+            $table->enum('status', ['belum_diverifikasi', 'disetujui', 'ditolak'])->default('belum_diverifikasi');
             $table->timestamps();
             $table->foreign('id_pemohon')->references('id_pemohon')->on('pemohon')->cascadeOnDelete();
             $table->foreign('id_jenis')->references('id_jenis')->on('jenis_surat')->cascadeOnDelete();

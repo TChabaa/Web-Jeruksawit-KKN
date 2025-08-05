@@ -31,7 +31,7 @@
                     {!! $article->content !!}
                 </div>
                 <div class="mx-auto mt-10 ">
-                    <img src="{{ Storage::url($article->image_url) }}" alt=""
+                    <img src="{{ Storage::url($article->gambar_articles[0]->image_url) }}" alt=""
                         class=" h-48 object-cover object-center w-[26rem]">
                 </div>
             </div>
