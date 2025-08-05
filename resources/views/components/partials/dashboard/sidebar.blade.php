@@ -105,22 +105,22 @@
                         </li>
                     @endif
 
+                    {{-- Perangkat Desa Menu --}}
                     @if (auth()->user()->role == 'admin' || auth()->user()->role == 'super_admin')
                         <li>
                             @php
                                 $roleName = auth()->user()->role;
-                                $routeName = $roleName . '.events.index';
+                                $perangkatDesaRouteName = $roleName . '.perangkat-desa.index';
                             @endphp
 
-                            <a class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark-dashboard dark:hover:bg-meta-4 {{ in_array(Route::current()->getName(), [$roleName . '.events.index', $roleName . '.events.create', $roleName . '.events.edit']) ? 'bg-graydark-dashboard dark:bg-meta-4' : '' }}"
-                                href="{{ route($routeName) }}">
+                            <a class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark-dashboard dark:hover:bg-meta-4 {{ in_array(Route::current()->getName(), [$roleName . '.perangkat-desa.index', $roleName . '.perangkat-desa.create', $roleName . '.perangkat-desa.edit']) ? 'bg-graydark-dashboard dark:bg-meta-4' : '' }}"
+                                href="{{ route($perangkatDesaRouteName) }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                                    viewBox="0 0 24 24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;">
-                                    <path d="M11 12h6v6h-6z"></path>
+                                    viewBox="0 0 24 24" style="fill: rgba(251, 251, 251, 1);transform: ;msFilter:;">
                                     <path
-                                        d="M19 4h-2V2h-2v2H9V2H7v2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2V6c0-1.103-.897-2-2-2zm.001 16H5V8h14l.001 12z">
+                                        d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zM8.5 9a1.5 1.5 0 1 1-.001 3.001A1.5 1.5 0 0 1 8.5 9zm7 0a1.5 1.5 0 1 1-.001 3.001A1.5 1.5 0 0 1 15.5 9zm-3.5 9c-3 0-4-2-4-2h8s-1 2-4 2z">
                                     </path>
-                                </svg> Acara
+                                </svg> Perangkat Desa
                             </a>
                         </li>
                     @endif

@@ -20,6 +20,8 @@ class DetailDomisiliInstansi extends Model
         'nip_pimpinan',
         'email_pimpinan',
         'alamat_instansi',
+        'bidang_usaha',
+        'jabatan',
         'keterangan_lokasi',
     ];
 

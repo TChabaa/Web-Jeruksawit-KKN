@@ -28,6 +28,58 @@
         <x-partials.frontend.advantages-brand />
     </section>
 
+    <!-- Perangkat Desa Carousel Section -->
+    <section class="bg-gray-50 py-16 font-inter">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="mb-12 text-center">
+                <h2 class="text-4xl font-extrabold text-gray-900 mb-4">Perangkat Desa Jeruksawit</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                    Berkenalan dengan perangkat desa yang berkomitmen melayani masyarakat Desa Jeruksawit dengan
+                    dedikasi tinggi
+                </p>
+            </div>
+
+            @if ($perangkatDesas->count() > 0)
+                <div class="relative">
+                    <!-- Carousel container -->
+                    <div class="overflow-hidden">
+                        <div class="flex transition-transform duration-300 ease-in-out" id="perangkatCarousel">
+                            @foreach ($perangkatDesas as $index => $perangkatDesa)
+                                <div class="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 flex-shrink-0 px-3">
+                                    <x-partials.frontend.card-perangkat-desa :$perangkatDesa />
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <!-- Navigation buttons -->
+                    @if ($perangkatDesas->count() > 4)
+                        <button
+                            class="absolute left-0 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-lg hover:bg-gray-50 transition-colors"
+                            onclick="slideCarousel(-1)">
+                            <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 19l-7-7 7-7"></path>
+                            </svg>
+                        </button>
+                        <button
+                            class="absolute right-0 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-lg hover:bg-gray-50 transition-colors"
+                            onclick="slideCarousel(1)">
+                            <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                                </path>
+                            </svg>
+                        </button>
+                    @endif
+                </div>
+            @else
+                <div class="text-center py-12">
+                    <p class="text-gray-500 text-lg">Belum ada data perangkat desa</p>
+                </div>
+            @endif
+        </div>
+    </section>
+
     <section class="font-inter">
         <div class="mb-8 text-4xl font-extrabold text-center">
             <h1 class="font-inter">UMKM Desa Wisata</h1>
@@ -48,38 +100,33 @@
         </div>
     </section>
 
-    <section class="bg-green-new">
+    <section class="bg-[#A2AF9B]">
         <div class="grid py-20 mx-auto md:grid-cols-2 max-w-7xl">
             <div class="pl-10 mb-8 space-y-10 text-white text-balance ">
-                <h1 class="text-4xl font-extrabold font-inter">Info Acara</h1>
+                <h1 class="text-4xl font-extrabold font-inter">Layanan Surat Menyurat</h1>
                 <p class="w-3/4 font-inter">
-                    Informasi terbaru dan terlengkap tentang berbagai acara menarik di tempat wisata Sukarame. Temukan
-                    berbagai acara seru yang sesuai dengan minat Anda dan dapatkan informasi lengkap tentang setiap
-                    acara.
-                    Jangan lewatkan kesempatan untuk menikmati berbagai acara menarik di tempat wisata
-                    Sukarame
-                    Mari jadikan momen liburan Anda di Sukarame semakin berkesan dengan mengikuti berbagai acara seru
-                    yang tersedia.
+                    Dapatkan berbagai layanan pembuatan surat menyurat secara online dengan mudah dan cepat.
+                    Kami menyediakan layanan SKCK, Surat Izin Keramaian, Surat Keterangan Usaha, SKTM,
+                    dan berbagai jenis surat lainnya untuk memenuhi kebutuhan administrasi Anda.
+                    Proses pengajuan yang mudah dan hasil yang dapat diandalkan.
                 </p>
                 <div class="mt-6">
-                    <a href="{{ route('events') }}"
-                        class="px-4 py-2 transition-transform duration-300 transform border-2 border-white rounded-md font-inter hover:shadow-lg">Lihat
-                        Semua</a>
+                    <a href="{{ route('layanan-surat') }}"
+                        class="px-4 py-2 transition-transform duration-300 transform border-2 border-white rounded-md font-inter hover:shadow-lg">Ajukan
+                        Surat</a>
                 </div>
             </div>
-            <div class="overflow-x-auto text-center no-scrollbar">
-                <div class="">
-                    <div class="inline-flex items-center justify-center gap-10 py-4">
-                        @forelse ($events as $event)
-                            <x-partials.frontend.card-event :event="$event" />
-                        @empty
-                            <p class="text-xl font-semibold text-center text-white">Tidak ada acara</p>
-                        @endforelse
-                    </div>
+            <div class="flex items-center justify-center">
+                <div class="text-center text-white">
+                    <svg class="w-32 h-32 mx-auto mb-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" />
+                    </svg>
+                    <h3 class="text-2xl font-bold mb-2">Layanan Digital</h3>
+                    <p class="text-lg">Proses surat menyurat yang cepat dan efisien</p>
                 </div>
             </div>
         </div>
-
     </section>
 
     <section class="relative">
@@ -113,10 +160,30 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/ScrollTrigger.min.js"></script>
     <script>
+        // Perangkat Desa Carousel functionality
+        let currentSlide = 0;
+        const totalSlides = {{ $perangkatDesas->count() }};
+        const itemsPerView = 4; // Number of items visible at once on desktop
+
+        function slideCarousel(direction) {
+            const carousel = document.getElementById('perangkatCarousel');
+            const maxSlide = Math.max(0, totalSlides - itemsPerView);
+
+            currentSlide += direction;
+
+            if (currentSlide < 0) {
+                currentSlide = 0;
+            } else if (currentSlide > maxSlide) {
+                currentSlide = maxSlide;
+            }
+
+            const translateX = -currentSlide * (100 / itemsPerView);
+            carousel.style.transform = `translateX(${translateX}%)`;
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             // Daftarkan plugin ScrollTrigger
             gsap.registerPlugin(ScrollTrigger);
-
 
             // Buat animasi untuk elemen dengan kelas .image-container
             gsap.utils.toArray('.image-container').forEach(container => {
@@ -130,9 +197,8 @@
                     opacity: 1,
                     y: 0,
                     duration: 1
-
                 });
-            })
+            });
         });
     </script>
 

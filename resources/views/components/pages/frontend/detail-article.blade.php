@@ -66,10 +66,10 @@
 
     <section class="pt-20 font-inter">
         <div class="relative z-10 max-w-screen-xl px-4 py-8 mx-auto">
-            <a href="{{ Storage::url($article->image_url) }}">
-                <img class="object-cover w-full rounded-md md:h-125" src="{{ Storage::url($article->image_url) }}"
-                    alt="Gambar detail">
-            </a>
+            @foreach ($article->gambar_articles as $gambar)
+                        <img class="h-auto max-w-full cursor-pointer object-cover object-center rounded-lg aspect-[4/3] imgClick"
+                            src="{{ Storage::url($gambar->image_url) }}" alt="">
+            @endforeach
         </div>
         <div
             class="relative z-20 h-auto max-w-screen-md px-10 mx-auto bg-white rounded-md xl:max-w-screen-lg md:py-10 md:-mt-25 lg:drop-shadow-xl">

@@ -2,7 +2,7 @@
     <x-slot:title>Acara Selengkapnya | </x-slot:title>
 
     <div class="flex flex-col min-h-[100dvh] pt-30">
-        <section class="w-full py-28 bg-green-new font-inter">
+        <section class="w-full py-28 bg-[#A2AF9B] font-inter">
             <div class="px-4 mx-auto max-w-7xl md:px-6">
                 <div class="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
                     <div class="flex flex-col justify-center space-y-4">
