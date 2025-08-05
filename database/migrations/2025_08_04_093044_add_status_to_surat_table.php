@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('events', function (Blueprint $table) {
-            $table->unsignedInteger('views')->default(0)->after('gmaps_url');
+        Schema::table('surat', function (Blueprint $table) {
+            $table->enum('status', ['belum_diverifikasi', 'disetujui', 'ditolak'])->default('belum_diverifikasi');
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('events', function (Blueprint $table) {
-            $table->dropColumn('views');
+        Schema::table('surat', function (Blueprint $table) {
+            $table->dropColumn('status');
         });
     }
 };

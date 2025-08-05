@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Models\Destination;
-use App\Models\Event;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -49,21 +48,12 @@ class DashboardController extends Controller
 
     public function admin()
     {
-        $totalEvent = Event::count();
         $totalArticle = Article::count();
         $totalDestination = Destination::count();
         $totalUser = User::where('role', '!=', 'super_admin')->count();
 
         // Mengambil 5 acara dengan views terbanyak
-        $event = Event::orderBy('views', 'desc')->take(5)->get();
-
-        $eventLabels = $event->pluck('name');
-        $eventData = $event->pluck('views');
-
-        $dataEvent = [
-            'eventLabels' => $eventLabels,
-            'eventData' => $eventData
-        ];
+    
 
         // Mengambil 5 wisata dengan views terbanyak
         $destinations = Destination::orderBy('views', 'desc')->take(5)->get();
@@ -87,26 +77,16 @@ class DashboardController extends Controller
             'articleData' => $articleData
         ];
 
-        return view('components.pages.dashboard.index', compact('totalDestination', 'totalEvent', 'totalArticle', 'totalUser', 'dataArticle', 'dataDestination', 'dataEvent'));
+        return view('components.pages.dashboard.index', compact('totalDestination', 'totalArticle', 'totalUser', 'dataArticle', 'dataDestination'));
     }
 
     public function superAdmin()
     {
-        $totalEvent = Event::count();
         $totalArticle = Article::count();
         $totalDestination = Destination::count();
         $totalUser = User::count();
 
         // Mengambil 5 acara dengan views terbanyak
-        $event = Event::orderBy('views', 'desc')->take(5)->get();
-
-        $eventLabels = $event->pluck('name');
-        $eventData = $event->pluck('views');
-
-        $dataEvent = [
-            'eventLabels' => $eventLabels,
-            'eventData' => $eventData
-        ];
 
         // Mengambil 5 wisata dengan views terbanyak
         $destinations = Destination::orderBy('views', 'desc')->take(5)->get();
@@ -130,6 +110,6 @@ class DashboardController extends Controller
             'articleData' => $articleData
         ];
 
-        return view('components.pages.dashboard.index', compact('totalDestination', 'totalEvent', 'totalArticle', 'totalUser', 'dataArticle', 'dataDestination', 'dataEvent'));
+        return view('components.pages.dashboard.index', compact('totalDestination', 'totalArticle', 'totalUser', 'dataArticle', 'dataDestination'));
     }
 }

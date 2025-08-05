@@ -3,7 +3,6 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\EventController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\DestinationController;
@@ -18,9 +17,7 @@ Route::get('/404', function () {
     return view('components.pages.frontend.page-not-found');
 });
 
-Route::get('/events', [FrontendController::class, 'events'])->name('events');
-Route::get('/events/{slug}/show', [EventController::class, 'show'])->name('events.show');
-Route::view('/about-us', 'components.pages.frontend.about-us-page')->name('about-us');
+Route::get('/about-us', [FrontendController::class, 'aboutUs'])->name('about-us');
 
 Route::get('/', [FrontendController::class, 'index'])->name('index');
 Route::get('/destinations', [FrontendController::class, 'destinations'])->name('destinations');
@@ -47,9 +44,6 @@ Route::middleware([
     ])->name('super_admin.')->prefix('super-admin')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'superAdmin'])->name('dashboard');
 
-        Route::resource('events', EventController::class)->except([
-            'show'
-        ]);
 
         Route::post('/destinations/{destination}/galleries', [DestinationController::class, 'addGalleries'])->name('destinations.addGalleries');
         Route::post('/destinations/{destination}/facility', [DestinationController::class, 'storeFacility'])->name('destinations.storeFacility');
@@ -88,14 +82,21 @@ Route::middleware([
         Route::put('/umkm/{umkm}/contact', [UmkmController::class, 'updateContactDetail'])->name('umkm.updateContactDetail');
         Route::put('/umkm/{umkm}/operational', [UmkmController::class, 'updateOperational'])->name('umkm.updateOperational');
 
+        Route::resource('perangkat-desa', \App\Http\Controllers\PerangkatDesaController::class)->except([
+            'show'
+        ]);
+
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
         // Layanan Surat Menyurat
         Route::get('/layanan-surat', [\App\Http\Controllers\LayananSuratController::class, 'index'])->name('layanan-surat');
+        Route::get('/layanan-surat/create', [\App\Http\Controllers\LayananSuratController::class, 'create'])->name('layanan-surat.create');
         Route::get('/layanan-surat/{type}/form', [\App\Http\Controllers\LayananSuratController::class, 'showForm'])->name('layanan-surat.form');
         Route::post('/layanan-surat/{type}/submit', [\App\Http\Controllers\LayananSuratController::class, 'submitForm'])->name('layanan-surat.submit');
+        Route::get('/layanan-surat/{id}/show', [\App\Http\Controllers\LayananSuratController::class, 'show'])->name('layanan-surat.show');
+        Route::post('/layanan-surat/{id}/status', [\App\Http\Controllers\LayananSuratController::class, 'updateStatus'])->name('layanan-surat.status');
     });
 
     // Admin
@@ -104,9 +105,6 @@ Route::middleware([
     ])->name('admin.')->prefix('admin')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'admin'])->name('dashboard');
 
-        Route::resource('events', EventController::class)->except([
-            'show'
-        ]);
 
         Route::post('/destinations/{destination}/galleries', [DestinationController::class, 'addGalleries'])->name('destinations.addGalleries');
         Route::post('/destinations/{destination}/facility', [DestinationController::class, 'storeFacility'])->name('destinations.storeFacility');
@@ -145,14 +143,21 @@ Route::middleware([
         Route::put('/umkm/{umkm}/contact', [UmkmController::class, 'updateContactDetail'])->name('umkm.updateContactDetail');
         Route::put('/umkm/{umkm}/operational', [UmkmController::class, 'updateOperational'])->name('umkm.updateOperational');
 
+        Route::resource('perangkat-desa', \App\Http\Controllers\PerangkatDesaController::class)->except([
+            'show'
+        ]);
+
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-        // Layanan Surat Menyurat
+        // Layanan Surat Menyurat - Admin Dashboard
         Route::get('/layanan-surat', [\App\Http\Controllers\LayananSuratController::class, 'index'])->name('layanan-surat');
+        Route::get('/layanan-surat/create', [\App\Http\Controllers\LayananSuratController::class, 'create'])->name('layanan-surat.create');
         Route::get('/layanan-surat/{type}/form', [\App\Http\Controllers\LayananSuratController::class, 'showForm'])->name('layanan-surat.form');
         Route::post('/layanan-surat/{type}/submit', [\App\Http\Controllers\LayananSuratController::class, 'submitForm'])->name('layanan-surat.submit');
+        Route::get('/layanan-surat/{id}/show', [\App\Http\Controllers\LayananSuratController::class, 'show'])->name('layanan-surat.show');
+        Route::post('/layanan-surat/{id}/status', [\App\Http\Controllers\LayananSuratController::class, 'updateStatus'])->name('layanan-surat.status');
     });
 
     // owner

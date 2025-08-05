@@ -1,5 +1,5 @@
 <x-layouts.dashboard>
-    <x-slot:title>Data Acara | </x-slot:title>
+    <x-slot:title>Data Perangkat Desa | </x-slot:title>
 
     <section>
         {{-- Breadcrumb --}}
@@ -8,22 +8,22 @@
                 <li>
                     <a class="font-medium" href="{{ route(auth()->user()->role . '.dashboard') }}">Dashboard /</a>
                 </li>
-                <li class="font-medium text-primary">Acara</li>
+                <li class="font-medium text-primary">Perangkat Desa</li>
             </ol>
         </nav>
 
-        {{-- Button add destination --}}
-        <a href="{{ route(auth()->user()->role . '.events.create') }}"
-            class="flex justify-center px-3 py-3 mb-5 rounded w-44 bg-primary text-white-dahsboard">Tambah Acara</a>
+        {{-- Button add perangkat desa --}}
+        <a href="{{ route(auth()->user()->role . '.perangkat-desa.create') }}"
+            class="flex justify-center px-3 py-3 mb-5 rounded w-52 bg-primary text-white-dahsboard">Tambah Perangkat
+            Desa</a>
 
         <table id="crudTable">
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Nama Acara</th>
-                    <th>Tanggal Mulai</th>
-                    <th>Tanggal Akhir</th>
-                    <th>Status</th>
+                    <th>Nama</th>
+                    <th>Jabatan</th>
+                    <th>Dibuat Oleh</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -32,8 +32,7 @@
     </section>
 
     <!-- Delete Confirmation Modal -->
-    <x-partials.dashboard.modal-delete title="acara" />
-
+    <x-partials.dashboard.modal-delete title="perangkat desa" />
 
     @push('script')
         <script type="text/javascript">
@@ -41,33 +40,26 @@
                 $('#crudTable').DataTable({
                     serverSide: true,
                     ajax: {
-                        url: '{!! url()->current() !!}',
-                        type: 'GET'
+                        url: '{!! url()->current() !!}'
                     },
                     columns: [{
-                            "data": 'id',
+                            "data": 'id_perangkat',
                             "orderable": true,
                             "searchable": false,
                             "className": 'text-center'
                         },
                         {
-                            data: 'name',
-                            name: 'name',
-                            width: "15%"
+                            data: 'nama',
+                            name: 'nama',
                         },
                         {
-                            data: 'start_date',
-                            name: 'start_date',
+                            data: 'jabatan',
+                            name: 'jabatan',
                         },
                         {
-                            data: 'end_date',
-                            name: 'end_date',
-                        },
-                        {
-                            data: 'status',
-                            name: 'status',
-                            orderable: false,
-                            searchable: false,
+                            data: 'creator',
+                            name: 'creator',
+                            "className": 'text-center'
                         },
                         {
                             data: 'action',
