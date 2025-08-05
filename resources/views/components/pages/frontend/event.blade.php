@@ -2,7 +2,7 @@
     <x-slot:title>Acara | </x-slot:title>
 
     <div class="pt-30 ">
-        <section class="mb-6 bg-green-new">
+        <section class="mb-6 bg-[#A2AF9B]">
             <div class="grid py-20 mx-auto md:grid-cols-3 max-w-7xl">
                 <div class="pl-10 mb-8 space-y-10 text-white text-balance ">
                     <h1 class="text-4xl font-extrabold font-inter">Info Acara Terbaru</h1>
@@ -54,7 +54,7 @@
                         class="block w-full p-4 text-sm text-gray-900 border border-gray-300 rounded-lg ps-10 bg-gray-50 focus:ring-green-new focus:border-green-new dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Cari Acara..." required />
                     <button type="submit"
-                        class="text-white absolute font-inter end-2.5 bottom-2.5 bg-green-new hover:bg-opacity-90 focus:ring-4 focus:outline-none focus:ring-green-new font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Cari</button>
+                        class="text-white absolute font-inter end-2.5 bottom-2.5 bg-[#A2AF9B] hover:bg-opacity-90 focus:ring-4 focus:outline-none focus:ring-green-new font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Cari</button>
                 </div>
             </form>
             <div class="grid gap-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:px-10 justify-items-center ">

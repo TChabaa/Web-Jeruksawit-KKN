@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="shortcut icon" href="{{ asset('assets/img/logo.png') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('assets/img/Karanganyar.png') }}" type="image/x-icon">
 
     {{-- FLowbite --}}
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
@@ -21,7 +21,7 @@
     @stack('style')
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <title>{{ $title ?? '' }} Desa Wisata Sukarame</title>
+    <title>{{ $title ?? '' }} Desa Jeruksawit</title>
 </head>
 
 <body>
@@ -29,7 +29,7 @@
         <nav class="bg-white border-gray-200 py-2.5">
             <div class="flex flex-wrap items-center justify-between max-w-screen-xl px-4 mx-auto lg:px-8 ">
                 <div href="#" class="flex items-center">
-                    <img src="{{ asset('assets/img/logo.png') }}" class="h-12 mr-3 md:h-20" alt="Desa Sukarame" />
+                    <img src="{{ asset('assets/img/Karanganyar.png') }}" class="h-12 mr-3 md:h-20" alt="Desa Jeruksawit" />
                 </div>
 
                 <button data-collapse-toggle="mobile-menu-2" type="button"
@@ -121,7 +121,7 @@
         <div class="flex flex-col items-center px-5 py-5 md:flex-row ">
             <div class="mx-auto text-center lg:w-1/2 md:mx-0 ">
                 <a class="flex items-center justify-center font-medium text-gray-900 title-font ">
-                    <img class="w-20" src="{{ asset('assets/img/logo.png') }}" alt="">
+                    <img class="w-20" src="{{ asset('assets/img/Karanganyar.png') }}" alt="">
                 </a>
                 <p class="mt-2 text-sm text-gray-500">Repeh Rapih Kerta Raharja</p>
                 <div class="mt-4">
@@ -210,7 +210,7 @@
             <div class="container px-5 py-4 mx-auto">
                 <p class="text-sm font-bold text-center text-white capitalize font-inter">Copyright
                     {{ date('Y') }} Desa
-                    Sukarame </p>
+                    Jeruksawit </p>
             </div>
         </div>
     </footer>
