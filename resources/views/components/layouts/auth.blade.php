@@ -8,8 +8,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
     {{-- Favicon --}}
-    <link rel="icon" type="image/png" href="{{ asset('assets/img/logo.png') }}" />
-    <link rel="apple-touch-icon" href="{{ asset('assets/img/logo.png') }}" />
+    <link rel="icon" type="image/png" href="{{ asset('assets/img/Karanganyar.png') }}" />
+    <link rel="apple-touch-icon" href="{{ asset('assets/img/Karanganyar.png') }}" />
 
     {{-- Google Font --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">

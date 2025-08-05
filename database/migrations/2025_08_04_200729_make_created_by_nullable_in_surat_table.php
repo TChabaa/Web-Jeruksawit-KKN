@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('events', function (Blueprint $table) {
-            $table->string('name', 50)->nullable(false)->after('image_url')->change();
+        Schema::table('surat', function (Blueprint $table) {
+            $table->unsignedInteger('created_by')->nullable()->change();
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('events', function (Blueprint $table) {
-            $table->string('name', 50)->change();
+        Schema::table('surat', function (Blueprint $table) {
+            $table->unsignedInteger('created_by')->nullable(false)->change();
         });
     }
 };

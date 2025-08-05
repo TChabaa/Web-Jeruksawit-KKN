@@ -21,7 +21,10 @@ class DetailDomisiliKelompok extends Model
         'ketua',
         'sekretaris',
         'bendahara',
+        'jenis_kelompok',
+        'jumlah_anggota',
         'keterangan_lokasi',
+        'tujuan_pembentukan',
     ];
 
     public function surat()

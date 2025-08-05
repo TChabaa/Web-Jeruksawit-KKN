@@ -100,38 +100,33 @@
         </div>
     </section>
 
-    <section class="bg-green-new">
+    <section class="bg-[#A2AF9B]">
         <div class="grid py-20 mx-auto md:grid-cols-2 max-w-7xl">
             <div class="pl-10 mb-8 space-y-10 text-white text-balance ">
-                <h1 class="text-4xl font-extrabold font-inter">Info Acara</h1>
+                <h1 class="text-4xl font-extrabold font-inter">Layanan Surat Menyurat</h1>
                 <p class="w-3/4 font-inter">
-                    Informasi terbaru dan terlengkap tentang berbagai acara menarik di tempat wisata Sukarame. Temukan
-                    berbagai acara seru yang sesuai dengan minat Anda dan dapatkan informasi lengkap tentang setiap
-                    acara.
-                    Jangan lewatkan kesempatan untuk menikmati berbagai acara menarik di tempat wisata
-                    Sukarame
-                    Mari jadikan momen liburan Anda di Sukarame semakin berkesan dengan mengikuti berbagai acara seru
-                    yang tersedia.
+                    Dapatkan berbagai layanan pembuatan surat menyurat secara online dengan mudah dan cepat.
+                    Kami menyediakan layanan SKCK, Surat Izin Keramaian, Surat Keterangan Usaha, SKTM,
+                    dan berbagai jenis surat lainnya untuk memenuhi kebutuhan administrasi Anda.
+                    Proses pengajuan yang mudah dan hasil yang dapat diandalkan.
                 </p>
-                {{-- <div class="mt-6">
-                    <a href="{{ route('events') }}"
-                        class="px-4 py-2 transition-transform duration-300 transform border-2 border-white rounded-md font-inter hover:shadow-lg">Lihat
-                        Semua</a>
-                </div> --}}
+                <div class="mt-6">
+                    <a href="{{ route('layanan-surat') }}"
+                        class="px-4 py-2 transition-transform duration-300 transform border-2 border-white rounded-md font-inter hover:shadow-lg">Ajukan
+                        Surat</a>
+                </div>
             </div>
-            {{-- <div class="overflow-x-auto text-center no-scrollbar">
-                <div class="">
-                    <div class="inline-flex items-center justify-center gap-10 py-4">
-                        @forelse ($events as $event)
-                            <x-partials.frontend.card-event :event="$event" />
-                        @empty
-                            <p class="text-xl font-semibold text-center text-white">Tidak ada acara</p>
-                        @endforelse
-                    </div>
+            <div class="flex items-center justify-center">
+                <div class="text-center text-white">
+                    <svg class="w-32 h-32 mx-auto mb-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" />
+                    </svg>
+                    <h3 class="text-2xl font-bold mb-2">Layanan Digital</h3>
+                    <p class="text-lg">Proses surat menyurat yang cepat dan efisien</p>
                 </div>
             </div> --}}
         </div>
-
     </section>
 
     <section class="relative">
