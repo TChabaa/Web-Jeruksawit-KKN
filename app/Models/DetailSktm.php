@@ -16,6 +16,8 @@ class DetailSktm extends Model
     protected $fillable = [
         'id_surat',
         'pendidikan',
+        'penghasilan',
+        'jumlah_tanggungan',
     ];
 
     public function surat()

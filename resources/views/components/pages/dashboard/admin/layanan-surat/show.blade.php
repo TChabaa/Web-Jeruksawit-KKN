@@ -211,6 +211,20 @@
                                             <dt class="text-sm font-medium text-gray-500">Pendidikan</dt>
                                             <dd class="mt-1 text-sm text-gray-900">{{ $detail->pendidikan }}</dd>
                                         </div>
+                                        @if ($detail->penghasilan)
+                                            <div>
+                                                <dt class="text-sm font-medium text-gray-500">Penghasilan Per Bulan</dt>
+                                                <dd class="mt-1 text-sm text-gray-900">Rp
+                                                    {{ number_format($detail->penghasilan, 0, ',', '.') }}</dd>
+                                            </div>
+                                        @endif
+                                        @if ($detail->jumlah_tanggungan)
+                                            <div>
+                                                <dt class="text-sm font-medium text-gray-500">Jumlah Tanggungan</dt>
+                                                <dd class="mt-1 text-sm text-gray-900">{{ $detail->jumlah_tanggungan }} orang
+                                                </dd>
+                                            </div>
+                                        @endif
                                     @break
 
                                     @case('Belum Menikah')
@@ -294,6 +308,60 @@
                                         </div>
                                     @break
 
+                                    @case('Domisili Kelompok')
+                                        <div>
+                                            <dt class="text-sm font-medium text-gray-500">Nama Kelompok</dt>
+                                            <dd class="mt-1 text-sm text-gray-900">{{ $detail->nama_kelompok }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt class="text-sm font-medium text-gray-500">Ketua</dt>
+                                            <dd class="mt-1 text-sm text-gray-900">{{ $detail->ketua }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt class="text-sm font-medium text-gray-500">Email Ketua</dt>
+                                            <dd class="mt-1 text-sm text-gray-900">{{ $detail->email_ketua }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt class="text-sm font-medium text-gray-500">Sekretaris</dt>
+                                            <dd class="mt-1 text-sm text-gray-900">{{ $detail->sekretaris }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt class="text-sm font-medium text-gray-500">Bendahara</dt>
+                                            <dd class="mt-1 text-sm text-gray-900">{{ $detail->bendahara }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt class="text-sm font-medium text-gray-500">Jenis Kelompok</dt>
+                                            <dd class="mt-1 text-sm text-gray-900">{{ $detail->jenis_kelompok }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt class="text-sm font-medium text-gray-500">Jumlah Anggota</dt>
+                                            <dd class="mt-1 text-sm text-gray-900">{{ $detail->jumlah_anggota }} orang</dd>
+                                        </div>
+                                        <div class="sm:col-span-2">
+                                            <dt class="text-sm font-medium text-gray-500">Alamat Kelompok</dt>
+                                            <dd class="mt-1 text-sm text-gray-900">{{ $detail->alamat_kelompok }}</dd>
+                                        </div>
+                                        <div class="sm:col-span-2">
+                                            <dt class="text-sm font-medium text-gray-500">Keterangan Lokasi</dt>
+                                            <dd class="mt-1 text-sm text-gray-900">{{ $detail->keterangan_lokasi }}</dd>
+                                        </div>
+                                        <div class="sm:col-span-2">
+                                            <dt class="text-sm font-medium text-gray-500">Tujuan Pembentukan</dt>
+                                            <dd class="mt-1 text-sm text-gray-900">{{ $detail->tujuan_pembentukan }}</dd>
+                                        </div>
+                                    @break
+
+                                    @case('Domisili Orang')
+                                        <div class="sm:col-span-2">
+                                            <dt class="text-sm font-medium text-gray-500">Keterangan Domisili</dt>
+                                            <dd class="mt-1 text-sm text-gray-900">{{ $detail->keterangan_domisili }}</dd>
+                                        </div>
+                                        <div class="sm:col-span-2">
+                                            <dt class="text-sm font-medium text-gray-500">Lama Tinggal</dt>
+                                            <dd class="mt-1 text-sm text-gray-900">{{ $detail->lama_tinggal }}</dd>
+                                        </div>
+                                    @break
+
                                     @default
                                         <div class="sm:col-span-2">
                                             <p class="text-sm text-gray-500">Detail tidak tersedia untuk jenis surat ini.</p>
@@ -340,6 +408,27 @@
                                     Update Status
                                 </button>
                             </form>
+                        </div>
+                    </div>
+                @elseif ($surat->status === 'disetujui')
+                    <div class="bg-white shadow rounded-lg mb-6">
+                        <div class="px-6 py-4 border-b border-gray-200">
+                            <h3 class="text-lg font-medium text-gray-900">Unduh Dokumen</h3>
+                        </div>
+                        <div class="px-6 py-4 space-y-3">
+                            <a href="{{ route(auth()->user()->role . '.layanan-surat.download-pdf', $surat->id_surat) }}"
+                                class="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                    </path>
+                                </svg>
+                                Unduh PDF
+                            </a>
+                            <p class="text-xs text-gray-500 text-center">
+                                PDF surat telah dikirim ke email pemohon
+                            </p>
                         </div>
                     </div>
                 @endif

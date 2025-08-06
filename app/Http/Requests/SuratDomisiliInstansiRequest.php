@@ -26,14 +26,12 @@ class SuratDomisiliInstansiRequest extends FormRequest
             'agama' => 'required|string|max:50',
             'pekerjaan' => 'required|string|max:100',
             'status_perkawinan' => 'required|string|max:50',
-            
+
             // Detail Domisili Instansi
             'nama_instansi' => 'required|string|max:255',
             'alamat_instansi' => 'required|string|max:500',
-            'jabatan' => 'required|string|max:255',
-            'bidang_usaha' => 'required|string|max:255',
             'keterangan_lokasi' => 'required|string|max:500',
-            
+
             // General
             'purpose' => 'required|string|max:255',
             'notes' => 'nullable|string|max:1000',
@@ -46,8 +44,6 @@ class SuratDomisiliInstansiRequest extends FormRequest
         return [
             'nama_instansi.required' => 'Nama instansi wajib diisi',
             'alamat_instansi.required' => 'Alamat instansi wajib diisi',
-            'jabatan.required' => 'Jabatan wajib diisi',
-            'bidang_usaha.required' => 'Bidang usaha wajib diisi',
             'keterangan_lokasi.required' => 'Keterangan lokasi wajib diisi',
         ];
     }

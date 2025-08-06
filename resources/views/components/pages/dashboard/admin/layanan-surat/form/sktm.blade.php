@@ -206,16 +206,46 @@
 
                 <div class="px-6 pb-4">
                     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                        <!-- Pendidikan -->
+                        <div class="sm:col-span-2">
+                            <label for="pendidikan" class="block text-sm font-medium text-gray-700">Pendidikan
+                                Terakhir
+                                *</label>
+                            <select name="pendidikan" id="pendidikan" required
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                                <option value="">Pilih Pendidikan Terakhir</option>
+                                <option value="Tidak Sekolah"
+                                    {{ old('pendidikan') == 'Tidak Sekolah' ? 'selected' : '' }}>Tidak Sekolah
+                                </option>
+                                <option value="SD" {{ old('pendidikan') == 'SD' ? 'selected' : '' }}>SD</option>
+                                <option value="SMP" {{ old('pendidikan') == 'SMP' ? 'selected' : '' }}>SMP</option>
+                                <option value="SMA/SMK" {{ old('pendidikan') == 'SMA/SMK' ? 'selected' : '' }}>SMA/SMK
+                                </option>
+                                <option value="Diploma" {{ old('pendidikan') == 'Diploma' ? 'selected' : '' }}>Diploma
+                                </option>
+                                <option value="Sarjana" {{ old('pendidikan') == 'Sarjana' ? 'selected' : '' }}>Sarjana
+                                </option>
+                                <option value="Magister" {{ old('pendidikan') == 'Magister' ? 'selected' : '' }}>
+                                    Magister
+                                </option>
+                                <option value="Doktor" {{ old('pendidikan') == 'Doktor' ? 'selected' : '' }}>Doktor
+                                </option>
+                            </select>
+                            @error('pendidikan')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
                         <!-- Penghasilan -->
                         <div>
                             <label for="penghasilan" class="block text-sm font-medium text-gray-700">Penghasilan Per
-                                Bulan *</label>
+                                Bulan</label>
                             <div class="mt-1 relative rounded-md shadow-sm">
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <span class="text-gray-500 sm:text-sm">Rp</span>
                                 </div>
                                 <input type="number" name="penghasilan" id="penghasilan"
-                                    value="{{ old('penghasilan') }}" required min="0" placeholder="0"
+                                    value="{{ old('penghasilan') }}" min="0" placeholder="0"
                                     class="pl-8 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
                             </div>
                             @error('penghasilan')
@@ -226,26 +256,16 @@
                         <!-- Jumlah Tanggungan -->
                         <div>
                             <label for="jumlah_tanggungan" class="block text-sm font-medium text-gray-700">Jumlah
-                                Tanggungan Keluarga *</label>
+                                Tanggungan Keluarga</label>
                             <input type="number" name="jumlah_tanggungan" id="jumlah_tanggungan"
-                                value="{{ old('jumlah_tanggungan') }}" required min="0"
+                                value="{{ old('jumlah_tanggungan') }}" min="0"
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
                             @error('jumlah_tanggungan')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
-                        <!-- Kondisi Ekonomi -->
-                        <div class="sm:col-span-2">
-                            <label for="kondisi_ekonomi" class="block text-sm font-medium text-gray-700">Kondisi
-                                Ekonomi/Keterangan Kemiskinan *</label>
-                            <textarea name="kondisi_ekonomi" id="kondisi_ekonomi" rows="4" required
-                                placeholder="Jelaskan kondisi ekonomi keluarga dan alasan membutuhkan SKTM"
-                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">{{ old('kondisi_ekonomi') }}</textarea>
-                            @error('kondisi_ekonomi')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
+
                     </div>
                 </div>
 

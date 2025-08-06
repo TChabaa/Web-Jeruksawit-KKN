@@ -8,7 +8,29 @@ use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\DestinationController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PDFController;
 use App\Http\Controllers\UmkmController;
+
+Route::get('/preview-surat-beda-nama', function () {
+    return view('components.surat.orang_yang_sama_pdf', [
+        'nomor' => '185',
+        'tahun' => '2025',
+        'nama_kepala' => 'MIDI',
+        'nama1' => 'SUPATA',
+        'ttl1' => 'Karanganyar, 09-05-1981',
+        'nik1' => '3313110905810002',
+        'ayah1' => 'KASNO',
+        'alamat1' => 'Jeruksawit, RT.005/006, Desa Jeruksawit, Kec. Gondangrejo',
+        'kk' => '3313131809130005',
+        'nama2' => 'SUYANTO',
+        'ttl2' => 'Karanganyar, 09-05-1981',
+        'ayah2' => 'PARIMIN',
+        'buku_nikah' => '528/33/X/2009',
+        'tanggal' => '03 Maret 2025'
+    ]);
+});
+
+Route::get('/pdf', [PDFController::class, 'generatePDF']);
 
 Route::get('/articles', [FrontendController::class, 'articles'])->name('articles');
 Route::get('/articles/{slug}/show', [ArticleController::class, 'show'])->name('articles.show');
@@ -97,6 +119,7 @@ Route::middleware([
         Route::post('/layanan-surat/{type}/submit', [\App\Http\Controllers\LayananSuratController::class, 'submitForm'])->name('layanan-surat.submit');
         Route::get('/layanan-surat/{id}/show', [\App\Http\Controllers\LayananSuratController::class, 'show'])->name('layanan-surat.show');
         Route::post('/layanan-surat/{id}/status', [\App\Http\Controllers\LayananSuratController::class, 'updateStatus'])->name('layanan-surat.status');
+        Route::get('/layanan-surat/{id}/download-pdf', [\App\Http\Controllers\LayananSuratController::class, 'downloadPdf'])->name('layanan-surat.download-pdf');
     });
 
     // Admin
@@ -158,6 +181,7 @@ Route::middleware([
         Route::post('/layanan-surat/{type}/submit', [\App\Http\Controllers\LayananSuratController::class, 'submitForm'])->name('layanan-surat.submit');
         Route::get('/layanan-surat/{id}/show', [\App\Http\Controllers\LayananSuratController::class, 'show'])->name('layanan-surat.show');
         Route::post('/layanan-surat/{id}/status', [\App\Http\Controllers\LayananSuratController::class, 'updateStatus'])->name('layanan-surat.status');
+        Route::get('/layanan-surat/{id}/download-pdf', [\App\Http\Controllers\LayananSuratController::class, 'downloadPdf'])->name('layanan-surat.download-pdf');
     });
 
     // owner

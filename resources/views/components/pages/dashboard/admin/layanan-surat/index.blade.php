@@ -39,7 +39,7 @@
                         <div class="ml-5 w-0 flex-1">
                             <dl>
                                 <dt class="text-sm font-medium text-gray-500 truncate">Menunggu Verifikasi</dt>
-                                <dd class="text-lg font-medium text-gray-900" id="pending-count">-</dd>
+                                <dd class="text-lg font-medium text-gray-900">{{ $statistics['pending'] ?? 0 }}</dd>
                             </dl>
                         </div>
                     </div>
@@ -61,7 +61,7 @@
                         <div class="ml-5 w-0 flex-1">
                             <dl>
                                 <dt class="text-sm font-medium text-gray-500 truncate">Disetujui</dt>
-                                <dd class="text-lg font-medium text-gray-900" id="approved-count">-</dd>
+                                <dd class="text-lg font-medium text-gray-900">{{ $statistics['approved'] ?? 0 }}</dd>
                             </dl>
                         </div>
                     </div>
@@ -83,7 +83,7 @@
                         <div class="ml-5 w-0 flex-1">
                             <dl>
                                 <dt class="text-sm font-medium text-gray-500 truncate">Ditolak</dt>
-                                <dd class="text-lg font-medium text-gray-900" id="rejected-count">-</dd>
+                                <dd class="text-lg font-medium text-gray-900">{{ $statistics['rejected'] ?? 0 }}</dd>
                             </dl>
                         </div>
                     </div>
@@ -106,7 +106,7 @@
                         <div class="ml-5 w-0 flex-1">
                             <dl>
                                 <dt class="text-sm font-medium text-gray-500 truncate">Total Surat</dt>
-                                <dd class="text-lg font-medium text-gray-900" id="total-count">-</dd>
+                                <dd class="text-lg font-medium text-gray-900">{{ $statistics['total'] ?? 0 }}</dd>
                             </dl>
                         </div>
                     </div>
@@ -119,6 +119,44 @@
             <div class="px-4 py-5 sm:p-6">
                 <div class="sm:flex sm:items-center sm:justify-between mb-6">
                     <h3 class="text-lg leading-6 font-medium text-gray-900">Daftar Permohonan Surat</h3>
+
+                    <!-- Filters Section -->
+                    <div class="mt-4 sm:mt-0">
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <!-- Status Filter Buttons -->
+                            <div class="flex flex-wrap gap-2">
+                                <button id="filter-all"
+                                    class="filter-btn active px-3 py-1 text-sm font-medium rounded-md bg-blue-100 text-blue-800 hover:bg-blue-200">
+                                    Semua
+                                </button>
+                                <button id="filter-pending"
+                                    class="filter-btn px-3 py-1 text-sm font-medium rounded-md bg-gray-100 text-gray-800 hover:bg-yellow-100 hover:text-yellow-800">
+                                    Menunggu Verifikasi
+                                </button>
+                                <button id="filter-approved"
+                                    class="filter-btn px-3 py-1 text-sm font-medium rounded-md bg-gray-100 text-gray-800 hover:bg-green-100 hover:text-green-800">
+                                    Disetujui
+                                </button>
+                                <button id="filter-rejected"
+                                    class="filter-btn px-3 py-1 text-sm font-medium rounded-md bg-gray-100 text-gray-800 hover:bg-red-100 hover:text-red-800">
+                                    Ditolak
+                                </button>
+                            </div>
+
+                            <!-- Jenis Surat Filter Dropdown -->
+                            <div class="flex items-center gap-2">
+                                <label for="jenis-surat-filter" class="text-sm font-medium text-gray-700">Jenis
+                                    Surat:</label>
+                                <select id="jenis-surat-filter"
+                                    class="px-3 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="all">Semua Jenis</option>
+                                    @foreach ($jenisSurat as $jenis)
+                                        <option value="{{ $jenis->id_jenis }}">{{ $jenis->nama_jenis }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
@@ -168,7 +206,28 @@
                     serverSide: true,
                     ajax: {
                         url: "{{ route(auth()->user()->role . '.layanan-surat') }}",
-                        type: 'GET'
+                        type: 'GET',
+                        data: function(d) {
+                            // Get status filter value
+                            var statusFilter = $('.filter-btn.active').attr('id').replace('filter-', '');
+
+                            // Only add status parameter if it's not 'all'
+                            if (statusFilter !== 'all') {
+                                if (statusFilter === 'pending') {
+                                    d.status = 'belum_diverifikasi';
+                                } else if (statusFilter === 'approved') {
+                                    d.status = 'disetujui';
+                                } else if (statusFilter === 'rejected') {
+                                    d.status = 'ditolak';
+                                }
+                            }
+
+                            // Add jenis surat filter - only if not 'all'
+                            var jenisSurat = $('#jenis-surat-filter').val();
+                            if (jenisSurat && jenisSurat !== 'all') {
+                                d.jenis_surat = jenisSurat;
+                            }
+                        }
                     },
                     columns: [{
                             data: 'no_surat',
@@ -180,7 +239,8 @@
                         },
                         {
                             data: 'jenis_surat',
-                            name: 'jenisSurat.nama_jenis'
+                            name: 'jenisSurat.nama_jenis',
+                            orderable: false
                         },
                         {
                             data: 'status',
@@ -205,33 +265,34 @@
                     language: {
                         url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/id.json'
                     },
-                    drawCallback: function(settings) {
-                        updateStatistics();
-                    }
+                    responsive: true,
+                    pageLength: 25,
+                    lengthMenu: [
+                        [10, 25, 50, 100, -1],
+                        [10, 25, 50, 100, "Semua"]
+                    ]
                 });
 
-                // Update statistics
-                function updateStatistics() {
-                    // This would ideally come from a separate API endpoint
-                    // For now, we'll count from the current table data
-                    var api = table.api();
-                    var data = api.rows().data();
+                // Filter button click events
+                $('.filter-btn').on('click', function() {
+                    // Update active state
+                    $('.filter-btn').removeClass(
+                            'active bg-blue-100 text-blue-800 bg-yellow-100 text-yellow-800 bg-green-100 text-green-800 bg-red-100 text-red-800'
+                            )
+                        .addClass('bg-gray-100 text-gray-800');
 
-                    var pending = 0,
-                        approved = 0,
-                        rejected = 0;
+                    $(this).removeClass('bg-gray-100 text-gray-800').addClass(
+                        'active bg-blue-100 text-blue-800');
 
-                    for (var i = 0; i < data.length; i++) {
-                        if (data[i].status.includes('Belum Diverifikasi')) pending++;
-                        else if (data[i].status.includes('Disetujui')) approved++;
-                        else if (data[i].status.includes('Ditolak')) rejected++;
-                    }
+                    // Reload DataTable with new filter
+                    table.ajax.reload();
+                });
 
-                    $('#pending-count').text(pending);
-                    $('#approved-count').text(approved);
-                    $('#rejected-count').text(rejected);
-                    $('#total-count').text(data.length);
-                }
+                // Jenis Surat filter change event
+                $('#jenis-surat-filter').on('change', function() {
+                    // Reload DataTable with new filter
+                    table.ajax.reload();
+                });
             });
         </script>
     @endpush

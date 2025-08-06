@@ -26,6 +26,9 @@
                 enctype="multipart/form-data" class="space-y-6">
                 @csrf
 
+                <!-- Hidden field for status_perkawinan -->
+                <input type="hidden" name="status_perkawinan" value="Belum Kawin">
+
                 <div class="px-6 py-4 border-b border-gray-200">
                     <h3 class="text-lg font-medium text-gray-900">Data Pemohon</h3>
                     <p class="mt-1 text-sm text-gray-500">Lengkapi data pribadi pemohon surat</p>
@@ -182,14 +185,13 @@
 
                 <div class="px-6 pb-6">
                     <div class="grid grid-cols-1 gap-6">
-                        <!-- Purpose -->
+                        <!-- Keperluan (specific for belum menikah) -->
                         <div>
-                            <label for="purpose" class="block text-sm font-medium text-gray-700">Tujuan/Maksud
-                                Pengajuan *</label>
-                            <input type="text" name="purpose" id="purpose" value="{{ old('purpose') }}"
+                            <label for="keperluan" class="block text-sm font-medium text-gray-700">Keperluan *</label>
+                            <input type="text" name="keperluan" id="keperluan" value="{{ old('keperluan') }}"
                                 required placeholder="Contoh: Persyaratan pernikahan, administrasi, dll"
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
-                            @error('purpose')
+                            @error('keperluan')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>

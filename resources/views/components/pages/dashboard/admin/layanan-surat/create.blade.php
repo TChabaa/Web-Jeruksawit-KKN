@@ -360,6 +360,36 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Domisili Orang -->
+            <div class="bg-white overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-200">
+                <div class="p-6">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <div class="w-10 h-10 bg-emerald-500 rounded-md flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <h3 class="text-lg font-medium text-gray-900">Domisili Orang</h3>
+                        </div>
+                    </div>
+                    <p class="mt-2 text-sm text-gray-500">
+                        Surat keterangan domisili orang yang digunakan untuk menyatakan tempat tinggal/domisili
+                        seseorang untuk keperluan administrasi.
+                    </p>
+                    <div class="mt-4">
+                        <a href="{{ route(auth()->user()->role . '.layanan-surat.form', 'domisili-orang') }}"
+                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-emerald-600 border border-transparent rounded-md hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
+                            Buat Surat
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </x-layouts.dashboard>

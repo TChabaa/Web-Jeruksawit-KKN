@@ -198,7 +198,7 @@
                     </div>
                 </div>
 
-                <!-- Detail Domisili Kelompok Section -->
+                <!-- Detail Domisili Orang Section -->
                 <div class="px-6 py-4 border-t border-gray-200">
                     <h3 class="text-lg font-medium text-gray-900">Detail {{ $title }}</h3>
                     <p class="mt-1 text-sm text-gray-500">Informasi khusus untuk permohonan {{ $title }}</p>
@@ -206,86 +206,28 @@
 
                 <div class="px-6 pb-4">
                     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                        <!-- Nama Kelompok -->
+                        <!-- Keterangan Domisili -->
                         <div class="sm:col-span-2">
-                            <label for="nama_kelompok" class="block text-sm font-medium text-gray-700">Nama
-                                Kelompok/Komunitas/Perkumpulan *</label>
-                            <input type="text" name="nama_kelompok" id="nama_kelompok"
-                                value="{{ old('nama_kelompok') }}" required
-                                placeholder="Contoh: Kelompok Tani Makmur, Karang Taruna, PKK RT 01"
-                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
-                            @error('nama_kelompok')
+                            <label for="keterangan_domisili"
+                                class="block text-sm font-medium text-gray-700">Keterangan
+                                Domisili *</label>
+                            <textarea name="keterangan_domisili" id="keterangan_domisili" rows="4" required
+                                placeholder="Jelaskan keterangan domisili, seperti alamat lengkap tempat tinggal, patokan, dan informasi lokasi lainnya"
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">{{ old('keterangan_domisili') }}</textarea>
+                            @error('keterangan_domisili')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
-                        <!-- Alamat Kelompok -->
+                        <!-- Lama Tinggal -->
                         <div class="sm:col-span-2">
-                            <label for="alamat_kelompok" class="block text-sm font-medium text-gray-700">Alamat
-                                Kelompok *</label>
-                            <textarea name="alamat_kelompok" id="alamat_kelompok" rows="3" required
-                                placeholder="Alamat lengkap tempat kegiatan kelompok termasuk RT/RW, Kelurahan/Desa, Kecamatan"
-                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">{{ old('alamat_kelompok') }}</textarea>
-                            @error('alamat_kelompok')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Ketua -->
-                        <div>
-                            <label for="ketua" class="block text-sm font-medium text-gray-700">Nama Ketua *</label>
-                            <input type="text" name="ketua" id="ketua" value="{{ old('ketua') }}"
-                                required placeholder="Nama lengkap ketua kelompok"
-                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
-                            @error('ketua')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Email Ketua -->
-                        <div>
-                            <label for="email_ketua" class="block text-sm font-medium text-gray-700">Email Ketua
+                            <label for="lama_tinggal" class="block text-sm font-medium text-gray-700">Lama Tinggal
                                 *</label>
-                            <input type="email" name="email_ketua" id="email_ketua"
-                                value="{{ old('email_ketua') }}" required placeholder="Email ketua kelompok"
+                            <input type="text" name="lama_tinggal" id="lama_tinggal"
+                                value="{{ old('lama_tinggal') }}" required
+                                placeholder="Contoh: 5 tahun, 10 bulan, sejak tahun 2020"
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
-                            @error('email_ketua')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Sekretaris -->
-                        <div>
-                            <label for="sekretaris" class="block text-sm font-medium text-gray-700">Nama Sekretaris
-                                *</label>
-                            <input type="text" name="sekretaris" id="sekretaris" value="{{ old('sekretaris') }}"
-                                required placeholder="Nama lengkap sekretaris kelompok"
-                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
-                            @error('sekretaris')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Bendahara -->
-                        <div>
-                            <label for="bendahara" class="block text-sm font-medium text-gray-700">Nama Bendahara
-                                *</label>
-                            <input type="text" name="bendahara" id="bendahara" value="{{ old('bendahara') }}"
-                                required placeholder="Nama lengkap bendahara kelompok"
-                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
-                            @error('bendahara')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Keterangan Lokasi -->
-                        <div class="sm:col-span-2">
-                            <label for="keterangan_lokasi" class="block text-sm font-medium text-gray-700">Keterangan
-                                Lokasi *</label>
-                            <textarea name="keterangan_lokasi" id="keterangan_lokasi" rows="3" required
-                                placeholder="Keterangan tambahan mengenai lokasi kelompok (patokan, dekat dengan apa, dll)"
-                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">{{ old('keterangan_lokasi') }}</textarea>
-                            @error('keterangan_lokasi')
+                            @error('lama_tinggal')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
@@ -306,7 +248,7 @@
                                 Pengajuan *</label>
                             <input type="text" name="purpose" id="purpose" value="{{ old('purpose') }}"
                                 required
-                                placeholder="Contoh: Pengurusan legalitas kelompok, pengajuan bantuan, administrasi"
+                                placeholder="Contoh: Keperluan administrasi bank, pengajuan beasiswa, keperluan kerja"
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
                             @error('purpose')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -318,7 +260,7 @@
                             <label for="notes" class="block text-sm font-medium text-gray-700">Catatan
                                 Tambahan</label>
                             <textarea name="notes" id="notes" rows="3"
-                                placeholder="Informasi tambahan mengenai kelompok atau keperluan surat"
+                                placeholder="Informasi tambahan mengenai domisili atau keperluan surat"
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">{{ old('notes') }}</textarea>
                             @error('notes')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>

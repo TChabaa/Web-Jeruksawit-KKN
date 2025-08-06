@@ -1,4 +1,4 @@
-<x-layouts.visitor-layout>
+<x-layouts.dashboard>
     <x-slot:title>Form {{ $title }}</x-slot:title>
 
     <div class="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -9,7 +9,7 @@
                     <h1 class="text-2xl font-bold text-gray-900">Form {{ $title }}</h1>
                     <p class="mt-2 text-sm text-gray-700">Isi formulir permohonan surat {{ $title }}</p>
                 </div>
-                <a href="{{ route('layanan-surat') }}"
+                <a href="{{ route(auth()->user()->role . '.layanan-surat.create') }}"
                     class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
                     <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -22,8 +22,8 @@
 
         <!-- Form Section -->
         <div class="bg-white shadow rounded-lg">
-            <form action="{{ route('layanan-surat.submit', $type) }}" method="POST" enctype="multipart/form-data"
-                class="space-y-6">
+            <form action="{{ route(auth()->user()->role . '.layanan-surat.submit', $type) }}" method="POST"
+                enctype="multipart/form-data" class="space-y-6">
                 @csrf
 
                 <div class="px-6 py-4 border-b border-gray-200">
@@ -198,96 +198,33 @@
                     </div>
                 </div>
 
-                <!-- Detail Domisili Kelompok Section -->
+                <!-- Detail Domisili Orang Section -->
                 <div class="px-6 py-4 border-t border-gray-200">
                     <h3 class="text-lg font-medium text-gray-900">Detail {{ $title }}</h3>
-                    <p class="mt-1 text-sm text-gray-500">Informasi khusus untuk permohonan {{ $title }}</p>
+                    <p class="mt-1 text-sm text-gray-500">Permohonan surat keterangan domisili untuk keperluan
+                        administrasi
+                    </p>
                 </div>
 
                 <div class="px-6 pb-4">
-                    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                        <!-- Nama Kelompok -->
-                        <div class="sm:col-span-2">
-                            <label for="nama_kelompok" class="block text-sm font-medium text-gray-700">Nama
-                                Kelompok/Komunitas/Perkumpulan *</label>
-                            <input type="text" name="nama_kelompok" id="nama_kelompok"
-                                value="{{ old('nama_kelompok') }}" required
-                                placeholder="Contoh: Kelompok Tani Makmur, Karang Taruna, PKK RT 01"
-                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
-                            @error('nama_kelompok')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Alamat Kelompok -->
-                        <div class="sm:col-span-2">
-                            <label for="alamat_kelompok" class="block text-sm font-medium text-gray-700">Alamat
-                                Kelompok *</label>
-                            <textarea name="alamat_kelompok" id="alamat_kelompok" rows="3" required
-                                placeholder="Alamat lengkap tempat kegiatan kelompok termasuk RT/RW, Kelurahan/Desa, Kecamatan"
-                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">{{ old('alamat_kelompok') }}</textarea>
-                            @error('alamat_kelompok')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Ketua -->
-                        <div>
-                            <label for="ketua" class="block text-sm font-medium text-gray-700">Nama Ketua *</label>
-                            <input type="text" name="ketua" id="ketua" value="{{ old('ketua') }}"
-                                required placeholder="Nama lengkap ketua kelompok"
-                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
-                            @error('ketua')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Email Ketua -->
-                        <div>
-                            <label for="email_ketua" class="block text-sm font-medium text-gray-700">Email Ketua
-                                *</label>
-                            <input type="email" name="email_ketua" id="email_ketua"
-                                value="{{ old('email_ketua') }}" required placeholder="Email ketua kelompok"
-                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
-                            @error('email_ketua')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Sekretaris -->
-                        <div>
-                            <label for="sekretaris" class="block text-sm font-medium text-gray-700">Nama Sekretaris
-                                *</label>
-                            <input type="text" name="sekretaris" id="sekretaris" value="{{ old('sekretaris') }}"
-                                required placeholder="Nama lengkap sekretaris kelompok"
-                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
-                            @error('sekretaris')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Bendahara -->
-                        <div>
-                            <label for="bendahara" class="block text-sm font-medium text-gray-700">Nama Bendahara
-                                *</label>
-                            <input type="text" name="bendahara" id="bendahara" value="{{ old('bendahara') }}"
-                                required placeholder="Nama lengkap bendahara kelompok"
-                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
-                            @error('bendahara')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Keterangan Lokasi -->
-                        <div class="sm:col-span-2">
-                            <label for="keterangan_lokasi" class="block text-sm font-medium text-gray-700">Keterangan
-                                Lokasi *</label>
-                            <textarea name="keterangan_lokasi" id="keterangan_lokasi" rows="3" required
-                                placeholder="Keterangan tambahan mengenai lokasi kelompok (patokan, dekat dengan apa, dll)"
-                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">{{ old('keterangan_lokasi') }}</textarea>
-                            @error('keterangan_lokasi')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
+                    <div class="bg-blue-50 border border-blue-200 rounded-md p-4">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <svg class="h-5 w-5 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-medium text-blue-800">Informasi</h3>
+                                <div class="mt-2 text-sm text-blue-700">
+                                    <p>Surat keterangan domisili akan dibuat berdasarkan data pemohon yang telah Anda
+                                        isi di
+                                        atas. Pastikan data yang dimasukkan sudah benar dan sesuai dengan dokumen resmi.
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -306,7 +243,7 @@
                                 Pengajuan *</label>
                             <input type="text" name="purpose" id="purpose" value="{{ old('purpose') }}"
                                 required
-                                placeholder="Contoh: Pengurusan legalitas kelompok, pengajuan bantuan, administrasi"
+                                placeholder="Contoh: Keperluan administrasi bank, pengajuan beasiswa, keperluan kerja"
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
                             @error('purpose')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -318,7 +255,7 @@
                             <label for="notes" class="block text-sm font-medium text-gray-700">Catatan
                                 Tambahan</label>
                             <textarea name="notes" id="notes" rows="3"
-                                placeholder="Informasi tambahan mengenai kelompok atau keperluan surat"
+                                placeholder="Informasi tambahan mengenai domisili atau keperluan surat"
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">{{ old('notes') }}</textarea>
                             @error('notes')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -330,7 +267,7 @@
                 <!-- Form Actions -->
                 <div class="px-6 py-4 bg-gray-50 rounded-b-lg">
                     <div class="flex justify-end space-x-3">
-                        <a href="{{ route('layanan-surat') }}"
+                        <a href="{{ route(auth()->user()->role . '.layanan-surat.create') }}"
                             class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
                             Batal
                         </a>
@@ -348,4 +285,4 @@
             </form>
         </div>
     </div>
-</x-layouts.visitor-layout>
+</x-layouts.dashboard>

@@ -22,8 +22,8 @@
 
         <!-- Form Section -->
         <div class="bg-white shadow rounded-lg">
-            <form action="{{ route('layanan-surat.submit', $type) }}" method="POST"
-                enctype="multipart/form-data" class="space-y-6">
+            <form action="{{ route('layanan-surat.submit', $type) }}" method="POST" enctype="multipart/form-data"
+                class="space-y-6">
                 @csrf
 
                 <div class="px-6 py-4 border-b border-gray-200">
@@ -266,31 +266,6 @@
                                 placeholder="Alamat lengkap instansi termasuk RT/RW, Kelurahan/Desa, Kecamatan"
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">{{ old('alamat_instansi') }}</textarea>
                             @error('alamat_instansi')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Bidang Usaha -->
-                        <div>
-                            <label for="bidang_usaha" class="block text-sm font-medium text-gray-700">Bidang
-                                Usaha/Kegiatan *</label>
-                            <input type="text" name="bidang_usaha" id="bidang_usaha"
-                                value="{{ old('bidang_usaha') }}" required
-                                placeholder="Contoh: Perdagangan, Jasa, Pendidikan, Sosial"
-                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
-                            @error('bidang_usaha')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Jabatan -->
-                        <div>
-                            <label for="jabatan" class="block text-sm font-medium text-gray-700">Jabatan Pemohon
-                                dalam Instansi *</label>
-                            <input type="text" name="jabatan" id="jabatan" value="{{ old('jabatan') }}"
-                                required placeholder="Contoh: Direktur, Ketua, Sekretaris, Manager"
-                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
-                            @error('jabatan')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>

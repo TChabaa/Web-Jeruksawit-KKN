@@ -259,6 +259,77 @@
                             @enderror
                         </div>
 
+                        <!-- Jenis Kelamin Almarhum -->
+                        <div>
+                            <label for="jenis_kelamin_almarhum" class="block text-sm font-medium text-gray-700">Jenis
+                                Kelamin
+                                Almarhum/Almarhumah *</label>
+                            <select name="jenis_kelamin_almarhum" id="jenis_kelamin_almarhum" required
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                                <option value="">Pilih Jenis Kelamin</option>
+                                <option value="L" {{ old('jenis_kelamin_almarhum') == 'L' ? 'selected' : '' }}>
+                                    Laki-laki
+                                </option>
+                                <option value="P" {{ old('jenis_kelamin_almarhum') == 'P' ? 'selected' : '' }}>
+                                    Perempuan
+                                </option>
+                            </select>
+                            @error('jenis_kelamin_almarhum')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Alamat Almarhum -->
+                        <div>
+                            <label for="alamat_almarhum" class="block text-sm font-medium text-gray-700">Alamat
+                                Almarhum/Almarhumah *</label>
+                            <textarea name="alamat_almarhum" id="alamat_almarhum" rows="2" required
+                                placeholder="Alamat terakhir almarhum/almarhumah"
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">{{ old('alamat_almarhum') }}</textarea>
+                            @error('alamat_almarhum')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Umur Almarhum -->
+                        <div>
+                            <label for="umur" class="block text-sm font-medium text-gray-700">Umur
+                                Almarhum/Almarhumah *</label>
+                            <input type="number" name="umur" id="umur" value="{{ old('umur') }}"
+                                required min="0" max="150" placeholder="Tahun"
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                            @error('umur')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Hari Kematian -->
+                        <div>
+                            <label for="hari_kematian" class="block text-sm font-medium text-gray-700">Hari Kematian
+                                *</label>
+                            <select name="hari_kematian" id="hari_kematian" required
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                                <option value="">Pilih Hari</option>
+                                <option value="Senin" {{ old('hari_kematian') == 'Senin' ? 'selected' : '' }}>Senin
+                                </option>
+                                <option value="Selasa" {{ old('hari_kematian') == 'Selasa' ? 'selected' : '' }}>Selasa
+                                </option>
+                                <option value="Rabu" {{ old('hari_kematian') == 'Rabu' ? 'selected' : '' }}>Rabu
+                                </option>
+                                <option value="Kamis" {{ old('hari_kematian') == 'Kamis' ? 'selected' : '' }}>Kamis
+                                </option>
+                                <option value="Jumat" {{ old('hari_kematian') == 'Jumat' ? 'selected' : '' }}>Jumat
+                                </option>
+                                <option value="Sabtu" {{ old('hari_kematian') == 'Sabtu' ? 'selected' : '' }}>Sabtu
+                                </option>
+                                <option value="Minggu" {{ old('hari_kematian') == 'Minggu' ? 'selected' : '' }}>Minggu
+                                </option>
+                            </select>
+                            @error('hari_kematian')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
                         <!-- Tanggal Kematian -->
                         <div>
                             <label for="tanggal_kematian" class="block text-sm font-medium text-gray-700">Tanggal
@@ -284,14 +355,48 @@
                             @enderror
                         </div>
 
-                        <!-- Sebab Kematian -->
+                        <!-- Penyebab Kematian -->
                         <div class="sm:col-span-2">
-                            <label for="sebab_kematian" class="block text-sm font-medium text-gray-700">Sebab Kematian
+                            <label for="penyebab_kematian" class="block text-sm font-medium text-gray-700">Penyebab
+                                Kematian
                                 *</label>
-                            <textarea name="sebab_kematian" id="sebab_kematian" rows="3" required
+                            <textarea name="penyebab_kematian" id="penyebab_kematian" rows="3" required
                                 placeholder="Jelaskan penyebab kematian (penyakit, kecelakaan, dll)"
-                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">{{ old('sebab_kematian') }}</textarea>
-                            @error('sebab_kematian')
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">{{ old('penyebab_kematian') }}</textarea>
+                            @error('penyebab_kematian')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Hubungan Pelapor -->
+                        <div class="sm:col-span-2">
+                            <label for="hubungan_pelapor" class="block text-sm font-medium text-gray-700">Hubungan
+                                Pelapor dengan
+                                Almarhum *</label>
+                            <select name="hubungan_pelapor" id="hubungan_pelapor" required
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                                <option value="">Pilih Hubungan</option>
+                                <option value="Suami" {{ old('hubungan_pelapor') == 'Suami' ? 'selected' : '' }}>
+                                    Suami
+                                </option>
+                                <option value="Istri" {{ old('hubungan_pelapor') == 'Istri' ? 'selected' : '' }}>
+                                    Istri
+                                </option>
+                                <option value="Anak" {{ old('hubungan_pelapor') == 'Anak' ? 'selected' : '' }}>Anak
+                                </option>
+                                <option value="Ayah" {{ old('hubungan_pelapor') == 'Ayah' ? 'selected' : '' }}>Ayah
+                                </option>
+                                <option value="Ibu" {{ old('hubungan_pelapor') == 'Ibu' ? 'selected' : '' }}>Ibu
+                                </option>
+                                <option value="Saudara" {{ old('hubungan_pelapor') == 'Saudara' ? 'selected' : '' }}>
+                                    Saudara</option>
+                                <option value="Keluarga"
+                                    {{ old('hubungan_pelapor') == 'Keluarga' ? 'selected' : '' }}>
+                                    Keluarga</option>
+                                <option value="Lainnya" {{ old('hubungan_pelapor') == 'Lainnya' ? 'selected' : '' }}>
+                                    Lainnya</option>
+                            </select>
+                            @error('hubungan_pelapor')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
@@ -306,14 +411,14 @@
 
                 <div class="px-6 pb-6">
                     <div class="grid grid-cols-1 gap-6">
-                        <!-- Purpose -->
+                        <!-- Keperluan -->
                         <div>
-                            <label for="purpose" class="block text-sm font-medium text-gray-700">Tujuan/Maksud
+                            <label for="keperluan" class="block text-sm font-medium text-gray-700">Keperluan/Tujuan
                                 Pengajuan *</label>
-                            <input type="text" name="purpose" id="purpose" value="{{ old('purpose') }}"
+                            <input type="text" name="keperluan" id="keperluan" value="{{ old('keperluan') }}"
                                 required placeholder="Contoh: Untuk pengurusan warisan, klaim asuransi, dll"
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
-                            @error('purpose')
+                            @error('keperluan')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>

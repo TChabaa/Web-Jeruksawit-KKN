@@ -278,52 +278,6 @@
                             @enderror
                         </div>
 
-                        <!-- Jenis Kelompok -->
-                        <div>
-                            <label for="jenis_kelompok" class="block text-sm font-medium text-gray-700">Jenis Kelompok
-                                *</label>
-                            <select name="jenis_kelompok" id="jenis_kelompok" required
-                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
-                                <option value="">Pilih Jenis Kelompok</option>
-                                <option value="Kelompok Tani"
-                                    {{ old('jenis_kelompok') == 'Kelompok Tani' ? 'selected' : '' }}>Kelompok Tani
-                                </option>
-                                <option value="Karang Taruna"
-                                    {{ old('jenis_kelompok') == 'Karang Taruna' ? 'selected' : '' }}>Karang Taruna
-                                </option>
-                                <option value="PKK" {{ old('jenis_kelompok') == 'PKK' ? 'selected' : '' }}>PKK
-                                </option>
-                                <option value="Posyandu" {{ old('jenis_kelompok') == 'Posyandu' ? 'selected' : '' }}>
-                                    Posyandu</option>
-                                <option value="Kelompok Usaha"
-                                    {{ old('jenis_kelompok') == 'Kelompok Usaha' ? 'selected' : '' }}>Kelompok Usaha
-                                </option>
-                                <option value="Organisasi Keagamaan"
-                                    {{ old('jenis_kelompok') == 'Organisasi Keagamaan' ? 'selected' : '' }}>Organisasi
-                                    Keagamaan</option>
-                                <option value="Komunitas"
-                                    {{ old('jenis_kelompok') == 'Komunitas' ? 'selected' : '' }}>Komunitas</option>
-                                <option value="Lainnya" {{ old('jenis_kelompok') == 'Lainnya' ? 'selected' : '' }}>
-                                    Lainnya</option>
-                            </select>
-                            @error('jenis_kelompok')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Jumlah Anggota -->
-                        <div>
-                            <label for="jumlah_anggota" class="block text-sm font-medium text-gray-700">Jumlah Anggota
-                                *</label>
-                            <input type="number" name="jumlah_anggota" id="jumlah_anggota"
-                                value="{{ old('jumlah_anggota') }}" required min="3"
-                                placeholder="Minimal 3 orang"
-                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
-                            @error('jumlah_anggota')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-
                         <!-- Keterangan Lokasi -->
                         <div class="sm:col-span-2">
                             <label for="keterangan_lokasi" class="block text-sm font-medium text-gray-700">Keterangan
@@ -332,18 +286,6 @@
                                 placeholder="Keterangan tambahan mengenai lokasi kelompok (patokan, dekat dengan apa, dll)"
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">{{ old('keterangan_lokasi') }}</textarea>
                             @error('keterangan_lokasi')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Tujuan Pembentukan -->
-                        <div class="sm:col-span-2">
-                            <label for="tujuan_pembentukan" class="block text-sm font-medium text-gray-700">Tujuan
-                                Pembentukan Kelompok *</label>
-                            <textarea name="tujuan_pembentukan" id="tujuan_pembentukan" rows="3" required
-                                placeholder="Jelaskan tujuan dan maksud pembentukan kelompok ini"
-                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">{{ old('tujuan_pembentukan') }}</textarea>
-                            @error('tujuan_pembentukan')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>

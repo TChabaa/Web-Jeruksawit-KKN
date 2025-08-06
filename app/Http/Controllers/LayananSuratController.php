@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 use App\Models\JenisSurat;
 use App\Models\Pemohon;
 use App\Models\Surat;
@@ -20,6 +22,7 @@ use App\Models\DetailOrangYangSama;
 use App\Models\DetailPindahKeluar;
 use App\Models\DetailDomisiliInstansi;
 use App\Models\DetailDomisiliKelompok;
+use App\Models\DetailDomisiliOrang;
 use App\Http\Requests\SuratSkckRequest;
 use App\Http\Requests\SuratIzinKeramaianRequest;
 use App\Http\Requests\SuratKeteranganUsahaRequest;
@@ -31,17 +34,33 @@ use App\Http\Requests\SuratOrangYangSamaRequest;
 use App\Http\Requests\SuratPindahKeluarRequest;
 use App\Http\Requests\SuratDomisiliInstansiRequest;
 use App\Http\Requests\SuratDomisiliKelompokRequest;
+use App\Http\Requests\SuratDomisiliOrangRequest;
+use App\Mail\SuratApprovalMail;
+use App\Mail\SuratSubmissionMail;
+use App\Mail\SuratRejectionMail;
 use Yajra\DataTables\Facades\DataTables;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class LayananSuratController extends Controller
 {
     /**
      * Display the admin dashboard for letter services
      */
-    public function index()
+    public function index(Request $request)
     {
         if (request()->ajax()) {
-            $surat = Surat::with(['pemohon', 'jenisSurat'])->latest();
+            // Remove the ->latest() to allow DataTables to handle sorting
+            $surat = Surat::with(['pemohon', 'jenisSurat']);
+
+            // Apply status filter if provided
+            if ($request->has('status') && $request->status !== '' && $request->status !== 'all') {
+                $surat->where('status', $request->status);
+            }
+
+            // Apply jenis surat filter if provided
+            if ($request->has('jenis_surat') && $request->jenis_surat !== '' && $request->jenis_surat !== 'all') {
+                $surat->where('id_jenis', $request->jenis_surat);
+            }
 
             return DataTables::of($surat)
                 ->addColumn('no_surat', function ($item) {
@@ -70,6 +89,12 @@ class LayananSuratController extends Controller
 
                     return '<span class="px-2 py-1 text-xs font-medium rounded-full ' . $statusClass . '">' . $statusText . '</span>';
                 })
+                ->editColumn('created_at', function ($item) {
+                    return $item->created_at ? $item->created_at->format('d/m/Y H:i') : '-';
+                })
+                ->orderColumn('created_at', function ($query, $order) {
+                    return $query->orderBy('created_at', $order);
+                })
                 ->addColumn('action', function ($item) {
                     $roleName = Auth::user()->role;
                     if (!in_array($roleName, ['admin', 'owner', 'super_admin'])) {
@@ -84,7 +109,29 @@ class LayananSuratController extends Controller
                 ->make(true);
         }
 
-        return view('components.pages.dashboard.admin.layanan-surat.index');
+        // Get statistics data and jenis surat for filters
+        $statistics = $this->getStatistics();
+        $jenisSurat = JenisSurat::all();
+
+        return view('components.pages.dashboard.admin.layanan-surat.index', compact('statistics', 'jenisSurat'));
+    }
+
+    /**
+     * Get statistics for dashboard cards
+     */
+    public function getStatistics()
+    {
+        $pending = Surat::where('status', 'belum_diverifikasi')->count();
+        $approved = Surat::where('status', 'disetujui')->count();
+        $rejected = Surat::where('status', 'ditolak')->count();
+        $total = Surat::count();
+
+        return [
+            'pending' => $pending,
+            'approved' => $approved,
+            'rejected' => $rejected,
+            'total' => $total
+        ];
     }
 
     /**
@@ -111,7 +158,8 @@ class LayananSuratController extends Controller
             'orang-yang-sama',
             'pindah-keluar',
             'domisili-instansi',
-            'domisili-kelompok'
+            'domisili-kelompok',
+            'domisili-orang'
         ];
 
         if (!in_array($type, $validTypes)) {
@@ -129,7 +177,8 @@ class LayananSuratController extends Controller
             'orang-yang-sama' => 'Orang yang Sama',
             'pindah-keluar' => 'Pindah Keluar',
             'domisili-instansi' => 'Domisili Instansi',
-            'domisili-kelompok' => 'Domisili Kelompok'
+            'domisili-kelompok' => 'Domisili Kelompok',
+            'domisili-orang' => 'Domisili Orang'
         ];
 
         return view('components.pages.dashboard.admin.layanan-surat.form.' . str_replace('-', '_', $type), [
@@ -157,7 +206,6 @@ class LayananSuratController extends Controller
             'agama' => 'required|string|max:50',
             'pekerjaan' => 'required|string|max:100',
             'status_perkawinan' => 'required|string|max:50',
-            'purpose' => 'required|string|max:255',
             'notes' => 'nullable|string|max:1000',
             'attachment' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ];
@@ -184,6 +232,16 @@ class LayananSuratController extends Controller
             $this->createDetailSurat($type, $surat->id_surat, $validatedData);
 
             DB::commit();
+
+            // Send confirmation email to user
+            try {
+                // Reload surat with relationships for email
+                $suratWithRelations = Surat::with(['pemohon', 'jenisSurat'])->find($surat->id_surat);
+                Mail::to($pemohon->email)->send(new SuratSubmissionMail($suratWithRelations, $pemohon));
+            } catch (\Exception $e) {
+                // Log email error but don't fail the submission
+                Log::error('Failed to send submission confirmation email: ' . $e->getMessage());
+            }
 
             // Handle redirect based on authentication status
             if (Auth::check()) {
@@ -225,7 +283,7 @@ class LayananSuratController extends Controller
             'catatan' => 'nullable|string|max:1000'
         ]);
 
-        $surat = Surat::findOrFail($id);
+        $surat = Surat::with(['pemohon', 'jenisSurat'])->findOrFail($id);
         $surat->status = $request->status;
 
         // Assign created_by when status is updated (not during form creation)
@@ -240,9 +298,234 @@ class LayananSuratController extends Controller
 
         $surat->save();
 
-        $statusText = $request->status === 'disetujui' ? 'disetujui' : 'ditolak';
+        // Generate PDF and send email if approved
+        if ($request->status === 'disetujui') {
+            try {
+                $pdfPath = $this->generateSuratPdf($surat);
+
+                // Send email with PDF attachment
+                Mail::to($surat->pemohon->email)->send(new SuratApprovalMail($surat, $surat->pemohon, $pdfPath));
+
+                $statusText = 'disetujui dan PDF telah dikirim via email';
+            } catch (\Exception $e) {
+                $statusText = 'disetujui, namun terjadi kesalahan saat mengirim email: ' . $e->getMessage();
+            }
+        } else {
+            // Send rejection email
+            try {
+                Mail::to($surat->pemohon->email)->send(new SuratRejectionMail($surat, $surat->pemohon, $request->catatan));
+                $statusText = 'ditolak dan email pemberitahuan telah dikirim';
+            } catch (\Exception $e) {
+                $statusText = 'ditolak, namun terjadi kesalahan saat mengirim email: ' . $e->getMessage();
+            }
+        }
 
         return redirect()->back()->with('success', "Surat berhasil {$statusText}.");
+    }
+
+    /**
+     * Download PDF for approved surat
+     */
+    public function downloadPdf($id)
+    {
+        $surat = Surat::with(['pemohon', 'jenisSurat'])->findOrFail($id);
+
+        if ($surat->status !== 'disetujui') {
+            return redirect()->back()->with('error', 'PDF hanya dapat diunduh untuk surat yang telah disetujui.');
+        }
+
+        try {
+            $pdfPath = $this->generateSuratPdf($surat);
+            $fileName = 'surat_' . str_replace(' ', '_', strtolower($surat->jenisSurat->nama_jenis)) . '_' . $surat->nomor_surat . '.pdf';
+
+            return response()->download($pdfPath, $fileName)->deleteFileAfterSend(true);
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat mengunduh PDF: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Generate PDF for surat
+     */
+    private function generateSuratPdf($surat)
+    {
+        $detail = $this->getDetailSurat($surat);
+        $data = $this->preparePdfData($surat, $detail);
+
+        $templateName = $this->getPdfTemplateName($surat->jenisSurat->nama_jenis);
+
+        $customPaper = [0, 0, 595.276, 935.433]; // A4 size in points
+        $pdf = Pdf::loadView('components.surat.' . $templateName, $data)
+            ->setPaper($customPaper, 'portrait');
+
+        // Ensure storage directory exists
+        if (!Storage::exists('public/surat-pdf')) {
+            Storage::makeDirectory('public/surat-pdf');
+        }
+
+        $fileName = 'surat_' . $surat->id_surat . '_' . time() . '.pdf';
+        $filePath = storage_path('app/public/surat-pdf/' . $fileName);
+
+        $pdf->save($filePath);
+
+        return $filePath;
+    }
+
+    /**
+     * Prepare data for PDF generation
+     */
+    private function preparePdfData($surat, $detail)
+    {
+        $pemohon = $surat->pemohon;
+
+        // Base data for all surat types
+        $data = [
+            'nomor' => $this->extractNomorFromSurat($surat->nomor_surat),
+            'tahun' => date('Y'),
+            'nama_kepala' => 'MIDI', // You may want to make this configurable
+            'nama' => $pemohon->nama_lengkap,
+            'ttl' => $pemohon->tempat_lahir . ', ' . \Carbon\Carbon::parse($pemohon->tanggal_lahir)->format('d-m-Y'),
+            'ktp' => $pemohon->nik,
+            'kk' => $pemohon->nomor_kk,
+            'agama' => $pemohon->agama,
+            'pekerjaan' => $pemohon->pekerjaan,
+            'alamat' => $pemohon->alamat,
+            'status' => $pemohon->status_perkawinan,
+            'kewarganegaraan' => 'Indonesia',
+            'tanggal' => \Carbon\Carbon::parse($surat->tanggal_surat)->format('d F Y')
+        ];
+
+        // Add specific data based on surat type
+        switch ($surat->jenisSurat->nama_jenis) {
+            case 'SKCK':
+                $data['keperluan'] = $detail->keperluan;
+                $data['mulai'] = \Carbon\Carbon::parse($detail->tanggal_mulai_berlaku)->format('d-m-Y');
+                $data['berakhir'] = \Carbon\Carbon::parse($detail->tanggal_akhir_berlaku)->format('d-m-Y');
+                break;
+
+            case 'Izin Keramaian':
+                $data['keperluan'] = $detail->keperluan;
+                $data['jenis_hiburan'] = $detail->jenis_hiburan;
+                $data['tempat_acara'] = $detail->tempat_acara;
+                $data['hari_acara'] = $detail->hari_acara;
+                $data['tanggal_acara'] = \Carbon\Carbon::parse($detail->tanggal_acara)->format('d F Y');
+                $data['jumlah_undangan'] = $detail->jumlah_undangan;
+                break;
+
+            case 'Keterangan Usaha':
+                $data['mulai_usaha'] = \Carbon\Carbon::parse($detail->mulai_usaha)->format('d F Y');
+                $data['jenis_usaha'] = $detail->jenis_usaha;
+                $data['alamat_usaha'] = $detail->alamat_usaha;
+                break;
+
+            case 'SKTM':
+                $data['pendidikan'] = $detail->pendidikan;
+                $data['penghasilan'] = $detail->penghasilan ? 'Rp ' . number_format($detail->penghasilan, 0, ',', '.') : '-';
+                $data['jumlah_tanggungan'] = $detail->jumlah_tanggungan;
+                break;
+
+            case 'Belum Menikah':
+                $data['keperluan'] = $detail->keperluan;
+                break;
+
+            case 'Keterangan Kematian':
+                $data['nama_almarhum'] = $detail->nama_almarhum;
+                $data['nik_almarhum'] = $detail->nik_almarhum;
+                $data['jenis_kelamin_almarhum'] = $detail->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan';
+                $data['alamat_almarhum'] = $detail->alamat;
+                $data['umur'] = $detail->umur;
+                $data['hari_kematian'] = $detail->hari_kematian;
+                $data['tanggal_kematian'] = \Carbon\Carbon::parse($detail->tanggal_kematian)->format('d F Y');
+                $data['tempat_kematian'] = $detail->tempat_kematian;
+                $data['penyebab_kematian'] = $detail->penyebab_kematian;
+                $data['hubungan_pelapor'] = $detail->hubungan_pelapor;
+                break;
+
+            case 'Keterangan Kelahiran':
+                $data['nama_anak'] = $detail->nama_anak;
+                $data['jenis_kelamin_anak'] = $detail->jenis_kelamin_anak == 'L' ? 'Laki-laki' : 'Perempuan';
+                $data['hari_lahir'] = $detail->hari_lahir;
+                $data['tanggal_lahir_anak'] = \Carbon\Carbon::parse($detail->tanggal_lahir)->format('d F Y');
+                $data['tempat_lahir_anak'] = $detail->tempat_lahir;
+                $data['penolong_kelahiran'] = $detail->penolong_kelahiran;
+                break;
+
+            case 'Orang yang Sama':
+                $data['nama1'] = $pemohon->nama_lengkap;
+                $data['ttl1'] = $pemohon->tempat_lahir . ', ' . \Carbon\Carbon::parse($pemohon->tanggal_lahir)->format('d-m-Y');
+                $data['nik1'] = $pemohon->nik;
+                $data['alamat1'] = $pemohon->alamat;
+                $data['nama2'] = $detail->nama_2;
+                $data['ttl2'] = $detail->tempat_lahir_2 . ', ' . \Carbon\Carbon::parse($detail->tanggal_lahir_2)->format('d-m-Y');
+                $data['ayah1'] = $detail->nama_ayah_2; // Assuming father name is same
+                $data['ayah2'] = $detail->nama_ayah_2;
+                $data['buku_nikah'] = $detail->dasar_dokumen_1;
+                break;
+
+            case 'Pindah Keluar':
+                $data['alamat_tujuan'] = $detail->alamat_tujuan;
+                $data['alasan_pindah'] = $detail->alasan_pindah;
+                $data['tanggal_pindah'] = \Carbon\Carbon::parse($detail->tanggal_pindah)->format('d F Y');
+                break;
+
+            case 'Domisili Instansi':
+                $data['nama_instansi'] = $detail->nama_instansi;
+                $data['nama_pimpinan'] = $detail->nama_pimpinan;
+                $data['nip_pimpinan'] = $detail->nip_pimpinan;
+                $data['email_pimpinan'] = $detail->email_pimpinan;
+                $data['alamat_instansi'] = $detail->alamat_instansi;
+                $data['keterangan_lokasi'] = $detail->keterangan_lokasi;
+                break;
+
+            case 'Domisili Kelompok':
+                $data['nama_kelompok'] = $detail->nama_kelompok;
+                $data['alamat_kelompok'] = $detail->alamat_kelompok;
+                $data['ketua'] = $detail->ketua;
+                $data['email_ketua'] = $detail->email_ketua;
+                $data['sekretaris'] = $detail->sekretaris;
+                $data['bendahara'] = $detail->bendahara;
+                $data['keterangan_lokasi'] = $detail->keterangan_lokasi;
+                break;
+
+            case 'Domisili Orang':
+                // No additional data needed, uses base data only
+                break;
+        }
+
+        return $data;
+    }
+
+    /**
+     * Get PDF template name based on surat type
+     */
+    private function getPdfTemplateName($jenisSurat)
+    {
+        return match ($jenisSurat) {
+            'SKCK' => 'skck_pdf',
+            'Izin Keramaian' => 'izin_keramaian_pdf',
+            'Keterangan Usaha' => 'keterangan_usaha_pdf',
+            'SKTM' => 'sktm_pdf',
+            'Belum Menikah' => 'belum_menikah_pdf',
+            'Keterangan Kematian' => 'keterangan_kematian_pdf',
+            'Keterangan Kelahiran' => 'keterangan_kelahiran_pdf',
+            'Orang yang Sama' => 'orang_yang_sama_pdf',
+            'Pindah Keluar' => 'pindah_keluar_pdf',
+            'Domisili Instansi' => 'domisili_instansi_pdf',
+            'Domisili Kelompok' => 'domisili_kelompok_pdf',
+            'Domisili Orang' => 'domisilo_orang_pdf',
+            default => 'skck_pdf'
+        };
+    }
+
+    /**
+     * Extract number from surat number format (474/123/XII/2025)
+     */
+    private function extractNomorFromSurat($nomorSurat)
+    {
+        if (preg_match('/474\/(\d+)\//', $nomorSurat, $matches)) {
+            return $matches[1];
+        }
+        return '1';
     }
 
     // Private helper methods
@@ -260,7 +543,7 @@ class LayananSuratController extends Controller
             'pindah-keluar' => SuratPindahKeluarRequest::class,
             'domisili-instansi' => SuratDomisiliInstansiRequest::class,
             'domisili-kelompok' => SuratDomisiliKelompokRequest::class,
-            default => throw new \Exception('Invalid surat type')
+            'domisili-orang' => SuratDomisiliOrangRequest::class,
         };
     }
 
@@ -297,7 +580,8 @@ class LayananSuratController extends Controller
             'orang-yang-sama' => 'Orang yang Sama',
             'pindah-keluar' => 'Pindah Keluar',
             'domisili-instansi' => 'Domisili Instansi',
-            'domisili-kelompok' => 'Domisili Kelompok'
+            'domisili-kelompok' => 'Domisili Kelompok',
+            'domisili-orang' => 'Domisili Orang'
         ];
 
         return JenisSurat::where('nama_jenis', $typeMapping[$type])->firstOrFail();
@@ -348,7 +632,9 @@ class LayananSuratController extends Controller
             case 'sktm':
                 DetailSktm::create([
                     'id_surat' => $idSurat,
-                    'pendidikan' => $data['pendidikan']
+                    'pendidikan' => $data['pendidikan'],
+                    'penghasilan' => $data['penghasilan'],
+                    'jumlah_tanggungan' => $data['jumlah_tanggungan'],
                 ]);
                 break;
 
@@ -416,8 +702,6 @@ class LayananSuratController extends Controller
                     'nip_pimpinan' => $data['nip_pimpinan'],
                     'email_pimpinan' => $data['email_pimpinan'],
                     'alamat_instansi' => $data['alamat_instansi'],
-                    'bidang_usaha' => $data['bidang_usaha'],
-                    'jabatan' => $data['jabatan'],
                     'keterangan_lokasi' => $data['keterangan_lokasi']
                 ]);
                 break;
@@ -431,10 +715,13 @@ class LayananSuratController extends Controller
                     'ketua' => $data['ketua'],
                     'sekretaris' => $data['sekretaris'],
                     'bendahara' => $data['bendahara'],
-                    'jenis_kelompok' => $data['jenis_kelompok'],
-                    'jumlah_anggota' => $data['jumlah_anggota'],
                     'keterangan_lokasi' => $data['keterangan_lokasi'],
-                    'tujuan_pembentukan' => $data['tujuan_pembentukan']
+                ]);
+                break;
+
+            case 'domisili-orang':
+                DetailDomisiliOrang::create([
+                    'id_surat' => $idSurat
                 ]);
                 break;
         }
@@ -456,6 +743,7 @@ class LayananSuratController extends Controller
             'Pindah Keluar' => DetailPindahKeluar::where('id_surat', $surat->id_surat)->first(),
             'Domisili Instansi' => DetailDomisiliInstansi::where('id_surat', $surat->id_surat)->first(),
             'Domisili Kelompok' => DetailDomisiliKelompok::where('id_surat', $surat->id_surat)->first(),
+            'Domisili Orang' => DetailDomisiliOrang::where('id_surat', $surat->id_surat)->first(),
             default => null
         };
     }
@@ -482,13 +770,11 @@ class LayananSuratController extends Controller
         ];
         $bulanRoman = $romanMonths[$bulan];
 
-        // Use the provided id_surat or get the latest one
-        if (!$idSurat) {
-            $lastSurat = Surat::latest('id_surat')->first();
-            $idSurat = $lastSurat ? $lastSurat->id_surat : 1;
-        }
+        // Count approved letters (disetujui) to generate sequential number
+        $approvedCount = Surat::where('status', 'disetujui')->count();
+        $nomorUrut = $approvedCount + 1; // Next sequential number
 
-        return sprintf('474/%d/%s/%s', $idSurat, $bulanRoman, $tahun);
+        return sprintf('474/%d/%s/%s', $nomorUrut, $bulanRoman, $tahun);
     }
 
     private function getTypeSpecificRules($type)
@@ -514,6 +800,8 @@ class LayananSuratController extends Controller
             ],
             'sktm' => [
                 'pendidikan' => 'required|string|max:100',
+                'penghasilan' => 'required|numeric|min:0',
+                'jumlah_tanggungan' => 'required|integer|min:0',
             ],
             'belum-menikah' => [
                 'keperluan' => 'required|string|max:255',
@@ -560,8 +848,6 @@ class LayananSuratController extends Controller
                 'nip_pimpinan' => 'required|string|max:50',
                 'email_pimpinan' => 'required|email|max:255',
                 'alamat_instansi' => 'required|string|max:500',
-                'bidang_usaha' => 'required|string|max:100',
-                'jabatan' => 'required|string|max:100',
                 'keterangan_lokasi' => 'required|string|max:255',
             ],
             'domisili-kelompok' => [
@@ -571,10 +857,10 @@ class LayananSuratController extends Controller
                 'email_ketua' => 'required|email|max:255',
                 'sekretaris' => 'required|string|max:255',
                 'bendahara' => 'required|string|max:255',
-                'jenis_kelompok' => 'required|string|max:100',
-                'jumlah_anggota' => 'required|integer|min:3',
                 'keterangan_lokasi' => 'required|string|max:255',
-                'tujuan_pembentukan' => 'required|string|max:1000',
+            ],
+            'domisili-orang' => [
+                // No additional fields needed since only id_surat is required
             ],
             default => []
         };

@@ -151,7 +151,6 @@ class FrontendController extends Controller
             'agama' => 'required|string|max:50',
             'pekerjaan' => 'required|string|max:100',
             'status_perkawinan' => 'required|string|max:50',
-            'purpose' => 'required|string|max:255',
             'notes' => 'nullable|string|max:1000',
             'attachment' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ];
@@ -262,7 +261,9 @@ class FrontendController extends Controller
             case 'sktm':
                 \App\Models\DetailSktm::create([
                     'id_surat' => $suratId,
-                    'pendidikan' => $validatedData['pendidikan'] ?? null
+                    'pendidikan' => $validatedData['pendidikan'] ?? null,
+                    'penghasilan' => $validatedData['penghasilan'] ?? null,
+                    'jumlah_tanggungan' => $validatedData['jumlah_tanggungan'] ?? null,
                 ]);
                 break;
 
@@ -380,6 +381,8 @@ class FrontendController extends Controller
             ],
             'sktm' => [
                 'pendidikan' => 'required|string|max:100',
+                'penghasilan' => 'required|numeric|min:0',
+                'jumlah_tanggungan' => 'required|integer|min:0',
             ],
             'belum-menikah' => [
                 'keperluan' => 'required|string|max:255',

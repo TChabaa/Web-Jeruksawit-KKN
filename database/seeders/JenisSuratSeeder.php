@@ -63,5 +63,10 @@ class JenisSuratSeeder extends Seeder
         $surat->nama_jenis = 'Domisili Kelompok';
         $surat->deskripsi = 'Surat keterangan domisili kelompok yang digunakan untuk menyatakan alamat resmi dari suatu kelompok, komunitas, atau perkumpulan.';
         $surat->save();
+
+        $surat = new JenisSurat();
+        $surat->nama_jenis = 'Domisili Orang';
+        $surat->deskripsi = 'Surat keterangan domisili orang yang digunakan untuk menyatakan tempat tinggal resmi seseorang di suatu wilayah.';
+        $surat->save();
     }
 }

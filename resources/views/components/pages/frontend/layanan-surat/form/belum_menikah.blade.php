@@ -22,9 +22,12 @@
 
         <!-- Form Section -->
         <div class="bg-white shadow rounded-lg">
-            <form action="{{ route('layanan-surat.submit', $type) }}" method="POST"
-                enctype="multipart/form-data" class="space-y-6">
+            <form action="{{ route('layanan-surat.submit', $type) }}" method="POST" enctype="multipart/form-data"
+                class="space-y-6">
                 @csrf
+
+                <!-- Hidden field for status_perkawinan -->
+                <input type="hidden" name="status_perkawinan" value="Belum Kawin">
 
                 <div class="px-6 py-4 border-b border-gray-200">
                     <h3 class="text-lg font-medium text-gray-900">Data Pemohon</h3>
@@ -182,6 +185,7 @@
 
                 <div class="px-6 pb-6">
                     <div class="grid grid-cols-1 gap-6">
+
                         <!-- Purpose -->
                         <div>
                             <label for="purpose" class="block text-sm font-medium text-gray-700">Tujuan/Maksud
