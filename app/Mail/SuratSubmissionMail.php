@@ -9,12 +9,14 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class SuratSubmissionMail extends Mailable
+class SuratSubmissionMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
     public $surat;
     public $pemohon;
+    public $tries = 3;
+    public $backoff = [10, 20, 40]; // Retry after 10s, 20s, 40s
 
     /**
      * Create a new message instance.
@@ -23,6 +25,7 @@ class SuratSubmissionMail extends Mailable
     {
         $this->surat = $surat;
         $this->pemohon = $pemohon;
+        $this->onQueue('emails'); // Use dedicated email queue
     }
 
     /**

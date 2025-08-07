@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Storage;
 
 class Umkm extends Model
 {
@@ -22,6 +23,20 @@ class Umkm extends Model
         'slug',
         'created_by',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($umkm) {
+            // Delete all associated images from storage before deleting the UMKM
+            foreach ($umkm->gambarUmkm as $gambar) {
+                if ($gambar->image_url && Storage::disk('public')->exists($gambar->image_url)) {
+                    Storage::disk('public')->delete($gambar->image_url);
+                }
+            }
+        });
+    }
 
 
     public function creator()

@@ -12,9 +12,6 @@ use App\Http\Controllers\PDFController;
 use App\Http\Controllers\UmkmController;
 
 
-Route::get('/pdf', [PDFController::class, 'generatePDF']);
-Route::get('/pdf/{suratId}', [PDFController::class, 'generatePDF'])->where('suratId', '[0-9]+');
-
 // Route untuk melihat bentuk PDF
 Route::get('/view-pdf/{type}', function ($type) {
     $validTypes = [
@@ -216,8 +213,6 @@ Route::middleware([
         Route::get('/layanan-surat/{id}/show', [\App\Http\Controllers\LayananSuratController::class, 'show'])->name('layanan-surat.show');
         Route::post('/layanan-surat/{id}/status', [\App\Http\Controllers\LayananSuratController::class, 'updateStatus'])->name('layanan-surat.status');
         Route::get('/layanan-surat/{id}/download-pdf', [\App\Http\Controllers\LayananSuratController::class, 'downloadPdf'])->name('layanan-surat.download-pdf');
-        // Alternative PDF route using PDFController as fallback
-        Route::get('/layanan-surat/{id}/download-pdf-alt', [\App\Http\Controllers\PDFController::class, 'generatePDF'])->name('layanan-surat.download-pdf-alt');
     });
 
     // Admin
@@ -280,8 +275,6 @@ Route::middleware([
         Route::get('/layanan-surat/{id}/show', [\App\Http\Controllers\LayananSuratController::class, 'show'])->name('layanan-surat.show');
         Route::post('/layanan-surat/{id}/status', [\App\Http\Controllers\LayananSuratController::class, 'updateStatus'])->name('layanan-surat.status');
         Route::get('/layanan-surat/{id}/download-pdf', [\App\Http\Controllers\LayananSuratController::class, 'downloadPdf'])->name('layanan-surat.download-pdf');
-        // Alternative PDF route using PDFController as fallback
-        Route::get('/layanan-surat/{id}/download-pdf-alt', [\App\Http\Controllers\PDFController::class, 'generatePDF'])->name('layanan-surat.download-pdf-alt');
     });
 
     // owner

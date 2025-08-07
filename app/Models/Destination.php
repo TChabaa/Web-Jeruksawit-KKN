@@ -9,6 +9,7 @@ use App\Models\Accommodation;
 use App\Models\ContactDetail;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Storage;
 
 class Destination extends Model
 {
@@ -25,6 +26,20 @@ class Destination extends Model
         'views',
         'slug',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($destination) {
+            // Delete all associated images from storage before deleting the destination
+            foreach ($destination->galleries as $gallery) {
+                if ($gallery->image_url && Storage::disk('public')->exists($gallery->image_url)) {
+                    Storage::disk('public')->delete($gallery->image_url);
+                }
+            }
+        });
+    }
 
     public function user()
     {

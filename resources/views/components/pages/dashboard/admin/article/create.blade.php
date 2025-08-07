@@ -33,32 +33,6 @@
             </div>
 
             <div class="px-6 py-6 mb-6 bg-white rounded-lg shadow-lg dark:bg-black">
-                @if (auth()->user()->role != 'writer')
-                    <div class="mb-4.5">
-                        <label for="author" class="block mb-3 text-sm font-medium text-black dark:text-white">
-                            Pembuat Artikel <span class="text-red-500">*</span>
-                        </label>
-                        <div x-data="{ isOptionSelected: false }" class="relative z-20 bg-transparent dark:bg-form-input">
-                            <select required id="author" name="writer"
-                                class="relative z-20 w-full px-5 py-3 transition bg-transparent border border-black rounded outline-none appearance-none focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                                :class="isOptionSelected && 'text-black dark:text-white'"
-                                @change="isOptionSelected = true">
-                                <option value="" hidden class="text-body">
-                                    Pilih Pembuat Artikel
-                                </option>
-                                @forelse ($writers as $writer)
-                                    <option value="{{ $writer->id }}" class="text-body"
-                                        {{ old('writer') == $writer->id ? 'selected' : '' }}>
-                                        {{ $writer->name }}</option>
-                                @empty
-                                    <option value="" class="text-body" selected>Belum ada Pembuat Artikel
-                                    </option>
-                                @endforelse
-                            </select>
-                            <x-partials.dashboard.input-error :messages="$errors->get('author')" />
-                        </div>
-                    </div>
-                @endif
                 <div class="mb-4.5">
                     <label for="title"
                         class="block mb-3 text-sm font-medium text-black-dashboard dark:text-white-dahsboard">
@@ -113,20 +87,20 @@
     }); // by name bukan id CKeditor 4
 </script>
 <script>
-        document.getElementById('gambar_article').addEventListener('change', function(event) {
-            const files = event.target.files;
-            const imagePreviewContainer = document.getElementById('imagePreviewContainer');
-            imagePreviewContainer.innerHTML = ''; // Clear previous images
+    document.getElementById('gambar_articles').addEventListener('change', function(event) {
+        const files = event.target.files;
+        const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+        imagePreviewContainer.innerHTML = ''; // Clear previous images
 
-            for (const file of files) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.className = 'w-32 h-32 object-cover rounded-lg';
-                    imagePreviewContainer.appendChild(img);
-                }
-                reader.readAsDataURL(file);
+        for (const file of files) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.className = 'w-32 h-32 object-cover rounded-lg';
+                imagePreviewContainer.appendChild(img);
             }
-        });
+            reader.readAsDataURL(file);
+        }
+    });
 </script>

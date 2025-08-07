@@ -45,10 +45,6 @@ class DestinationCreateRequest extends FormRequest
             'contact_details.social_media' => 'nullable|string|max:100',
         ];
 
-        if (Auth::user()->role !== 'owner') {
-            $rules['owner'] = 'required';
-        }
-
         return $rules;
     }
 

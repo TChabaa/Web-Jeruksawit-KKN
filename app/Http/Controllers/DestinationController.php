@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Gallery;
 use App\Models\Facility;
 use App\Models\Destination;
@@ -13,6 +12,7 @@ use App\Models\Accommodation;
 use App\Models\ContactDetail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
 use Yajra\DataTables\Facades\DataTables;
 use App\Http\Requests\DestinationCreateRequest;
@@ -66,12 +66,7 @@ class DestinationController extends Controller
      */
     public function create()
     {
-        $owners = [];
-
-        if (Auth::user()->role !== 'owner') {
-            $owners = User::where('role', 'owner')->get();
-        }
-        return view('components.pages.dashboard.admin.destination.create', compact('owners'));
+        return view('components.pages.dashboard.admin.destination.create');
     }
 
     /**
@@ -113,7 +108,7 @@ class DestinationController extends Controller
     private function createDestination($request)
     {
         return Destination::create([
-            'owner_id' => Auth::user()->role != "owner" ? $request->owner : Auth::user()->id,
+            'owner_id' => Auth::user()->id,
             'name' => $request->name_destination,
             'description' => $request->description,
             'location' => $request->location,
@@ -277,16 +272,10 @@ class DestinationController extends Controller
 
         $openingHours = $this->formatOpeningHours($destination->openingHours->toArray());
 
-        $owners = [];
-
-        if (Auth::user()->role !== 'owner') {
-            $owners = User::where('role', 'owner')->get();
-        }
-
         $title = 'Hapus Foto Destinasi!';
         $text = "Apakah Anda yakin ingin menghapus?";
         confirmDelete($title, $text);
-        return view('components.pages.dashboard.admin.destination.edit', compact('destination', 'openingHours', 'owners'));
+        return view('components.pages.dashboard.admin.destination.edit', compact('destination', 'openingHours'));
     }
 
     private function formatOpeningHours($openingHours)
@@ -321,7 +310,7 @@ class DestinationController extends Controller
             $oldName = $destination->name;
 
             $destination->update([
-                'owner_id' => Auth::user()->role != "owner" ? $request->owner : Auth::user()->id,
+                'owner_id' => Auth::user()->id,
                 'name' => $request->name_destination,
                 'description' => $request->description,
                 'location' => $request->location,
@@ -403,6 +392,8 @@ class DestinationController extends Controller
      */
     public function destroy(Destination $destination)
     {
+        // Load galleries relationship to ensure model event can access them
+        $destination->load('galleries');
         $destination->delete();
 
         Alert::toast('Berhasil menghapus data destinasi', 'success');
@@ -412,7 +403,9 @@ class DestinationController extends Controller
     public function destroyGallery(string $destination, string $gallery)
     {
         $destination = Destination::with('galleries')->findOrFail($destination);
-        $destination->galleries()->findOrFail($gallery)->delete();
+        $galleryItem = $destination->galleries()->findOrFail($gallery);
+
+        $galleryItem->delete();
 
         Alert::toast('Berhasil menghapus data photo', 'success');
         return redirect()->route(Auth::user()->role . '.destinations.edit', $destination);

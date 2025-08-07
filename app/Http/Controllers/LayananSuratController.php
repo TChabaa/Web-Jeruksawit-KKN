@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
@@ -38,46 +37,13 @@ use App\Http\Requests\SuratDomisiliOrangRequest;
 use App\Mail\SuratApprovalMail;
 use App\Mail\SuratSubmissionMail;
 use App\Mail\SuratRejectionMail;
+use App\Jobs\ProcessSuratApproval;
+use App\Jobs\ProcessSuratRejection;
+use App\Jobs\ProcessSuratSubmission;
 use Yajra\DataTables\Facades\DataTables;
-use Barryvdh\DomPDF\Facade\Pdf;
 
 class LayananSuratController extends Controller
 {
-    /**
-     * Send email with retry mechanism
-     */
-    private function sendEmailWithRetry($emailFunction, $type, $email, $suratId, $maxRetries = 3)
-    {
-        $attempt = 1;
-
-        while ($attempt <= $maxRetries) {
-            try {
-                $emailFunction();
-                return; // Success, exit early
-            } catch (\Exception $e) {
-                Log::warning("Email sending attempt {$attempt} failed for {$type}", [
-                    'email' => $email,
-                    'surat_id' => $suratId,
-                    'error' => $e->getMessage(),
-                    'attempt' => $attempt
-                ]);
-
-                if ($attempt === $maxRetries) {
-                    // Final attempt failed
-                    Log::error("Failed to send {$type} email after {$maxRetries} attempts", [
-                        'email' => $email,
-                        'surat_id' => $suratId,
-                        'final_error' => $e->getMessage()
-                    ]);
-                    break;
-                }
-
-                // Wait before retry (exponential backoff)
-                sleep(pow(2, $attempt - 1));
-                $attempt++;
-            }
-        }
-    }
 
     /**
      * Display the admin dashboard for letter services
@@ -277,14 +243,14 @@ class LayananSuratController extends Controller
 
             DB::commit();
 
-            // Send confirmation email to user
-            $this->sendEmailWithRetry(function () use ($surat, $pemohon) {
-                // Reload surat with relationships for email
-                $suratWithRelations = Surat::with(['pemohon', 'jenisSurat'])->find($surat->id_surat);
-                Mail::to($pemohon->email)->send(new SuratSubmissionMail($suratWithRelations, $pemohon));
+            // Queue email sending for better performance
+            ProcessSuratSubmission::dispatch($surat->id_surat, $pemohon->id_pemohon)
+                ->delay(now()->addSeconds(5)); // Small delay to ensure DB commit
 
-                Log::info('Surat submission email sent successfully from dashboard', ['email' => $pemohon->email]);
-            }, 'submission confirmation', $pemohon->email, $surat->id_surat);
+            Log::info('Surat submission queued for email processing', [
+                'surat_id' => $surat->id_surat,
+                'email' => $pemohon->email
+            ]);
 
             // Handle redirect based on authentication status
             if (Auth::check()) {
@@ -310,8 +276,9 @@ class LayananSuratController extends Controller
     {
         $surat = Surat::with(['pemohon', 'jenisSurat'])->findOrFail($id);
 
-        // Get detail based on type
-        $detail = $this->getDetailSurat($surat);
+        // Get detail based on type using PDFController
+        $pdfController = new \App\Http\Controllers\PDFController();
+        $detail = $pdfController->getDetailSurat($surat);
 
         return view('components.pages.dashboard.admin.layanan-surat.show', compact('surat', 'detail'));
     }
@@ -341,38 +308,29 @@ class LayananSuratController extends Controller
 
         $surat->save();
 
-        // Generate PDF and send email if approved
+        // Queue PDF generation and email sending for better performance
         if ($request->status === 'disetujui') {
-            try {
-                $pdfPath = $this->generateSuratPdf($surat);
+            // Queue approval processing (PDF generation + email)
+            ProcessSuratApproval::dispatch($surat->id_surat)
+                ->delay(now()->addSeconds(10)); // Small delay to ensure DB commit
 
-                // Send email with PDF attachment using retry mechanism
-                $this->sendEmailWithRetry(function () use ($surat, $pdfPath) {
-                    Mail::to($surat->pemohon->email)->send(new SuratApprovalMail($surat, $surat->pemohon, $pdfPath));
-                    Log::info('Surat approval email sent successfully from dashboard', [
-                        'email' => $surat->pemohon->email,
-                        'surat_id' => $surat->id_surat
-                    ]);
-                }, 'approval', $surat->pemohon->email, $surat->id_surat);
+            $statusText = 'disetujui dan sedang diproses untuk pengiriman PDF via email';
 
-                $statusText = 'disetujui dan PDF telah dikirim via email';
-            } catch (\Exception $e) {
-                Log::error('Failed to generate PDF for approval email: ' . $e->getMessage(), [
-                    'surat_id' => $surat->id_surat
-                ]);
-                $statusText = 'disetujui, namun terjadi kesalahan saat menghasilkan PDF: ' . $e->getMessage();
-            }
+            Log::info('Surat approval queued for processing', [
+                'surat_id' => $surat->id_surat,
+                'email' => $surat->pemohon->email
+            ]);
         } else {
-            // Send rejection email using retry mechanism
-            $this->sendEmailWithRetry(function () use ($surat, $request) {
-                Mail::to($surat->pemohon->email)->send(new SuratRejectionMail($surat, $surat->pemohon, $request->catatan));
-                Log::info('Surat rejection email sent successfully from dashboard', [
-                    'email' => $surat->pemohon->email,
-                    'surat_id' => $surat->id_surat
-                ]);
-            }, 'rejection', $surat->pemohon->email, $surat->id_surat);
+            // Queue rejection email
+            ProcessSuratRejection::dispatch($surat->id_surat, $request->catatan)
+                ->delay(now()->addSeconds(5)); // Faster processing for rejections
 
-            $statusText = 'ditolak dan email pemberitahuan telah dikirim';
+            $statusText = 'ditolak dan sedang diproses untuk pengiriman email pemberitahuan';
+
+            Log::info('Surat rejection queued for processing', [
+                'surat_id' => $surat->id_surat,
+                'email' => $surat->pemohon->email
+            ]);
         }
 
         return redirect()->back()->with('success', "Surat berhasil {$statusText}.");
@@ -383,282 +341,9 @@ class LayananSuratController extends Controller
      */
     public function downloadPdf($id)
     {
-        $surat = Surat::with(['pemohon', 'jenisSurat'])->findOrFail($id);
-
-        if ($surat->status !== 'disetujui') {
-            return redirect()->back()->with('error', 'PDF hanya dapat diunduh untuk surat yang telah disetujui.');
-        }
-
-        try {
-            Log::info('Starting PDF generation', [
-                'surat_id' => $id,
-                'jenis_surat' => $surat->jenisSurat->nama_jenis,
-                'nomor_surat' => $surat->nomor_surat
-            ]);
-
-            $pdfPath = $this->generateSuratPdf($surat);
-            $cleanNomorSurat = str_replace(['/', '\\'], '_', $surat->nomor_surat ?? 'no_number');
-            $fileName = 'surat_' . str_replace(' ', '_', strtolower($surat->jenisSurat->nama_jenis)) . '_' . $cleanNomorSurat . '.pdf';
-
-            Log::info('PDF generated successfully', [
-                'surat_id' => $id,
-                'file_path' => $pdfPath,
-                'file_name' => $fileName
-            ]);
-
-            return response()->download($pdfPath, $fileName)->deleteFileAfterSend(true);
-        } catch (\Exception $e) {
-            Log::error('PDF Generation Error', [
-                'surat_id' => $id,
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ]);
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat mengunduh PDF: ' . $e->getMessage());
-        }
-    }
-
-    /**
-     * Generate PDF for surat
-     */
-    private function generateSuratPdf($surat)
-    {
-        try {
-            Log::info('Starting PDF generation', [
-                'surat_id' => $surat->id_surat,
-                'jenis_surat' => $surat->jenisSurat->nama_jenis,
-                'nomor_surat' => $surat->nomor_surat
-            ]);
-
-            $detail = $this->getDetailSurat($surat);
-
-            // Validate that detail exists for the surat type
-            if (!$detail && $this->requiresDetail($surat->jenisSurat->nama_jenis)) {
-                throw new \Exception('Data detail surat tidak ditemukan untuk jenis: ' . $surat->jenisSurat->nama_jenis);
-            }
-
-            Log::info('Preparing PDF data', [
-                'surat_id' => $surat->id_surat,
-                'has_detail' => !is_null($detail)
-            ]);
-
-            $data = $this->preparePdfData($surat, $detail);
-            $templateName = $this->getPdfTemplateName($surat->jenisSurat->nama_jenis);
-
-            Log::info('Template info', [
-                'surat_id' => $surat->id_surat,
-                'template_name' => $templateName
-            ]);
-
-            // Check if template exists
-            $templatePath = 'components.surat.' . $templateName;
-            if (!view()->exists($templatePath)) {
-                throw new \Exception('Template PDF tidak ditemukan: ' . $templateName);
-            }
-
-            $customPaper = [0, 0, 595.276, 935.433]; // A4 size in points
-            $pdf = Pdf::loadView($templatePath, $data)
-                ->setPaper($customPaper, 'portrait');
-
-            // Ensure storage directory exists
-            if (!Storage::exists('public/surat-pdf')) {
-                Storage::makeDirectory('public/surat-pdf');
-            }
-
-            $fileName = 'surat_' . $surat->id_surat . '_' . time() . '.pdf';
-            $filePath = storage_path('app/public/surat-pdf/' . $fileName);
-
-            Log::info('Saving PDF', [
-                'surat_id' => $surat->id_surat,
-                'file_path' => $filePath
-            ]);
-
-            $pdf->save($filePath);
-
-            Log::info('PDF saved successfully', [
-                'surat_id' => $surat->id_surat,
-                'file_size' => file_exists($filePath) ? filesize($filePath) : 'not found'
-            ]);
-
-            return $filePath;
-        } catch (\Exception $e) {
-            Log::error('Error in generateSuratPdf', [
-                'surat_id' => $surat->id_surat ?? 'unknown',
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ]);
-            throw $e;
-        }
-    }
-
-    /**
-     * Check if surat type requires detail data
-     */
-    private function requiresDetail($jenisSurat)
-    {
-        return !in_array($jenisSurat, ['Domisili Orang']);
-    }
-
-    /**
-     * Prepare data for PDF generation
-     */
-    private function preparePdfData($surat, $detail)
-    {
-        $pemohon = $surat->pemohon;
-
-        // Base data for all surat types
-        $data = [
-            'nomor' => $this->extractNomorFromSurat($surat->nomor_surat ?? ''),
-            'tahun' => date('Y'),
-            'nama_kepala' => 'MIDI', // You may want to make this configurable
-            'nama' => $pemohon->nama_lengkap ?? '',
-            'ttl' => ($pemohon->tempat_lahir ?? '') . ', ' . ($pemohon->tanggal_lahir ? \Carbon\Carbon::parse($pemohon->tanggal_lahir)->format('d-m-Y') : ''),
-            'ktp' => $pemohon->nik ?? '',
-            'kk' => $pemohon->nomor_kk ?? '',
-            'agama' => $pemohon->agama ?? '',
-            'pekerjaan' => $pemohon->pekerjaan ?? '',
-            'alamat' => $pemohon->alamat ?? '',
-            'status' => $pemohon->status_perkawinan ?? '',
-            'kewarganegaraan' => 'Indonesia',
-            'tanggal' => $surat->tanggal_surat ? \Carbon\Carbon::parse($surat->tanggal_surat)->format('d F Y') : now()->format('d F Y')
-        ];
-
-        // Add specific data based on surat type
-        if ($detail) {
-            switch ($surat->jenisSurat->nama_jenis) {
-                case 'SKCK':
-                    $data['keperluan'] = $detail->keperluan ?? '';
-                    $data['mulai'] = $detail->tanggal_mulai_berlaku ? \Carbon\Carbon::parse($detail->tanggal_mulai_berlaku)->format('d-m-Y') : '';
-                    $data['berakhir'] = $detail->tanggal_akhir_berlaku ? \Carbon\Carbon::parse($detail->tanggal_akhir_berlaku)->format('d-m-Y') : '';
-                    break;
-
-                case 'Izin Keramaian':
-                    $data['keperluan'] = $detail->keperluan ?? '';
-                    $data['jenis_hiburan'] = $detail->jenis_hiburan ?? '';
-                    $data['tempat_acara'] = $detail->tempat_acara ?? '';
-                    $data['hari_acara'] = $detail->hari_acara ?? '';
-                    $data['tanggal_acara'] = $detail->tanggal_acara ? \Carbon\Carbon::parse($detail->tanggal_acara)->format('d F Y') : '';
-                    $data['jumlah_undangan'] = $detail->jumlah_undangan ?? '';
-                    break;
-
-                case 'Keterangan Usaha':
-                    $data['mulai_usaha'] = $detail->mulai_usaha ? \Carbon\Carbon::parse($detail->mulai_usaha)->format('d F Y') : '';
-                    $data['jenis_usaha'] = $detail->jenis_usaha ?? '';
-                    $data['alamat_usaha'] = $detail->alamat_usaha ?? '';
-                    break;
-
-                case 'SKTM':
-                    $data['pendidikan'] = $detail->pendidikan ?? '';
-                    $data['penghasilan'] = $detail->penghasilan ? 'Rp ' . number_format($detail->penghasilan, 0, ',', '.') : '-';
-                    $data['jumlah_tanggungan'] = $detail->jumlah_tanggungan ?? '';
-                    break;
-
-                case 'Belum Menikah':
-                    $data['keperluan'] = $detail->keperluan ?? '';
-                    break;
-
-                case 'Keterangan Kematian':
-                    $data['nama_almarhum'] = $detail->nama_almarhum ?? '';
-                    $data['nik_almarhum'] = $detail->nik_almarhum ?? '';
-                    $data['jenis_kelamin_almarhum'] = ($detail->jenis_kelamin ?? '') == 'L' ? 'Laki-laki' : 'Perempuan';
-                    $data['alamat_almarhum'] = $detail->alamat ?? '';
-                    $data['umur'] = $detail->umur ?? '';
-                    $data['hari_kematian'] = $detail->hari_kematian ?? '';
-                    $data['tanggal_kematian'] = $detail->tanggal_kematian ? \Carbon\Carbon::parse($detail->tanggal_kematian)->format('d F Y') : '';
-                    $data['tempat_kematian'] = $detail->tempat_kematian ?? '';
-                    $data['penyebab_kematian'] = $detail->penyebab_kematian ?? '';
-                    $data['hubungan_pelapor'] = $detail->hubungan_pelapor ?? '';
-                    break;
-
-                case 'Keterangan Kelahiran':
-                    $data['nama_anak'] = $detail->nama_anak ?? '';
-                    $data['jenis_kelamin_anak'] = ($detail->jenis_kelamin_anak ?? '') == 'L' ? 'Laki-laki' : 'Perempuan';
-                    $data['hari_lahir'] = $detail->hari_lahir ?? '';
-                    $data['tanggal_lahir_anak'] = $detail->tanggal_lahir ? \Carbon\Carbon::parse($detail->tanggal_lahir)->format('d F Y') : '';
-                    $data['tempat_lahir_anak'] = $detail->tempat_lahir ?? '';
-                    $data['penolong_kelahiran'] = $detail->penolong_kelahiran ?? '';
-                    break;
-
-                case 'Orang yang Sama':
-                    $data['nama1'] = $pemohon->nama_lengkap ?? '';
-                    $data['ttl1'] = ($pemohon->tempat_lahir ?? '') . ', ' . ($pemohon->tanggal_lahir ? \Carbon\Carbon::parse($pemohon->tanggal_lahir)->format('d-m-Y') : '');
-                    $data['nik1'] = $pemohon->nik ?? '';
-                    $data['alamat1'] = $pemohon->alamat ?? '';
-                    $data['nama2'] = $detail->nama_2 ?? '';
-                    $data['ttl2'] = ($detail->tempat_lahir_2 ?? '') . ', ' . ($detail->tanggal_lahir_2 ? \Carbon\Carbon::parse($detail->tanggal_lahir_2)->format('d-m-Y') : '');
-                    $data['ayah1'] = $detail->nama_ayah_2 ?? '';
-                    $data['ayah2'] = $detail->nama_ayah_2 ?? '';
-                    $data['buku_nikah'] = $detail->dasar_dokumen_1 ?? '';
-                    break;
-
-                case 'Pindah Keluar':
-                    $data['alamat_tujuan'] = $detail->alamat_tujuan ?? '';
-                    $data['alasan_pindah'] = $detail->alasan_pindah ?? '';
-                    $data['tanggal_pindah'] = $detail->tanggal_pindah ? \Carbon\Carbon::parse($detail->tanggal_pindah)->format('d F Y') : '';
-                    break;
-
-                case 'Domisili Instansi':
-                    $data['nama_instansi'] = $detail->nama_instansi ?? '';
-                    $data['nama_pimpinan'] = $detail->nama_pimpinan ?? '';
-                    $data['nip_pimpinan'] = $detail->nip_pimpinan ?? '';
-                    $data['email_pimpinan'] = $detail->email_pimpinan ?? '';
-                    $data['alamat_instansi'] = $detail->alamat_instansi ?? '';
-                    $data['keterangan_lokasi'] = $detail->keterangan_lokasi ?? '';
-                    break;
-
-                case 'Domisili Kelompok':
-                    $data['nama_kelompok'] = $detail->nama_kelompok ?? '';
-                    $data['alamat_kelompok'] = $detail->alamat_kelompok ?? '';
-                    $data['ketua'] = $detail->ketua ?? '';
-                    $data['email_ketua'] = $detail->email_ketua ?? '';
-                    $data['sekretaris'] = $detail->sekretaris ?? '';
-                    $data['bendahara'] = $detail->bendahara ?? '';
-                    $data['keterangan_lokasi'] = $detail->keterangan_lokasi ?? '';
-                    break;
-
-                case 'Domisili Orang':
-                    // No additional data needed, uses base data only
-                    break;
-            }
-        }
-
-        return $data;
-    }
-
-    /**
-     * Get PDF template name based on surat type
-     */
-    private function getPdfTemplateName($jenisSurat)
-    {
-        return match ($jenisSurat) {
-            'SKCK' => 'skck_pdf',
-            'Izin Keramaian' => 'izin_keramaian_pdf',
-            'Keterangan Usaha' => 'keterangan_usaha_pdf',
-            'SKTM' => 'sktm_pdf',
-            'Belum Menikah' => 'belum_menikah_pdf',
-            'Keterangan Kematian' => 'keterangan_kematian_pdf',
-            'Keterangan Kelahiran' => 'keterangan_kelahiran_pdf',
-            'Orang yang Sama' => 'orang_yang_sama_pdf',
-            'Pindah Keluar' => 'pindah_keluar_pdf',
-            'Domisili Instansi' => 'domisili_instansi_pdf',
-            'Domisili Kelompok' => 'domisili_kelompok_pdf',
-            'Domisili Orang' => 'domisili_orang_pdf',
-            default => 'skck_pdf'
-        };
-    }
-
-    /**
-     * Extract number from surat number format (474/123/XII/2025)
-     */
-    private function extractNomorFromSurat($nomorSurat)
-    {
-        if (empty($nomorSurat)) {
-            return '1';
-        }
-
-        if (preg_match('/474\/(\d+)\//', $nomorSurat, $matches)) {
-            return $matches[1];
-        }
-        return '1';
+        // Delegate to PDFController for consistent PDF generation
+        $pdfController = new \App\Http\Controllers\PDFController();
+        return $pdfController->generatePDF(new \Illuminate\Http\Request(), $id);
     }
 
     // Private helper methods
@@ -858,27 +543,6 @@ class LayananSuratController extends Controller
                 ]);
                 break;
         }
-    }
-
-    private function getDetailSurat($surat)
-    {
-        $jenis = $surat->jenisSurat->nama_jenis;
-
-        return match ($jenis) {
-            'SKCK' => DetailSkck::where('id_surat', $surat->id_surat)->first(),
-            'Izin Keramaian' => DetailIzinKeramaian::where('id_surat', $surat->id_surat)->first(),
-            'Keterangan Usaha' => DetailKeteranganUsaha::where('id_surat', $surat->id_surat)->first(),
-            'SKTM' => DetailSktm::where('id_surat', $surat->id_surat)->first(),
-            'Belum Menikah' => DetailBelumMenikah::where('id_surat', $surat->id_surat)->first(),
-            'Keterangan Kematian' => DetailKematian::where('id_surat', $surat->id_surat)->first(),
-            'Keterangan Kelahiran' => DetailKelahiran::where('id_surat', $surat->id_surat)->first(),
-            'Orang yang Sama' => DetailOrangYangSama::where('id_surat', $surat->id_surat)->first(),
-            'Pindah Keluar' => DetailPindahKeluar::where('id_surat', $surat->id_surat)->first(),
-            'Domisili Instansi' => DetailDomisiliInstansi::where('id_surat', $surat->id_surat)->first(),
-            'Domisili Kelompok' => DetailDomisiliKelompok::where('id_surat', $surat->id_surat)->first(),
-            'Domisili Orang' => DetailDomisiliOrang::where('id_surat', $surat->id_surat)->first(),
-            default => null
-        };
     }
 
     private function generateNomorSurat($jenisSurat, $idSurat = null)

@@ -25,32 +25,6 @@
 
 
             <div class="px-6 py-6 mb-6 bg-white rounded-lg shadow-lg dark:bg-black">
-                @if (auth()->user()->role != 'writer')
-                    <div class="mb-4.5">
-                        <label for="author" class="block mb-3 text-sm font-medium text-black dark:text-white">
-                            Pembuat Artikel <span class="text-red-500">*</span>
-                        </label>
-                        <div x-data="{ isOptionSelected: false }" class="relative z-20 bg-transparent dark:bg-form-input">
-                            <select required id="author" name="writer"
-                                class="relative z-20 w-full px-5 py-3 transition bg-transparent border border-black rounded outline-none appearance-none focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                                :class="isOptionSelected && 'text-black dark:text-white'"
-                                @change="isOptionSelected = true">
-                                <option value="" hidden class="text-body">
-                                    Pilih Pembuat Artikel
-                                </option>
-                                @forelse ($admins as $admin)
-                                    <option value="{{ $admin->id }}" class="text-body"
-                                        {{ $article->author_id == $admin->id ? 'selected' : '' }}>
-                                        {{ $admin->name }}</option>
-                                @empty
-                                    <option value="" class="text-body" selected>Belum ada Pembuat Artikel
-                                    </option>
-                                @endforelse
-                            </select>
-                            <x-partials.dashboard.input-error :messages="$errors->get('author')" />
-                        </div>
-                    </div>
-                @endif
                 <div class="mb-4.5">
                     <label for="title"
                         class="block mb-3 text-sm font-medium text-black-dashboard dark:text -white-dahsboard">
@@ -96,8 +70,7 @@
             <div class="flex items-center justify-between ">
                 <div class="object-contain w-40 overflow-hidden rounded-md">
                     <a href="{{ Storage::url($gambar_article->image_url) }}" target="_blank">
-                        <img class="w-full" src="{{ Storage::url($gambar_article->image_url) }}"
-                            alt="Gambar Wisata">
+                        <img class="w-full" src="{{ Storage::url($gambar_article->image_url) }}" alt="Gambar Wisata">
                     </a>
                 </div>
                 <form
@@ -120,33 +93,29 @@
             <!-- Modal content -->
             <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
                 <!-- Modal header -->
-                <div
-                    class="flex items-center justify-between p-4 border-b rounded-t md:p-5 dark:border-gray-600">
+                <div class="flex items-center justify-between p-4 border-b rounded-t md:p-5 dark:border-gray-600">
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                         Tambah Galeri
                     </h3>
                     <button type="button"
                         class="inline-flex items-center justify-center w-8 h-8 text-sm text-gray-400 bg-transparent rounded-lg hover:bg-gray-200 hover:text-gray-900 ms-auto dark:hover:bg-gray-600 dark:hover:text-white"
                         data-modal-toggle="crud-modal-4">
-                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                            fill="none" viewBox="0 0 14 14">
-                            <path stroke="currentColor" stroke-linecap="round"
-                                stroke-linejoin="round" stroke-width="2"
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                         </svg>
                         <span class="sr-only">Close modal</span>
                     </button>
                 </div>
                 <!-- Modal body -->
-                <form
-                    action="{{ route(auth()->user()->role . '.articles.addGambar', $article->id) }}"
-                    method="POST" enctype="multipart/form-data" class="p-4 md:p-5">
+                <form action="{{ route(auth()->user()->role . '.articles.addGambar', $article->id) }}" method="POST"
+                    enctype="multipart/form-data" class="p-4 md:p-5">
                     @csrf
                     @method('POST')
 
                     <div class="px-6 py-6 mb-6 bg-white rounded-lg dark:bg-black">
-                        <label for="gambar_articles"
-                            class="block mb-2 text-sm font-medium text-black dark:text-white">
+                        <label for="gambar_articles" class="block mb-2 text-sm font-medium text-black dark:text-white">
                             Masukan Foto <span class="text-red-500">*</span>
                         </label>
                         <p class="text-xs font-medium text-red-500">* Menambahkan foto bisa lebih dari
@@ -154,6 +123,7 @@
                         <p class="text-xs font-medium text-red-500">* Pastikan file bertipe jpeg, jpg,
                             png</p>
                         <p class="text-xs font-medium text-red-500">* Maksimal file 1MB</p>
+                        <div id="imagePreviewContainer" class="flex flex-wrap gap-5 mt-3"></div>
                         <input type="file" required multiple accept="image/*" name="gambar_articles[]"
                             id="gambar_articles" class="mt-3">
                         <x-partials.dashboard.input-error :messages="$errors->get('gambar_articles.')" />
@@ -179,7 +149,7 @@
 
 
     <script>
-        document.getElementById('image').addEventListener('change', function(event) {
+        document.getElementById('gambar_articles').addEventListener('change', function(event) {
             const files = event.target.files;
             const imagePreviewContainer = document.getElementById('imagePreviewContainer');
             imagePreviewContainer.innerHTML = ''; // Clear previous images

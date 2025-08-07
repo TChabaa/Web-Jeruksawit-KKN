@@ -155,7 +155,7 @@ class PerangkatDesaController extends Controller
             // Check if there's a new image uploaded
             if ($request->hasFile('gambar')) {
                 // Delete old image if exists
-                if ($perangkat_desa->gambar) {
+                if ($perangkat_desa->gambar && Storage::disk('public')->exists($perangkat_desa->gambar)) {
                     Storage::disk('public')->delete($perangkat_desa->gambar);
                 }
 
@@ -189,12 +189,6 @@ class PerangkatDesaController extends Controller
     {
         try {
             $perangkat_desa = PerangkatDesa::findOrFail($id);
-
-            // Delete image if exists
-            if ($perangkat_desa->gambar) {
-                Storage::disk('public')->delete($perangkat_desa->gambar);
-            }
-
             $perangkat_desa->delete();
 
             Alert::toast('Sukses Menghapus Perangkat Desa', 'success');

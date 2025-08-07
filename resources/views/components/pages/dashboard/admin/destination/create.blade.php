@@ -37,32 +37,6 @@
             </div>
 
             <div class="px-6 py-6 mb-6 bg-white rounded-lg shadow-lg dark:bg-black">
-                @if (auth()->user()->role != 'owner')
-                    <div class="mb-4.5">
-                        <label for="owner" class="block mb-3 text-sm font-medium text-black dark:text-white">
-                            Penanggung Jawab Wisata <span class="text-red-500">*</span>
-                        </label>
-                        <div x-data="{ isOptionSelected: false }" class="relative z-20 bg-transparent dark:bg-form-input">
-                            <select required id="owner" name="owner"
-                                class="relative z-20 w-full px-5 py-3 transition bg-transparent border border-black rounded outline-none appearance-none focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                                :class="isOptionSelected && 'text-black dark:text-white'"
-                                @change="isOptionSelected = true">
-                                <option value="" hidden class="text-body">
-                                    Pilih Penanggung Jawab
-                                </option>
-                                @forelse ($owners as $owner)
-                                    <option value="{{ $owner->id }}" class="text-body"
-                                        {{ old('owner') == $owner->id ? 'selected' : '' }}>
-                                        {{ $owner->name }}</option>
-                                @empty
-                                    <option value="" class="text-body" selected>Belum ada pennggung jawab</option>
-                                @endforelse
-                            </select>
-                            <x-partials.dashboard.input-error :messages="$errors->get('owner')" />
-                        </div>
-                    </div>
-                @endif
-
                 <div class="w-full mb-6">
                     <label for="name_destination" class="block mb-3 text-sm font-medium text-black dark:text-white">
                         Nama Wisata <span class="text-red-500">*</span>
@@ -121,8 +95,8 @@
                         Harga Tempat Wisata <span class="text-red-500">*</span>
                     </label>
                     <p class="text-xs font-medium text-gray-400">* Jika gratis/free masukan nilai 0</p>
-                    <input id="price_range" value="{{ old('price_range') }}" required name="price_range"
-                        type="number" placeholder="Harga Tempat Wisata"
+                    <input id="price_range" value="{{ old('price_range') }}" required name="price_range" type="number"
+                        placeholder="Harga Tempat Wisata"
                         class="w-full mt-3 rounded border-[1.5px] border-black bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                 </div>
 
