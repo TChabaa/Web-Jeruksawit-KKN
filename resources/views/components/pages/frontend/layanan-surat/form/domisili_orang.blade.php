@@ -22,8 +22,8 @@
 
         <!-- Form Section -->
         <div class="bg-white shadow rounded-lg">
-            <form action="{{ route('layanan-surat.submit', $type) }}" method="POST" enctype="multipart/form-data"
-                class="space-y-6">
+            <form action="{{ route('layanan-surat.submit', $type) }}" method="POST"
+                enctype="multipart/form-data" class="space-y-6">
                 @csrf
 
                 <div class="px-6 py-4 border-b border-gray-200">
@@ -201,35 +201,30 @@
                 <!-- Detail Domisili Orang Section -->
                 <div class="px-6 py-4 border-t border-gray-200">
                     <h3 class="text-lg font-medium text-gray-900">Detail {{ $title }}</h3>
-                    <p class="mt-1 text-sm text-gray-500">Informasi khusus untuk permohonan {{ $title }}</p>
+                    <p class="mt-1 text-sm text-gray-500">Permohonan surat keterangan domisili untuk keperluan
+                        administrasi
+                    </p>
                 </div>
 
                 <div class="px-6 pb-4">
-                    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                        <!-- Keterangan Domisili -->
-                        <div class="sm:col-span-2">
-                            <label for="keterangan_domisili"
-                                class="block text-sm font-medium text-gray-700">Keterangan
-                                Domisili *</label>
-                            <textarea name="keterangan_domisili" id="keterangan_domisili" rows="4" required
-                                placeholder="Jelaskan keterangan domisili, seperti alamat lengkap tempat tinggal, patokan, dan informasi lokasi lainnya"
-                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">{{ old('keterangan_domisili') }}</textarea>
-                            @error('keterangan_domisili')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Lama Tinggal -->
-                        <div class="sm:col-span-2">
-                            <label for="lama_tinggal" class="block text-sm font-medium text-gray-700">Lama Tinggal
-                                *</label>
-                            <input type="text" name="lama_tinggal" id="lama_tinggal"
-                                value="{{ old('lama_tinggal') }}" required
-                                placeholder="Contoh: 5 tahun, 10 bulan, sejak tahun 2020"
-                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
-                            @error('lama_tinggal')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
+                    <div class="bg-blue-50 border border-blue-200 rounded-md p-4">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <svg class="h-5 w-5 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-medium text-blue-800">Informasi</h3>
+                                <div class="mt-2 text-sm text-blue-700">
+                                    <p>Surat keterangan domisili akan dibuat berdasarkan data pemohon yang telah Anda
+                                        isi di
+                                        atas. Pastikan data yang dimasukkan sudah benar dan sesuai dengan dokumen resmi.
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

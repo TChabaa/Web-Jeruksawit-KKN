@@ -243,84 +243,11 @@
                             @enderror
                         </div>
 
-                        <!-- Jenis Kepindahan -->
-                        <div>
-                            <label for="jenis_kepindahan" class="block text-sm font-medium text-gray-700">Jenis
-                                Kepindahan *</label>
-                            <select name="jenis_kepindahan" id="jenis_kepindahan" required
-                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
-                                <option value="">Pilih Jenis Kepindahan</option>
-                                <option value="Kepala Keluarga dan Seluruh Anggota Keluarga"
-                                    {{ old('jenis_kepindahan') == 'Kepala Keluarga dan Seluruh Anggota Keluarga' ? 'selected' : '' }}>
-                                    Kepala Keluarga dan Seluruh Anggota Keluarga
-                                </option>
-                                <option value="Kepala Keluarga dan Sebagian Anggota Keluarga"
-                                    {{ old('jenis_kepindahan') == 'Kepala Keluarga dan Sebagian Anggota Keluarga' ? 'selected' : '' }}>
-                                    Kepala Keluarga dan Sebagian Anggota Keluarga
-                                </option>
-                                <option value="Anggota Keluarga"
-                                    {{ old('jenis_kepindahan') == 'Anggota Keluarga' ? 'selected' : '' }}>
-                                    Anggota Keluarga
-                                </option>
-                            </select>
                             @error('jenis_kepindahan')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
-                        <!-- Status KK -->
-                        <div>
-                            <label for="status_kk" class="block text-sm font-medium text-gray-700">Status KK di Tempat
-                                Tujuan *</label>
-                            <select name="status_kk" id="status_kk" required
-                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
-                                <option value="">Pilih Status KK</option>
-                                <option value="Numpang KK" {{ old('status_kk') == 'Numpang KK' ? 'selected' : '' }}>
-                                    Numpang KK</option>
-                                <option value="Membuat KK Baru"
-                                    {{ old('status_kk') == 'Membuat KK Baru' ? 'selected' : '' }}>Membuat KK Baru
-                                </option>
-                                <option value="Nomor KK Tetap"
-                                    {{ old('status_kk') == 'Nomor KK Tetap' ? 'selected' : '' }}>Nomor KK Tetap
-                                </option>
-                            </select>
-                            @error('status_kk')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Klasifikasi Pindah -->
-                        <div>
-                            <label for="klasifikasi_pindah"
-                                class="block text-sm font-medium text-gray-700">Klasifikasi Pindah *</label>
-                            <select name="klasifikasi_pindah" id="klasifikasi_pindah" required
-                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
-                                <option value="">Pilih Klasifikasi</option>
-                                <option value="Dalam Satu Desa/Kelurahan"
-                                    {{ old('klasifikasi_pindah') == 'Dalam Satu Desa/Kelurahan' ? 'selected' : '' }}>
-                                    Dalam Satu Desa/Kelurahan
-                                </option>
-                                <option value="Antar Desa/Kelurahan Satu Kecamatan"
-                                    {{ old('klasifikasi_pindah') == 'Antar Desa/Kelurahan Satu Kecamatan' ? 'selected' : '' }}>
-                                    Antar Desa/Kelurahan Satu Kecamatan
-                                </option>
-                                <option value="Antar Kecamatan Satu Kabupaten/Kota"
-                                    {{ old('klasifikasi_pindah') == 'Antar Kecamatan Satu Kabupaten/Kota' ? 'selected' : '' }}>
-                                    Antar Kecamatan Satu Kabupaten/Kota
-                                </option>
-                                <option value="Antar Kabupaten/Kota Satu Provinsi"
-                                    {{ old('klasifikasi_pindah') == 'Antar Kabupaten/Kota Satu Provinsi' ? 'selected' : '' }}>
-                                    Antar Kabupaten/Kota Satu Provinsi
-                                </option>
-                                <option value="Antar Provinsi"
-                                    {{ old('klasifikasi_pindah') == 'Antar Provinsi' ? 'selected' : '' }}>
-                                    Antar Provinsi
-                                </option>
-                            </select>
-                            @error('klasifikasi_pindah')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
                     </div>
                 </div>
 

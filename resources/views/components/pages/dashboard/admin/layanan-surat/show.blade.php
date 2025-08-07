@@ -308,6 +308,87 @@
                                         </div>
                                     @break
 
+                                    @case('Orang yang Sama')
+                                        <div>
+                                            <dt class="text-sm font-medium text-gray-500">Nama Pertama</dt>
+                                            <dd class="mt-1 text-sm text-gray-900">{{ $surat->pemohon->nama_lengkap }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt class="text-sm font-medium text-gray-500">TTL Pertama</dt>
+                                            <dd class="mt-1 text-sm text-gray-900">
+                                                {{ $surat->pemohon->tempat_lahir }},
+                                                {{ \Carbon\Carbon::parse($surat->pemohon->tanggal_lahir)->format('d/m/Y') }}
+                                            </dd>
+                                        </div>
+                                        <div>
+                                            <dt class="text-sm font-medium text-gray-500">Nama Kedua</dt>
+                                            <dd class="mt-1 text-sm text-gray-900">{{ $detail->nama_2 }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt class="text-sm font-medium text-gray-500">TTL Kedua</dt>
+                                            <dd class="mt-1 text-sm text-gray-900">
+                                                {{ $detail->tempat_lahir_2 }},
+                                                {{ \Carbon\Carbon::parse($detail->tanggal_lahir_2)->format('d/m/Y') }}
+                                            </dd>
+                                        </div>
+                                        <div>
+                                            <dt class="text-sm font-medium text-gray-500">Nama Ayah</dt>
+                                            <dd class="mt-1 text-sm text-gray-900">{{ $detail->nama_ayah_2 }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt class="text-sm font-medium text-gray-500">Dasar Dokumen 1</dt>
+                                            <dd class="mt-1 text-sm text-gray-900">{{ $detail->dasar_dokumen_1 }}</dd>
+                                        </div>
+                                        <div class="sm:col-span-2">
+                                            <dt class="text-sm font-medium text-gray-500">Dasar Dokumen 2</dt>
+                                            <dd class="mt-1 text-sm text-gray-900">{{ $detail->dasar_dokumen_2 }}</dd>
+                                        </div>
+                                    @break
+
+                                    @case('Pindah Keluar')
+                                        <div>
+                                            <dt class="text-sm font-medium text-gray-500">Alamat Tujuan</dt>
+                                            <dd class="mt-1 text-sm text-gray-900">{{ $detail->alamat_tujuan }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt class="text-sm font-medium text-gray-500">Alasan Pindah</dt>
+                                            <dd class="mt-1 text-sm text-gray-900">{{ $detail->alasan_pindah }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt class="text-sm font-medium text-gray-500">Tanggal Pindah</dt>
+                                            <dd class="mt-1 text-sm text-gray-900">
+                                                {{ \Carbon\Carbon::parse($detail->tanggal_pindah)->format('d/m/Y') }}
+                                            </dd>
+                                        </div>
+                                    @break
+
+                                    @case('Domisili Instansi')
+                                        <div>
+                                            <dt class="text-sm font-medium text-gray-500">Nama Instansi</dt>
+                                            <dd class="mt-1 text-sm text-gray-900">{{ $detail->nama_instansi }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt class="text-sm font-medium text-gray-500">Nama Pimpinan</dt>
+                                            <dd class="mt-1 text-sm text-gray-900">{{ $detail->nama_pimpinan }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt class="text-sm font-medium text-gray-500">NIP Pimpinan</dt>
+                                            <dd class="mt-1 text-sm text-gray-900">{{ $detail->nip_pimpinan }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt class="text-sm font-medium text-gray-500">Email Pimpinan</dt>
+                                            <dd class="mt-1 text-sm text-gray-900">{{ $detail->email_pimpinan }}</dd>
+                                        </div>
+                                        <div class="sm:col-span-2">
+                                            <dt class="text-sm font-medium text-gray-500">Alamat Instansi</dt>
+                                            <dd class="mt-1 text-sm text-gray-900">{{ $detail->alamat_instansi }}</dd>
+                                        </div>
+                                        <div class="sm:col-span-2">
+                                            <dt class="text-sm font-medium text-gray-500">Keterangan Lokasi</dt>
+                                            <dd class="mt-1 text-sm text-gray-900">{{ $detail->keterangan_lokasi }}</dd>
+                                        </div>
+                                    @break
+
                                     @case('Domisili Kelompok')
                                         <div>
                                             <dt class="text-sm font-medium text-gray-500">Nama Kelompok</dt>
@@ -426,6 +507,16 @@
                                 </svg>
                                 Unduh PDF
                             </a>
+                            {{-- <a href="{{ route(auth()->user()->role . '.layanan-surat.download-pdf-alt', $surat->id_surat) }}"
+                                class="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                    </path>
+                                </svg>
+                                Unduh PDF (Alt)
+                            </a> --}}
                             <p class="text-xs text-gray-500 text-center">
                                 PDF surat telah dikirim ke email pemohon
                             </p>

@@ -14,7 +14,6 @@ return new class extends Migration
             $table->string('keperluan');
             $table->string('jenis_hiburan');
             $table->string('tempat_acara');
-            $table->string('hari_acara');
             $table->date('tanggal_acara');
             $table->integer('jumlah_undangan');
             $table->foreign('id_surat')->references('id_surat')->on('surat')->cascadeOnDelete();

@@ -11,26 +11,122 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\UmkmController;
 
-Route::get('/preview-surat-beda-nama', function () {
-    return view('components.surat.orang_yang_sama_pdf', [
-        'nomor' => '185',
-        'tahun' => '2025',
-        'nama_kepala' => 'MIDI',
-        'nama1' => 'SUPATA',
-        'ttl1' => 'Karanganyar, 09-05-1981',
-        'nik1' => '3313110905810002',
-        'ayah1' => 'KASNO',
-        'alamat1' => 'Jeruksawit, RT.005/006, Desa Jeruksawit, Kec. Gondangrejo',
-        'kk' => '3313131809130005',
-        'nama2' => 'SUYANTO',
-        'ttl2' => 'Karanganyar, 09-05-1981',
-        'ayah2' => 'PARIMIN',
-        'buku_nikah' => '528/33/X/2009',
-        'tanggal' => '03 Maret 2025'
-    ]);
-});
 
 Route::get('/pdf', [PDFController::class, 'generatePDF']);
+Route::get('/pdf/{suratId}', [PDFController::class, 'generatePDF'])->where('suratId', '[0-9]+');
+
+// Route untuk melihat bentuk PDF
+Route::get('/view-pdf/{type}', function ($type) {
+    $validTypes = [
+        'skck',
+        'izin-keramaian',
+        'keterangan-usaha',
+        'sktm',
+        'belum-menikah',
+        'keterangan-kematian',
+        'keterangan-kelahiran',
+        'orang-yang-sama',
+        'pindah-keluar',
+        'domisili-instansi',
+        'domisili-kelompok',
+        'domisili-orang'
+    ];
+
+    if (!in_array($type, $validTypes)) {
+        abort(404, 'Jenis PDF tidak ditemukan');
+    }
+
+    // Sample data untuk preview
+    $sampleData = [
+        'nomor' => '474/001/VIII/2025',
+        'tahun' => '2025',
+        'nama_kepala' => 'MIDI',
+        'nama' => 'CONTOH NAMA',
+        'ttl' => 'Karanganyar, 01-01-1990',
+        'ktp' => '3313130101900001',
+        'kk' => '3313130101900001',
+        'agama' => 'Islam',
+        'pekerjaan' => 'Karyawan Swasta',
+        'alamat' => 'Desa Jeruksawit, Kec. Gondangrejo, Kab. Karanganyar',
+        'status' => 'Belum Kawin',
+        'kewarganegaraan' => 'Indonesia',
+        'tanggal' => now()->translatedFormat('d F Y'),
+
+        // Data spesifik untuk setiap jenis surat
+        'keperluan' => 'Untuk keperluan administrasi',
+        'mulai' => '01-08-2025',
+        'berakhir' => '01-09-2025',
+        'jenis_hiburan' => 'Campursari',
+        'tempat_acara' => 'Balai Desa Jeruksawit',
+        'hari_acara' => 'Sabtu',
+        'tanggal_acara' => '15 Agustus 2025',
+        'jumlah_undangan' => '200',
+        'mulai_usaha' => '01 Januari 2020',
+        'jenis_usaha' => 'Warung Makan',
+        'alamat_usaha' => 'Desa Jeruksawit',
+        'pendidikan' => 'SMA',
+        'penghasilan' => 'Rp 1.500.000',
+        'jumlah_tanggungan' => '3',
+        'nama_almarhum' => 'ALMARHUM CONTOH',
+        'nik_almarhum' => '3313130101800001',
+        'jenis_kelamin_almarhum' => 'Laki-laki',
+        'alamat_almarhum' => 'Desa Jeruksawit',
+        'umur' => '70',
+        'hari_kematian' => 'Senin',
+        'tanggal_kematian' => '01 Agustus 2025',
+        'tempat_kematian' => 'Rumah Sakit',
+        'penyebab_kematian' => 'Sakit',
+        'hubungan_pelapor' => 'Anak',
+        'nama_anak' => 'BAYI CONTOH',
+        'jenis_kelamin_anak' => 'Laki-laki',
+        'hari_lahir' => 'Senin',
+        'tanggal_lahir_anak' => '01 Agustus 2025',
+        'tempat_lahir_anak' => 'Rumah Sakit',
+        'penolong_kelahiran' => 'Bidan',
+        'nama1' => 'NAMA PERTAMA',
+        'ttl1' => 'Karanganyar, 01-01-1990',
+        'nik1' => '3313130101900001',
+        'alamat1' => 'Desa Jeruksawit',
+        'nama2' => 'NAMA KEDUA',
+        'ttl2' => 'Karanganyar, 01-01-1990',
+        'ayah1' => 'NAMA AYAH',
+        'ayah2' => 'NAMA AYAH',
+        'buku_nikah' => 'Akta Nikah No. 123',
+        'alamat_tujuan' => 'Surakarta',
+        'alasan_pindah' => 'Pekerjaan',
+        'tanggal_pindah' => '01 September 2025',
+        'nama_instansi' => 'PT CONTOH INDONESIA',
+        'nama_pimpinan' => 'PIMPINAN CONTOH',
+        'nip_pimpinan' => '123456789',
+        'email_pimpinan' => 'pimpinan@contoh.com',
+        'alamat_instansi' => 'Jl. Contoh No. 1',
+        'keterangan_lokasi' => 'Bersebelahan dengan Balai Desa',
+        'nama_kelompok' => 'KELOMPOK CONTOH',
+        'alamat_kelompok' => 'Desa Jeruksawit',
+        'ketua' => 'KETUA CONTOH',
+        'email_ketua' => 'ketua@contoh.com',
+        'sekretaris' => 'SEKRETARIS CONTOH',
+        'bendahara' => 'BENDAHARA CONTOH'
+    ];
+
+    $templateName = match ($type) {
+        'skck' => 'skck_pdf',
+        'izin-keramaian' => 'izin_keramaian_pdf',
+        'keterangan-usaha' => 'keterangan_usaha_pdf',
+        'sktm' => 'sktm_pdf',
+        'belum-menikah' => 'belum_menikah_pdf',
+        'keterangan-kematian' => 'keterangan_kematian_pdf',
+        'keterangan-kelahiran' => 'keterangan_kelahiran_pdf',
+        'orang-yang-sama' => 'orang_yang_sama_pdf',
+        'pindah-keluar' => 'pindah_keluar_pdf',
+        'domisili-instansi' => 'domisili_instansi_pdf',
+        'domisili-kelompok' => 'domisili_kelompok_pdf',
+        'domisili-orang' => 'domisili_orang_pdf',
+        default => 'skck_pdf'
+    };
+
+    return view('components.surat.' . $templateName, $sampleData);
+})->name('view-pdf');
 
 Route::get('/articles', [FrontendController::class, 'articles'])->name('articles');
 Route::get('/articles/{slug}/show', [ArticleController::class, 'show'])->name('articles.show');
@@ -120,6 +216,8 @@ Route::middleware([
         Route::get('/layanan-surat/{id}/show', [\App\Http\Controllers\LayananSuratController::class, 'show'])->name('layanan-surat.show');
         Route::post('/layanan-surat/{id}/status', [\App\Http\Controllers\LayananSuratController::class, 'updateStatus'])->name('layanan-surat.status');
         Route::get('/layanan-surat/{id}/download-pdf', [\App\Http\Controllers\LayananSuratController::class, 'downloadPdf'])->name('layanan-surat.download-pdf');
+        // Alternative PDF route using PDFController as fallback
+        Route::get('/layanan-surat/{id}/download-pdf-alt', [\App\Http\Controllers\PDFController::class, 'generatePDF'])->name('layanan-surat.download-pdf-alt');
     });
 
     // Admin
@@ -182,6 +280,8 @@ Route::middleware([
         Route::get('/layanan-surat/{id}/show', [\App\Http\Controllers\LayananSuratController::class, 'show'])->name('layanan-surat.show');
         Route::post('/layanan-surat/{id}/status', [\App\Http\Controllers\LayananSuratController::class, 'updateStatus'])->name('layanan-surat.status');
         Route::get('/layanan-surat/{id}/download-pdf', [\App\Http\Controllers\LayananSuratController::class, 'downloadPdf'])->name('layanan-surat.download-pdf');
+        // Alternative PDF route using PDFController as fallback
+        Route::get('/layanan-surat/{id}/download-pdf-alt', [\App\Http\Controllers\PDFController::class, 'generatePDF'])->name('layanan-surat.download-pdf-alt');
     });
 
     // owner

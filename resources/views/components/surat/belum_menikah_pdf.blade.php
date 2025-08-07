@@ -3,16 +3,58 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Surat Keterangan Domisili Masjid</title>
+    <title>Surat Keterangan Belum Nikah</title>
     <style>
         body {
             font-family: 'Times New Roman', serif;
             font-size: 12pt;
-            margin: 1.5cm;
+            margin: 0;
+            padding: 0;
+        }
+
+        .page {
+            margin: 1cm 1.2cm;
+        }
+
+        p {
+            margin: 2pt 0;
+            line-height: 1.3;
         }
 
         .center {
             text-align: center;
+        }
+
+        .left {
+            text-align: left;
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 3px double black;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+
+        .header-title {
+            font-size: 15pt;
+            font-weight: bold;
+        }
+
+        .header-subtitle {
+            font-size: 18pt;
+            font-weight: bold;
+        }
+
+        .header-info {
+            font-style: italic;
+            font-size: 12pt;
+        }
+
+        .kode-desa {
+            margin-top: 5px;
+            text-align: left;
+            font-weight: bold;
         }
 
         .indent {
@@ -24,72 +66,113 @@
             margin-left: auto;
             margin-top: 50px;
             text-align: left;
-        }
-
-        .signature p:last-child {
-            text-align: center;
+            display: block;
         }
 
         table {
-            width: 100%;
             border-collapse: collapse;
+            width: 100%;
         }
 
-        td {
-            padding: 2px 0;
+        table td {
             vertical-align: top;
-        }
-
-        h3,
-        p {
-            margin: 5px 0;
+            padding: 2px 0;
         }
     </style>
 </head>
 
 <body>
-    <x-surat.kop_surat />
+    <div class="page">
+        <x-surat.kop_surat />
 
-    <div class="kode-desa">
-        No. Kode Desa/Kelurahan: 33.13.13.2007
-    </div>
+        <div class="kode-desa">
+            No. Kode Desa/Kelurahan: 33.13.13.2007
+        </div>
 
-    <div class="center">
-        <h3><u>SURAT BELUM NIKAH</u></h3>
-        <p>Nomor: { $nomor ?? '___' } / { $bulan ?? 'VIII' } / { $tahun ?? '2025' }</p>
-    </div>
+        <div class="center">
+            <h3><u>SURAT KETERANGAN BELUM NIKAH</u></h3>
+            <p>Nomor: {{ $nomor ?? '475 / 208 / VII / 2025' }}</p>
+        </div>
 
-    <div class="content">
-        <p class="indent">No.Kode Desa/Kelurahan</p>
-        <p class="indent">33.13.13.2007</p>
-        <p class="indent">SURAT KETERANGAN BELUM MENIKAH</p>
-        <p class="indent">Nomor : 474 / 173 / VI / 2025</p>
-        <p class="indent">Yang bertanda tangan dibawah ini :</p>
-        <p class="indent">Nama : MIDI</p>
-        <p class="indent">Jabatan : Kepala Desa Jeruksawit</p>
-        <p class="indent">Alamat : Kantor Kepala Desa Jeruksawit, Kecamatan Gondangrejo, Kabupaten Karanganyar</p>
-        <p class="indent">Menerangkan Bahwa :</p>
-        <p class="indent">Nama : IIN AYUIKA ASPIRANI</p>
-        <p class="indent">Tempat Tanggal Lahir : Surakarta, 11-11-1998</p>
-        <p class="indent">Agama : Islam</p>
-        <p class="indent">Pekerjaan : Karyawan Swasta</p>
-        <p class="indent">Status : Belum Kawin</p>
-        <p class="indent">Alamat : Perumhan Taman Permata Regency Blok B16, Desa Jeruksawit,</p>
-        <p class="indent">Kec.Gondangrejo</p>
-        <p class="indent">No.NIK / KK : 3372045111960006 / 3372041907210008</p>
-        <p class="indent">Keperluan : Menerangkan bahwa orang tersebut sampai saat ini benar-benar belum</p>
-        <p class="indent">Menikah.</p>
-        <p class="indent">Surat keterangan ini di buat berdasarkan data yang tercantum di Kartu Identitsas</p>
-        <p class="indent">KTP maupun Kartu KK, dan pengakuan yang bersangkutan</p>
-        <p class="indent">Kegunaan : Surat Keterangan ini di buat untuk keperluan Persyaratan pengajuan pinjaman</p>
-        <p class="indent">KUR</p>
-    </div>
+        <div class="content">
+            <p class="indent">Yang bertanda tangan di bawah ini Kepala Desa Jeruksawit, Kec. Gondangrejo, Kab.
+                Karanganyar:</p>
+            <br>
 
-    <div class="signature">
-        <p style="margin-bottom: 0;">Jeruksawit, { $tanggal ?? '06 August 2025' }</p>
-        <p style="margin-top: 0;">Kepala Desa Jeruksawit</p>
-        <br><br><br>
-        <p><strong>{ $nama_kepala ?? 'MIDI' }</strong></p>
+            <table>
+                <tr>
+                    <td width="150">Nama</td>
+                    <td>: {{ $nama_kepala ?? 'MIDI' }}</td>
+                </tr>
+                <tr>
+                    <td>Jabatan</td>
+                    <td>: Kepala Desa Jeruksawit</td>
+                </tr>
+                <tr>
+                    <td>Alamat</td>
+                    <td>: Kantor Kepala Desa Jeruksawit, Kec. Gondangrejo</td>
+                </tr>
+            </table>
+
+            <p>Menerangkan bahwa:</p>
+
+            <table>
+                <tr>
+                    <td width="150">Nama</td>
+                    <td>: {{ $nama ?? 'IIN AYUIKA ASPIRANI' }}</td>
+                </tr>
+                <tr>
+                    <td>Tempat, Tgl Lahir</td>
+                    <td>: {{ $ttl ?? 'Surakarta, 11-11-1998' }}</td>
+                </tr>
+                <tr>
+                    <td>Agama</td>
+                    <td>: {{ $agama ?? 'Islam' }}</td>
+                </tr>
+                <tr>
+                    <td>Pekerjaan</td>
+                    <td>: {{ $pekerjaan ?? 'Karyawan Swasta' }}</td>
+                </tr>
+                <tr>
+                    <td>Status</td>
+                    <td>: {{ $status ?? 'Belum Kawin' }}</td>
+                </tr>
+                <tr>
+                    <td>Alamat</td>
+                    <td>: {{ $alamat ?? 'Perumahan Taman Permata Regency Blok B16, Desa Jeruksawit, Kec. Gondangrejo' }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>No. NIK / KK</td>
+                    <td>: {{ $nik ?? '3372045111960006' }} / {{ $kk ?? '3372041907210008' }}</td>
+                </tr>
+                <tr>
+                    <td>Keperluan</td>
+                    <td>:
+                        {{ $keperluan ?? 'Menerangkan bahwa orang tersebut sampai saat ini benar-benar belum menikah.' }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Kegunaan</td>
+                    <td>: {{ $kegunaan ?? 'Untuk keperluan pengajuan pinjaman KUR.' }}</td>
+                </tr>
+            </table>
+
+            <br>
+
+            <p class="indent">Surat keterangan ini dibuat berdasarkan data yang tercantum pada KTP dan Kartu Keluarga
+                serta pengakuan yang bersangkutan.</p>
+            <p class="indent">Demikian surat keterangan ini dibuat untuk dipergunakan sebagaimana mestinya.</p>
+        </div>
+
+        <div class="signature">
+            <p style="margin-bottom: 0;">Jeruksawit, {{ $tanggal ?? '06 Agustus 2025' }}</p>
+            <p style="margin-top: 0;">Kepala Desa Jeruksawit</p>
+
+            <br><br><br>
+
+            <p style="font-weight:bold">{{ $nama_kepala ?? 'MIDI' }}</p>
+        </div>
     </div>
 </body>
 

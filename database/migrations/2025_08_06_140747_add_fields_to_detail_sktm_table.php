@@ -12,9 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('detail_sktm', function (Blueprint $table) {
-            $table->decimal('penghasilan', 15, 2)->nullable()->after('pendidikan');
-            $table->integer('jumlah_tanggungan')->nullable()->after('penghasilan');
-            $table->text('kondisi_ekonomi')->nullable()->after('jumlah_tanggungan');
+            $table->decimal('penghasilan', 15, 2)->after('pendidikan'); // tidak nullable
+            $table->integer('jumlah_tanggungan')->after('penghasilan'); // tidak nullable
         });
     }
 
@@ -24,7 +23,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('detail_sktm', function (Blueprint $table) {
-            $table->dropColumn(['penghasilan', 'jumlah_tanggungan', 'kondisi_ekonomi']);
+            $table->dropColumn(['penghasilan', 'jumlah_tanggungan']);
         });
     }
 };

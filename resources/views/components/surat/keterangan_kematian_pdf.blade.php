@@ -3,16 +3,60 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Surat Keterangan Domisili Masjid</title>
+    <title>Surat Keterangan Orang yang Sama</title>
     <style>
         body {
             font-family: 'Times New Roman', serif;
             font-size: 12pt;
-            margin: 1.5cm;
+            margin: 0;
+            /* <--- Penting! */
+            padding: 0;
+        }
+
+        .page {
+            margin: 1cm 1.2cm;
+            /* Kiri & Kanan: 1.2cm, Atas & Bawah: 1cm */
+        }
+
+        p {
+            margin: 2pt 0;
+            line-height: 1.3;
         }
 
         .center {
             text-align: center;
+        }
+
+        .left {
+            text-align: left;
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 3px double black;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+
+        .header-title {
+            font-size: 15pt;
+            font-weight: bold;
+        }
+
+        .header-subtitle {
+            font-size: 18pt;
+            font-weight: bold;
+        }
+
+        .header-info {
+            font-style: italic;
+            font-size: 12pt;
+        }
+
+        .kode-desa {
+            margin-top: 5px;
+            text-align: left;
+            font-weight: bold;
         }
 
         .indent {
@@ -24,73 +68,104 @@
             margin-left: auto;
             margin-top: 50px;
             text-align: left;
+            display: block;
         }
 
-        .signature p:last-child {
-            text-align: center;
-        }
 
         table {
-            width: 100%;
             border-collapse: collapse;
+            width: 100%;
         }
 
-        td {
-            padding: 2px 0;
+        table td {
             vertical-align: top;
+            padding: 2px 0;
         }
 
-        h3,
-        p {
-            margin: 5px 0;
+            {
+            page-break-before: avoid !important;
+            page-break-inside: avoid !important;
+            page-break-after: avoid !important;
+            box-sizing: border-box;
         }
     </style>
 </head>
 
 <body>
-    <x-surat.kop_surat />
+    <div class="page">
+        <x-surat.kop_surat />
 
-    <div class="kode-desa">
-        No. Kode Desa/Kelurahan: 33.13.13.2007
-    </div>
+        <div class="kode-desa">
+            No. Kode Desa/Kelurahan: 33.13.13.2007
+        </div>
 
-    <div class="center">
-        <h3><u>SURAT KEMATIAN</u></h3>
-        <p>Nomor: { $nomor ?? '___' } / { $bulan ?? 'VIII' } / { $tahun ?? '2025' }</p>
-    </div>
+        <div class="center">
+            <h3><u>SURAT KETERANGAN KEMATIAN</u></h3>
+            <p>Nomor: {{ $nomor ?? '475 / 208 / VII / 2025' }}</p>
+        </div>
 
-    <div class="content">
-        <p class="indent">SURAT KEMATIAN</p>
-        <p class="indent">Nomor : 474.3/23 / III/ 2016</p>
-        <p class="indent">Yang bertanda tangan dibawah ini</p>
-        <p class="indent">Kepala Desa Jeruksawit menerangkan</p>
-        <p class="indent">bahwa:</p>
-        <p class="indent">Nama : KARTONO</p>
-        <p class="indent">NIK : -</p>
-        <p class="indent">Jenis Kelamin : LAKI-LAKI</p>
-        <p class="indent">Alamat : MOJOREJO,</p>
-        <p class="indent">RT.002/006</p>
-        <p class="indent">DESA JERUKSAWIT</p>
-        <p class="indent">Umur : 58 TAHUN</p>
-        <p class="indent">Telah Meninggal Dunia pada :</p>
-        <p class="indent">Hari : KAMIS</p>
-        <p class="indent">Tanggal : 24 FEBRUARI 2000</p>
-        <p class="indent">Di : RUMAH</p>
-        <p class="indent">Disebabkan karena : SAKIT TUA</p>
-        <p class="indent">Surat keterangan ini dibuat atas dasar</p>
-        <p class="indent">yang sebenarnya.</p>
-        <p class="indent">Nama yang melapor: MULYONO</p>
-        <p class="indent">Hub. Dengan yang mati : ANAK</p>
-        <p class="indent">Jeruksawit, 21-05-2024</p>
-        <p class="indent">Kepala Desa Jeruksawi</p>
-        <p class="indent">MIDI</p>
-    </div>
+        <div class="content">
+            <p class="indent">Yang bertanda tangan di bawah ini, Kepala Desa Jeruksawit, menerangkan bahwa:</p>
+            <br>
 
-    <div class="signature">
-        <p style="margin-bottom: 0;">Jeruksawit, { $tanggal ?? '06 August 2025' }</p>
-        <p style="margin-top: 0;">Kepala Desa Jeruksawit</p>
-        <br><br><br>
-        <p><strong>{ $nama_kepala ?? 'MIDI' }</strong></p>
+            <table>
+                <tr>
+                    <td width="180">Nama</td>
+                    <td>: {{ $nama_almarhum ?? '-' }}</td>
+                </tr>
+                <tr>
+                    <td>NIK</td>
+                    <td>: {{ $nik_almarhum ?? '-' }}</td>
+                </tr>
+                <tr>
+                    <td>Jenis Kelamin</td>
+                    <td>: {{ $jenis_kelamin_almarhum ?? '-' }}</td>
+                </tr>
+                <tr>
+                    <td>Alamat</td>
+                    <td>: {{ $alamat_almarhum ?? '-' }}</td>
+                </tr>
+                <tr>
+                    <td>Umur</td>
+                    <td>: {{ $umur ?? '-' }} tahun</td>
+                </tr>
+                <tr>
+                    <td>Hari Meninggal</td>
+                    <td>: {{ $hari_kematian ?? '-' }}</td>
+                </tr>
+                <tr>
+                    <td>Tanggal</td>
+                    <td>: {{ $tanggal_kematian ?? '-' }}</td>
+                </tr>
+                <tr>
+                    <td>Tempat Meninggal</td>
+                    <td>: {{ $tempat_kematian ?? '-' }}</td>
+                </tr>
+                <tr>
+                    <td>Penyebab Kematian</td>
+                    <td>: {{ $penyebab_kematian ?? '-' }}</td>
+                </tr>
+                <tr>
+                    <td>Nama Pelapor</td>
+                    <td>: {{ $nama_pelapor ?? '-' }}</td>
+                </tr>
+                <tr>
+                    <td>Hubungan Pelapor</td>
+                    <td>: {{ $hubungan_pelapor ?? '-' }}</td>
+                </tr>
+            </table>
+
+            <br>
+            <p>Surat keterangan ini dibuat dengan sebenar-benarnya untuk dipergunakan sebagaimana mestinya.</p>
+        </div>
+
+        <div class="signature">
+            <p style="margin-bottom: 0;">Jeruksawit, {{ $tanggal ?? \Carbon\Carbon::now()->translatedFormat('d F Y') }}
+            </p>
+            <p style="margin-top: 0;">Kepala Desa Jeruksawit</p>
+            <br><br><br>
+            <p style="font-weight: bold">{{ $nama_kepala ?? 'MIDI' }}</p>
+        </div>
     </div>
 </body>
 

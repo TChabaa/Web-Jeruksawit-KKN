@@ -3,16 +3,58 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Surat Keterangan Domisili Masjid</title>
+    <title>Surat Keterangan Belum Nikah</title>
     <style>
         body {
             font-family: 'Times New Roman', serif;
             font-size: 12pt;
-            margin: 1.5cm;
+            margin: 0;
+            padding: 0;
+        }
+
+        .page {
+            margin: 1cm 1.2cm;
+        }
+
+        p {
+            margin: 2pt 0;
+            line-height: 1.3;
         }
 
         .center {
             text-align: center;
+        }
+
+        .left {
+            text-align: left;
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 3px double black;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+
+        .header-title {
+            font-size: 15pt;
+            font-weight: bold;
+        }
+
+        .header-subtitle {
+            font-size: 18pt;
+            font-weight: bold;
+        }
+
+        .header-info {
+            font-style: italic;
+            font-size: 12pt;
+        }
+
+        .kode-desa {
+            margin-top: 5px;
+            text-align: left;
+            font-weight: bold;
         }
 
         .indent {
@@ -24,66 +66,85 @@
             margin-left: auto;
             margin-top: 50px;
             text-align: left;
-        }
-
-        .signature p:last-child {
-            text-align: center;
+            display: block;
         }
 
         table {
-            width: 100%;
             border-collapse: collapse;
+            width: 100%;
         }
 
-        td {
-            padding: 2px 0;
+        table td {
             vertical-align: top;
-        }
-
-        h3,
-        p {
-            margin: 5px 0;
+            padding: 2px 0;
         }
     </style>
 </head>
 
 <body>
-    <x-surat.kop_surat />
+    <div class="page">
+        <x-surat.kop_surat />
 
-    <div class="kode-desa">
-        No. Kode Desa/Kelurahan: 33.13.13.2007
-    </div>
+        <div class="kode-desa">
+            No. Kode Desa/Kelurahan: 33.13.13.2007
+        </div>
 
-    <div class="center">
-        <h3><u>SURAT DOMISILI ORANG</u></h3>
-        <p>Nomor: { $nomor ?? '___' } / { $bulan ?? 'VIII' } / { $tahun ?? '2025' }</p>
-    </div>
+        <div class="center">
+            <h3><u>SURAT KETERANGAN DOMISILI</u></h3>
+            <p>Nomor: {{ $nomor ?? '474 / 047 / II / 2025' }}</p>
+        </div>
 
-    <div class="content">
-        <p class="indent">No.Kode Desa/Kelurahan</p>
-        <p class="indent">33.13.13.2007</p>
-        <p class="indent">SURAT KETERANGAN DOMISILI</p>
-        <p class="indent">Nomor : 474 / 116 / IV / 2025</p>
-        <p class="indent">Yang bertanda tangan bahwa ini Kepala Desa Jeruksawit,Kec.Gondangrejo, Kab.Karanganyar :</p>
-        <p class="indent">Nama : MIDI</p>
-        <p class="indent">Jabatan : Kepala Desa Jeruksawit</p>
-        <p class="indent">Alamat : Kantor Kepala Desa Jeruksawit, Kec.Gondangrejo</p>
-        <p class="indent">Menerangkan Bahwa :</p>
-        <p class="indent">Nama : MI SUDIRMAN BANYUANYAR</p>
-        <p class="indent">Kepala Sekolah : UMIYATUN,S.PdI,M.Pd</p>
-        <p class="indent">NIP : 197306162007102002</p>
-        <p class="indent">Alamat : Banyuanyar, rt.003/001, Desa Jeruksawit, Kec.Gondangrejo</p>
-        <p class="indent">Kab.Karanganyar</p>
-        <p class="indent">MI SUDIRMAN BANYUANYAR Tersebut benar keberadaanya di wilayah kami di Dusun Banyuanyar,
-            rt.003/001, Desa Jeruksawit Kec.Gondangrejo Kab.Karanganyar</p>
-        <p class="indent">Demikian surat keterangan ini dibuat agar digunakan sebagaimana mestinya.</p>
-    </div>
+        <div class="content">
+            <p class="indent">Yang bertanda tangan di bawah ini Kepala Desa Jeruksawit, Kec. Gondangrejo, Kab.
+                Karanganyar, menerangkan bahwa:</p>
+            <br>
 
-    <div class="signature">
-        <p style="margin-bottom: 0;">Jeruksawit, { $tanggal ?? '06 August 2025' }</p>
-        <p style="margin-top: 0;">Kepala Desa Jeruksawit</p>
-        <br><br><br>
-        <p><strong>{ $nama_kepala ?? 'MIDI' }</strong></p>
+            <table>
+                <tr>
+                    <td width="180">Nama Kelompok</td>
+                    <td>: {{ $nama_kelompok ?? 'Contoh Kelompok Tani Maju' }}</td>
+                </tr>
+                <tr>
+                    <td>Alamat Kelompok</td>
+                    <td>: {{ $alamat_kelompok ?? 'Dusun Banyuanyar, Desa Jeruksawit, Gondangrejo' }}</td>
+                </tr>
+                <tr>
+                    <td>Ketua</td>
+                    <td>: {{ $ketua ?? 'Budi Santoso' }}</td>
+                </tr>
+                <tr>
+                    <td>Email Ketua</td>
+                    <td>: {{ $email_ketua ?? 'budi@example.com' }}</td>
+                </tr>
+                <tr>
+                    <td>Sekretaris</td>
+                    <td>: {{ $sekretaris ?? 'Siti Aminah' }}</td>
+                </tr>
+                <tr>
+                    <td>Bendahara</td>
+                    <td>: {{ $bendahara ?? 'Rudi Hartono' }}</td>
+                </tr>
+                <tr>
+                    <td>Keterangan Lokasi</td>
+                    <td>: {{ $keterangan_lokasi ?? 'Bertempat di lahan persawahan Blok A RT 03 RW 01' }}</td>
+                </tr>
+            </table>
+
+            <br>
+
+            <p class="indent">Kelompok tersebut benar keberadaannya di wilayah kami dan aktif dalam kegiatan masyarakat
+                setempat.</p>
+            <p class="indent">Demikian surat keterangan ini dibuat agar digunakan sebagaimana mestinya.</p>
+        </div>
+
+        <div class="signature">
+            <p style="margin-bottom: 0;">Jeruksawit, {{ $tanggal ?? '07 Agustus 2025' }}</p>
+            <p style="margin-top: 0;">Kepala Desa Jeruksawit</p>
+
+            <br><br><br>
+
+            <p style="font-weight:bold">{{ $nama_kepala ?? 'MIDI' }}</p>
+        </div>
     </div>
 </body>
 

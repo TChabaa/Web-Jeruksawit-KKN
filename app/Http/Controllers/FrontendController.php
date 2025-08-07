@@ -6,9 +6,30 @@ use App\Models\Gallery;
 use App\Models\Destination;
 use App\Models\Article;
 use App\Models\Umkm;
+use App\Models\PerangkatDesa;
+
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
+use App\Mail\SuratSubmissionMail;
 use RealRashid\SweetAlert\Facades\Alert;
+use App\Models\JenisSurat;
+use App\Models\Pemohon;
+use App\Models\Surat;
+use App\Models\DetailSkck;
+use App\Models\DetailIzinKeramaian;
+use App\Models\DetailKeteranganUsaha;
+use App\Models\DetailSktm;
+use App\Models\DetailBelumMenikah;
+use App\Models\DetailKematian;
+use App\Models\DetailKelahiran;
+use App\Models\DetailOrangYangSama;
+use App\Models\DetailPindahKeluar;
+use App\Models\DetailDomisiliInstansi;
+use App\Models\DetailDomisiliKelompok;
+use App\Models\DetailDomisiliOrang;
+
 
 class FrontendController extends Controller
 {
@@ -17,7 +38,7 @@ class FrontendController extends Controller
         $destinations = Destination::with('galleries')->limit(3)->latest()->get();
         $articles = Article::with('user')->limit(3)->latest()->get();
         $umkms = Umkm::with('gambarUmkm')->limit(3)->latest()->get();
-        $perangkatDesas = \App\Models\PerangkatDesa::limit(8)->latest()->get(); // For carousel
+        $perangkatDesas = PerangkatDesa::limit(8)->latest()->get(); // For carousel
 
         return view('components.pages.frontend.index', compact('destinations', 'articles', 'umkms', 'perangkatDesas'));
     }
@@ -64,7 +85,7 @@ class FrontendController extends Controller
 
     public function aboutUs()
     {
-        $perangkatDesas = \App\Models\PerangkatDesa::latest()->get(); // For list display
+        $perangkatDesas = PerangkatDesa::latest()->get(); // For list display
 
         return view('components.pages.frontend.about-us-page', compact('perangkatDesas'));
     }
@@ -99,7 +120,8 @@ class FrontendController extends Controller
             'orang-yang-sama',
             'pindah-keluar',
             'domisili-instansi',
-            'domisili-kelompok'
+            'domisili-kelompok',
+            'domisili-orang'
         ];
 
         if (!in_array($type, $validTypes)) {
@@ -118,7 +140,8 @@ class FrontendController extends Controller
             'orang-yang-sama' => 'Orang yang Sama',
             'pindah-keluar' => 'Pindah Keluar',
             'domisili-instansi' => 'Domisili Instansi',
-            'domisili-kelompok' => 'Domisili Kelompok'
+            'domisili-kelompok' => 'Domisili Kelompok',
+            'domisili-orang' => 'Domisili Orang'
         ];
 
         // Load the specific form view for the surat type
@@ -137,6 +160,9 @@ class FrontendController extends Controller
      */
     public function layananSuratSubmit(Request $request, $type)
     {
+        // Log the submission attempt
+        Log::info('Surat submission attempt', ['type' => $type, 'user_email' => $request->input('email')]);
+
         // Use the same validation as LayananSuratController
         $basicRules = [
             'name' => 'required|string|max:255',
@@ -159,11 +185,17 @@ class FrontendController extends Controller
         $typeSpecificRules = $this->getTypeSpecificRules($type);
         $rules = array_merge($basicRules, $typeSpecificRules);
 
-        $validatedData = $request->validate($rules);
+        // Validate request
+        try {
+            $validatedData = $request->validate($rules);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error('Validation failed for surat submission', ['errors' => $e->errors(), 'type' => $type]);
+            return redirect()->back()->withErrors($e->errors())->withInput();
+        }
 
         try {
             // Create or update pemohon with correct field names
-            $pemohon = \App\Models\Pemohon::updateOrCreate(
+            $pemohon = Pemohon::updateOrCreate(
                 ['nik' => $validatedData['nik']],
                 [
                     'nomor_kk' => $validatedData['nomor_kk'],
@@ -192,20 +224,21 @@ class FrontendController extends Controller
                 'orang-yang-sama' => 'Orang yang Sama',
                 'pindah-keluar' => 'Pindah Keluar',
                 'domisili-instansi' => 'Domisili Instansi',
-                'domisili-kelompok' => 'Domisili Kelompok'
+                'domisili-kelompok' => 'Domisili Kelompok',
+                'domisili-orang' => 'Domisili Orang'
             ];
 
-            $jenisSurat = \App\Models\JenisSurat::where('nama_jenis', $jenissuratMap[$type])->first();
+            $jenisSurat = JenisSurat::where('nama_jenis', $jenissuratMap[$type])->first();
             if (!$jenisSurat) {
                 // Create jenis surat if it doesn't exist
-                $jenisSurat = \App\Models\JenisSurat::create([
+                $jenisSurat = JenisSurat::create([
                     'nama_jenis' => $jenissuratMap[$type],
                     'kode_jenis' => strtoupper(str_replace('-', '_', $type))
                 ]);
             }
 
             // Create surat record with correct field names
-            $surat = \App\Models\Surat::create([
+            $surat = Surat::create([
                 'id_pemohon' => $pemohon->id_pemohon,
                 'id_jenis' => $jenisSurat->id_jenis,
                 'status' => 'belum_diverifikasi'
@@ -214,12 +247,35 @@ class FrontendController extends Controller
             // Create specific detail record based on type
             $this->createDetailRecord($type, $surat->id_surat, $validatedData);
 
-            Alert::success('Berhasil', 'Permohonan surat berhasil diajukan. Kami akan memproses dan mengirimkan surat ke email Anda.');
-        } catch (\Exception $e) {
-            Alert::error('Gagal', 'Terjadi kesalahan saat mengajukan permohonan: ' . $e->getMessage());
-        }
+            // Log successful creation
+            Log::info('Surat created successfully', ['surat_id' => $surat->id_surat, 'type' => $type]);
 
-        return redirect()->route('layanan-surat');
+            // Send confirmation email to user
+            try {
+                // Reload surat with relationships for email
+                $suratWithRelations = Surat::with(['pemohon', 'jenisSurat'])->find($surat->id_surat);
+                Mail::to($pemohon->email)->send(new SuratSubmissionMail($suratWithRelations, $pemohon));
+
+                Log::info('Surat submission email sent successfully', ['email' => $pemohon->email]);
+            } catch (\Exception $e) {
+                // Log email error but don't fail the submission
+                Log::error('Failed to send submission confirmation email: ' . $e->getMessage());
+            }
+
+            // Success redirect
+            Log::info('Redirecting to layanan-surat index after successful submission');
+
+            // Temporarily add debugging - remove this after testing
+            session()->flash('success', 'Permohonan surat berhasil diajukan! Email konfirmasi akan dikirim ke ' . $pemohon->email);
+
+            return redirect()->route('layanan-surat');
+        } catch (\Exception $e) {
+            // Log the error for debugging
+            Log::error('Surat submission failed: ' . $e->getMessage());
+
+            // Redirect back to form with input and error message
+            return redirect()->back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat mengajukan permohonan: ' . $e->getMessage()]);
+        }
     }
 
     /**
@@ -229,7 +285,7 @@ class FrontendController extends Controller
     {
         switch ($type) {
             case 'skck':
-                \App\Models\DetailSkck::create([
+                DetailSkck::create([
                     'id_surat' => $suratId,
                     'keperluan' => $validatedData['keperluan'],
                     'tanggal_mulai_berlaku' => $validatedData['tanggal_mulai_berlaku'] ?? null,
@@ -238,7 +294,7 @@ class FrontendController extends Controller
                 break;
 
             case 'izin-keramaian':
-                \App\Models\DetailIzinKeramaian::create([
+                DetailIzinKeramaian::create([
                     'id_surat' => $suratId,
                     'keperluan' => $validatedData['keperluan'],
                     'jenis_hiburan' => $validatedData['jenis_hiburan'] ?? null,
@@ -250,7 +306,7 @@ class FrontendController extends Controller
                 break;
 
             case 'keterangan-usaha':
-                \App\Models\DetailKeteranganUsaha::create([
+                DetailKeteranganUsaha::create([
                     'id_surat' => $suratId,
                     'mulai_usaha' => $validatedData['mulai_usaha'] ?? null,
                     'jenis_usaha' => $validatedData['jenis_usaha'] ?? null,
@@ -259,7 +315,7 @@ class FrontendController extends Controller
                 break;
 
             case 'sktm':
-                \App\Models\DetailSktm::create([
+                DetailSktm::create([
                     'id_surat' => $suratId,
                     'pendidikan' => $validatedData['pendidikan'] ?? null,
                     'penghasilan' => $validatedData['penghasilan'] ?? null,
@@ -268,14 +324,14 @@ class FrontendController extends Controller
                 break;
 
             case 'belum-menikah':
-                \App\Models\DetailBelumMenikah::create([
+                DetailBelumMenikah::create([
                     'id_surat' => $suratId,
                     'keperluan' => $validatedData['keperluan']
                 ]);
                 break;
 
             case 'keterangan-kematian':
-                \App\Models\DetailKematian::create([
+                DetailKematian::create([
                     'id_surat' => $suratId,
                     'nama_almarhum' => $validatedData['nama_almarhum'] ?? null,
                     'nik_almarhum' => $validatedData['nik_almarhum'] ?? null,
@@ -291,7 +347,7 @@ class FrontendController extends Controller
                 break;
 
             case 'keterangan-kelahiran':
-                \App\Models\DetailKelahiran::create([
+                DetailKelahiran::create([
                     'id_surat' => $suratId,
                     'nama_anak' => $validatedData['nama_anak'] ?? null,
                     'jenis_kelamin_anak' => $validatedData['jenis_kelamin_anak'] ?? null,
@@ -303,7 +359,7 @@ class FrontendController extends Controller
                 break;
 
             case 'orang-yang-sama':
-                \App\Models\DetailOrangYangSama::create([
+                DetailOrangYangSama::create([
                     'id_surat' => $suratId,
                     'nama_2' => $validatedData['nama_2'] ?? null,
                     'tempat_lahir_2' => $validatedData['tempat_lahir_2'] ?? null,
@@ -315,7 +371,7 @@ class FrontendController extends Controller
                 break;
 
             case 'pindah-keluar':
-                \App\Models\DetailPindahKeluar::create([
+                DetailPindahKeluar::create([
                     'id_surat' => $suratId,
                     'alamat_tujuan' => $validatedData['alamat_tujuan'] ?? null,
                     'alasan_pindah' => $validatedData['alasan_pindah'] ?? null,
@@ -324,21 +380,19 @@ class FrontendController extends Controller
                 break;
 
             case 'domisili-instansi':
-                \App\Models\DetailDomisiliInstansi::create([
+                DetailDomisiliInstansi::create([
                     'id_surat' => $suratId,
                     'nama_instansi' => $validatedData['nama_instansi'] ?? null,
                     'nama_pimpinan' => $validatedData['nama_pimpinan'] ?? null,
                     'nip_pimpinan' => $validatedData['nip_pimpinan'] ?? null,
                     'email_pimpinan' => $validatedData['email_pimpinan'] ?? null,
                     'alamat_instansi' => $validatedData['alamat_instansi'] ?? null,
-                    'bidang_usaha' => $validatedData['bidang_usaha'] ?? null,
-                    'jabatan' => $validatedData['jabatan'] ?? null,
                     'keterangan_lokasi' => $validatedData['keterangan_lokasi'] ?? null
                 ]);
                 break;
 
             case 'domisili-kelompok':
-                \App\Models\DetailDomisiliKelompok::create([
+                DetailDomisiliKelompok::create([
                     'id_surat' => $suratId,
                     'nama_kelompok' => $validatedData['nama_kelompok'] ?? null,
                     'email_ketua' => $validatedData['email_ketua'] ?? null,
@@ -346,10 +400,13 @@ class FrontendController extends Controller
                     'ketua' => $validatedData['ketua'] ?? null,
                     'sekretaris' => $validatedData['sekretaris'] ?? null,
                     'bendahara' => $validatedData['bendahara'] ?? null,
-                    'jenis_kelompok' => $validatedData['jenis_kelompok'] ?? null,
-                    'jumlah_anggota' => $validatedData['jumlah_anggota'] ?? null,
                     'keterangan_lokasi' => $validatedData['keterangan_lokasi'] ?? null,
-                    'tujuan_pembentukan' => $validatedData['tujuan_pembentukan'] ?? null
+                ]);
+                break;
+
+            case 'domisili-orang':
+                DetailDomisiliOrang::create([
+                    'id_surat' => $suratId
                 ]);
                 break;
         }
@@ -419,9 +476,6 @@ class FrontendController extends Controller
                 'alamat_tujuan' => 'required|string|max:500',
                 'alasan_pindah' => 'required|string|max:255',
                 'tanggal_pindah' => 'required|date',
-                'jenis_kepindahan' => 'required|string|max:100',
-                'status_kk' => 'required|string|max:100',
-                'klasifikasi_pindah' => 'required|string|max:100',
             ],
             'domisili-instansi' => [
                 'nama_instansi' => 'required|string|max:255',
@@ -429,9 +483,7 @@ class FrontendController extends Controller
                 'nip_pimpinan' => 'required|string|max:50',
                 'email_pimpinan' => 'required|email|max:255',
                 'alamat_instansi' => 'required|string|max:500',
-                'bidang_usaha' => 'required|string|max:100',
-                'jabatan' => 'required|string|max:100',
-                'keterangan_lokasi' => 'required|string|max:255',
+
             ],
             'domisili-kelompok' => [
                 'nama_kelompok' => 'required|string|max:255',
@@ -440,10 +492,10 @@ class FrontendController extends Controller
                 'email_ketua' => 'required|email|max:255',
                 'sekretaris' => 'required|string|max:255',
                 'bendahara' => 'required|string|max:255',
-                'jenis_kelompok' => 'required|string|max:100',
-                'jumlah_anggota' => 'required|integer|min:3',
                 'keterangan_lokasi' => 'required|string|max:255',
-                'tujuan_pembentukan' => 'required|string|max:1000',
+            ],
+            'domisili-orang' => [
+                // No additional fields for domisili orang
             ],
             default => []
         };

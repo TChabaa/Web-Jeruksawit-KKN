@@ -45,10 +45,16 @@
 
                         <!-- NIK -->
                         <div>
-                            <label for="nik" class="block text-sm font-medium text-gray-700">NIK *</label>
+                            <label for="nik" class="block text-sm font-medium text-gray-700">
+                                NIK (Nomor Induk Kependudukan) *
+                            </label>
                             <input type="text" name="nik" id="nik" value="{{ old('nik') }}" required
-                                maxlength="16" pattern="[0-9]{16}"
-                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                                maxlength="16" pattern="[0-9]{16}" placeholder="Masukkan 16 digit NIK sesuai KTP"
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                                oninput="validateNIK(this)">
+                            <p class="mt-1 text-xs text-gray-500">
+                                Contoh: 3313110905810002 (16 digit angka sesuai KTP)
+                            </p>
                             @error('nik')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
@@ -56,11 +62,16 @@
 
                         <!-- Nomor KK -->
                         <div>
-                            <label for="nomor_kk" class="block text-sm font-medium text-gray-700">Nomor Kartu Keluarga
-                                *</label>
+                            <label for="nomor_kk" class="block text-sm font-medium text-gray-700">
+                                Nomor Kartu Keluarga (KK) *
+                            </label>
                             <input type="text" name="nomor_kk" id="nomor_kk" value="{{ old('nomor_kk') }}" required
-                                maxlength="16" pattern="[0-9]{16}"
-                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                                maxlength="16" pattern="[0-9]{16}" placeholder="Masukkan 16 digit nomor KK"
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                                oninput="validateKK(this)">
+                            <p class="mt-1 text-xs text-gray-500">
+                                Contoh: 3313131809130005 (16 digit angka sesuai Kartu Keluarga)
+                            </p>
                             @error('nomor_kk')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
@@ -322,4 +333,55 @@
             </form>
         </div>
     </div>
+
+    @push('scripts')
+        <script>
+            // NIK and KK validation functions
+            function validateNIK(input) {
+                const value = input.value.replace(/\D/g, ''); // Remove non-digits
+                input.value = value; // Update input value
+
+                const warningElement = input.parentNode.querySelector('.nik-warning');
+                if (warningElement) {
+                    warningElement.remove();
+                }
+
+                if (value.length > 0 && value.length < 16) {
+                    showValidationWarning(input, 'NIK harus terdiri dari 16 digit angka', 'nik-warning');
+                } else if (value.length === 16) {
+                    removeValidationWarning(input, 'nik-warning');
+                }
+            }
+
+            function validateKK(input) {
+                const value = input.value.replace(/\D/g, ''); // Remove non-digits
+                input.value = value; // Update input value
+
+                const warningElement = input.parentNode.querySelector('.kk-warning');
+                if (warningElement) {
+                    warningElement.remove();
+                }
+
+                if (value.length > 0 && value.length < 16) {
+                    showValidationWarning(input, 'Nomor KK harus terdiri dari 16 digit angka', 'kk-warning');
+                } else if (value.length === 16) {
+                    removeValidationWarning(input, 'kk-warning');
+                }
+            }
+
+            function showValidationWarning(input, message, className) {
+                const warning = document.createElement('p');
+                warning.className = `mt-1 text-sm text-orange-600 ${className}`;
+                warning.textContent = message;
+                input.parentNode.appendChild(warning);
+            }
+
+            function removeValidationWarning(input, className) {
+                const warning = input.parentNode.querySelector(`.${className}`);
+                if (warning) {
+                    warning.remove();
+                }
+            }
+        </script>
+    @endpush
 </x-layouts.visitor-layout>

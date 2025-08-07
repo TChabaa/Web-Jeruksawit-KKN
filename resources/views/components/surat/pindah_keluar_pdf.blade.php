@@ -3,16 +3,60 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Surat Keterangan Domisili Masjid</title>
+    <title>Surat Pengantar Pindah Keluar</title>
     <style>
         body {
             font-family: 'Times New Roman', serif;
             font-size: 12pt;
-            margin: 1.5cm;
+            margin: 0;
+            /* <--- Penting! */
+            padding: 0;
+        }
+
+        .page {
+            margin: 1cm 1.2cm;
+            /* Kiri & Kanan: 1.2cm, Atas & Bawah: 1cm */
+        }
+
+        p {
+            margin: 2pt 0;
+            line-height: 1.3;
         }
 
         .center {
             text-align: center;
+        }
+
+        .left {
+            text-align: left;
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 3px double black;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+
+        .header-title {
+            font-size: 15pt;
+            font-weight: bold;
+        }
+
+        .header-subtitle {
+            font-size: 18pt;
+            font-weight: bold;
+        }
+
+        .header-info {
+            font-style: italic;
+            font-size: 12pt;
+        }
+
+        .kode-desa {
+            margin-top: 5px;
+            text-align: left;
+            font-weight: bold;
         }
 
         .indent {
@@ -24,91 +68,124 @@
             margin-left: auto;
             margin-top: 50px;
             text-align: left;
+            display: block;
         }
 
-        .signature p:last-child {
-            text-align: center;
-        }
 
         table {
-            width: 100%;
             border-collapse: collapse;
+            width: 100%;
         }
 
-        td {
-            padding: 2px 0;
+        table td {
             vertical-align: top;
+            padding: 2px 0;
         }
 
-        h3,
-        p {
-            margin: 5px 0;
+            {
+            page-break-before: avoid !important;
+            page-break-inside: avoid !important;
+            page-break-after: avoid !important;
+            box-sizing: border-box;
+        }
+
+
+        .label {
+            width: 180px;
         }
     </style>
 </head>
 
 <body>
-    <x-surat.kop_surat />
 
-    <div class="kode-desa">
-        No. Kode Desa/Kelurahan: 33.13.13.2007
-    </div>
+    <div class="page">
+        <x-surat.kop_surat />
 
-    <div class="center">
-        <h3><u>SURAT PINDAH KELUAR</u></h3>
-        <p>Nomor: { $nomor ?? '___' } / { $bulan ?? 'VIII' } / { $tahun ?? '2025' }</p>
-    </div>
+        <div class="kode-desa">
+            No. Kode Desa/Kelurahan: 33.13.13.2007
+        </div>
 
-    <div class="content">
-        <p class="indent">No.Kode Desa/Kelurahan</p>
-        <p class="indent">33.13.13.2007</p>
-        <p class="indent">SURAT PENGANTAR PINDAH KELUAR</p>
-        <p class="indent">Nomor : 475 / 208 / VII / 2025</p>
-        <p class="indent">Yang bertandatangan dibawah ini menerangkan bahwa :</p>
-        <p class="indent">Nama Lengkap : ISNA</p>
-        <p class="indent">Nomor KK : 3313132605080001</p>
-        <p class="indent">Nomor Induk Penduduk ( NIK ) : 3313130607830002</p>
-        <p class="indent">Jenis Kelamin : LAKI-LAKI</p>
-        <p class="indent">Tempat & Tgl Lahir : KARANGANYAR,06-07-1983</p>
-        <p class="indent">Kewarganegaraan : INDONESIA</p>
-        <p class="indent">Agama : ISLAM</p>
-        <p class="indent">Status Perkawinan : KAWIN</p>
-        <p class="indent">Alamat Terakhir : KEDUNGGONG, RT.004/002</p>
-        <p class="indent">Dusun : KEDUNGGONG</p>
-        <p class="indent">Desa / Kelurahan : JERUKSAWIT</p>
-        <p class="indent">Kecamatan : GONDANGREJo</p>
-        <p class="indent">Kabupaten : KARANGANYAR</p>
-        <p class="indent">Kode POS : 57773</p>
-        <p class="indent">Nama Kepala Keluarga : ISNA</p>
-        <p class="indent">Nomor Kartu Keluarga : 3313132605080001</p>
-        <p class="indent">. Alamat Tujuan Pindah : DADAPAN, RT.006/007</p>
-        <p class="indent">Dusun : DADAPAN</p>
-        <p class="indent">Desa / Kelurahan : JATIKUWUNG</p>
-        <p class="indent">Kecamatan : GONDANGREJO</p>
-        <p class="indent">Kabupaten/Kota : KARANGANYAR</p>
-        <p class="indent">Kode Pos : -</p>
-        <p class="indent">Provinsi : JAWA TENGAH</p>
-        <p class="indent">Alasan Pindah : MENIKAH</p>
-        <p class="indent">Tanggal Pindah : 14-07-2025</p>
-        <p class="indent">Dasar Pindah : -</p>
-        <p class="indent">Keluarga yang Pindah : 1</p>
-        <p class="indent">Keterangan SHDK 01. Kepala Keluarga 03.Istri 05.Menantu 07.Orang Tua. 09.Famili Lain
-            11.Lainnya
-        </p>
-        <p class="indent">02.Suami 04.Anak 06.Cucu 08.Mertua 10.Pembantu</p>
-        <p class="indent">Demikian untuk menjadikan periksa</p>
-        <p class="indent">Karanganyar,14-07-2025</p>
-        <p class="indent">Pemohon Kepala Desa Jeruksawit</p>
-        <p class="indent">ISNA</p>
-        <p class="indent">MIDI</p>
-        <p class="indent">SUTRISNO</p>
-    </div>
+        <div class="center">
+            <h3><u>SURAT PENGANTAR PINDAH KELUAR</u></h3>
+            <p>Nomor: {{ $nomor ?? '475 / 208 / VII / 2025' }}</p>
+        </div>
 
-    <div class="signature">
-        <p style="margin-bottom: 0;">Jeruksawit, { $tanggal ?? '06 August 2025' }</p>
-        <p style="margin-top: 0;">Kepala Desa Jeruksawit</p>
-        <br><br><br>
-        <p><strong>{ $nama_kepala ?? 'MIDI' }</strong></p>
+        <div class="content">
+            <p class="indent">Yang bertanda tangan di bawah ini menerangkan bahwa:</p>
+
+            <table>
+                <tr>
+                    <td class="label">Nama Lengkap</td>
+                    <td>: {{ $nama ?? 'ISNA' }}</td>
+                </tr>
+                <tr>
+                    <td>Nomor Kartu Keluarga</td>
+                    <td>: {{ $no_kk ?? '3313132605080001' }}</td>
+                </tr>
+                <tr>
+                    <td>NIK</td>
+                    <td>: {{ $nik ?? '3313130607830002' }}</td>
+                </tr>
+                <tr>
+                    <td>Jenis Kelamin</td>
+                    <td>: {{ $jenis_kelamin ?? 'Laki-laki' }}</td>
+                </tr>
+                <tr>
+                    <td>Tempat & Tanggal Lahir</td>
+                    <td>: {{ $ttl ?? 'Karanganyar, 06-07-1983' }}</td>
+                </tr>
+                <tr>
+                    <td>Kewarganegaraan</td>
+                    <td>: {{ $kewarganegaraan ?? 'Indonesia' }}</td>
+                </tr>
+                <tr>
+                    <td>Agama</td>
+                    <td>: {{ $agama ?? 'Islam' }}</td>
+                </tr>
+                <tr>
+                    <td>Status Perkawinan</td>
+                    <td>: {{ $status_perkawinan ?? 'Kawin' }}</td>
+                </tr>
+                <tr>
+                    <td>Alamat Terakhir</td>
+                    <td>: {{ $alamat_terakhir ?? 'Kedunggong, RT.004/002, Desa Jeruksawit' }}</td>
+                </tr>
+            </table>
+
+            <br>
+
+            <p class="indent"><strong>Alamat Tujuan Pindah:</strong></p>
+            <table>
+                <tr>
+                    <td class="label">Alamat</td>
+                    <td>: {{ $alamat_tujuan ?? 'DADAPAN, RT.006/007, Desa XXX, Kecamatan YYY, Kabupaten ZZZ' }}</td>
+                </tr>
+            </table>
+
+            <br>
+
+            <table>
+                <tr>
+                    <td class="label">Alasan Pindah</td>
+                    <td>: {{ $alasan_pindah ?? 'Menikah' }}</td>
+                </tr>
+                <tr>
+                    <td>Tanggal Pindah</td>
+                    <td>: {{ $tanggal_pindah ?? '14 Juli 2025' }}</td>
+                </tr>
+            </table>
+
+            <br>
+
+            <p class="indent">Demikian surat pengantar ini dibuat untuk dipergunakan sebagaimana mestinya.</p>
+        </div>
+
+        <div class="signature">
+            <p style="margin-bottom: 0;">Jeruksawit, {{ $tanggal ?? '06 Agustus 2025' }}</p>
+            <p style="margin-top: 0;">Kepala Desa Jeruksawit</p>
+            <br><br><br>
+            <p><strong>{{ $nama_kepala ?? 'MIDI' }}</strong></p>
+        </div>
     </div>
 </body>
 

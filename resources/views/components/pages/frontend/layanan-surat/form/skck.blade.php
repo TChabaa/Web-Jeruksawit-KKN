@@ -45,10 +45,15 @@
 
                         <!-- NIK -->
                         <div>
-                            <label for="nik" class="block text-sm font-medium text-gray-700">NIK *</label>
+                            <label for="nik" class="block text-sm font-medium text-gray-700">
+                                NIK (Nomor Induk Kependudukan) *
+                            </label>
                             <input type="text" name="nik" id="nik" value="{{ old('nik') }}" required
-                                maxlength="16" pattern="[0-9]{16}"
+                                maxlength="16" pattern="[0-9]{16}" placeholder="Masukkan 16 digit NIK sesuai KTP"
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                            <p class="mt-1 text-xs text-gray-500">
+                                Contoh: 3313110905810002 (16 digit angka sesuai KTP)
+                            </p>
                             @error('nik')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
@@ -56,11 +61,15 @@
 
                         <!-- Nomor KK -->
                         <div>
-                            <label for="nomor_kk" class="block text-sm font-medium text-gray-700">Nomor Kartu Keluarga
-                                *</label>
+                            <label for="nomor_kk" class="block text-sm font-medium text-gray-700">
+                                Nomor Kartu Keluarga (KK) *
+                            </label>
                             <input type="text" name="nomor_kk" id="nomor_kk" value="{{ old('nomor_kk') }}" required
-                                maxlength="16" pattern="[0-9]{16}"
+                                maxlength="16" pattern="[0-9]{16}" placeholder="Masukkan 16 digit nomor KK"
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                            <p class="mt-1 text-xs text-gray-500">
+                                Contoh: 3313131809130005 (16 digit angka sesuai Kartu Keluarga)
+                            </p>
                             @error('nomor_kk')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
@@ -300,6 +309,53 @@
 
     @push('scripts')
         <script>
+            // NIK and KK validation functions
+            function validateNIK(input) {
+                const value = input.value.replace(/\D/g, ''); // Remove non-digits
+                input.value = value; // Update input value
+
+                const warningElement = input.parentNode.querySelector('.nik-warning');
+                if (warningElement) {
+                    warningElement.remove();
+                }
+
+                if (value.length > 0 && value.length < 16) {
+                    showValidationWarning(input, 'NIK harus terdiri dari 16 digit angka', 'nik-warning');
+                } else if (value.length === 16) {
+                    removeValidationWarning(input, 'nik-warning');
+                }
+            }
+
+            function validateKK(input) {
+                const value = input.value.replace(/\D/g, ''); // Remove non-digits
+                input.value = value; // Update input value
+
+                const warningElement = input.parentNode.querySelector('.kk-warning');
+                if (warningElement) {
+                    warningElement.remove();
+                }
+
+                if (value.length > 0 && value.length < 16) {
+                    showValidationWarning(input, 'Nomor KK harus terdiri dari 16 digit angka', 'kk-warning');
+                } else if (value.length === 16) {
+                    removeValidationWarning(input, 'kk-warning');
+                }
+            }
+
+            function showValidationWarning(input, message, className) {
+                const warning = document.createElement('p');
+                warning.className = `mt-1 text-sm text-orange-600 ${className}`;
+                warning.textContent = message;
+                input.parentNode.appendChild(warning);
+            }
+
+            function removeValidationWarning(input, className) {
+                const warning = input.parentNode.querySelector(`.${className}`);
+                if (warning) {
+                    warning.remove();
+                }
+            }
+
             document.addEventListener('DOMContentLoaded', function() {
                 // Set minimum date for validity dates to today
                 const today = new Date().toISOString().split('T')[0];
@@ -310,6 +366,22 @@
                 document.getElementById('tanggal_mulai_berlaku').addEventListener('change', function() {
                     document.getElementById('tanggal_akhir_berlaku').min = this.value;
                 });
+
+                // Add event listeners for NIK validation
+                const nikInput = document.getElementById('nik');
+                if (nikInput) {
+                    nikInput.addEventListener('input', function() {
+                        validateNIK(this);
+                    });
+                }
+
+                // Add event listeners for KK validation
+                const kkInput = document.getElementById('nomor_kk');
+                if (kkInput) {
+                    kkInput.addEventListener('input', function() {
+                        validateKK(this);
+                    });
+                }
             });
         </script>
     @endpush

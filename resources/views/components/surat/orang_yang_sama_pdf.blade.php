@@ -90,6 +90,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="page">
         <x-surat.kop_surat />
@@ -101,7 +102,7 @@
 
         <div class="center">
             <h3><u>SURAT KETERANGAN ORANG YANG SAMA</u></h3>
-            <p>Nomor: 474 / {{ $nomor ?? '___' }} / VI / {{ $tahun ?? '2025' }}</p>
+            <p>Nomor: {{ $nomor ?? '475 / 208 / VII / 2025' }}</p>
         </div>
 
         <div class="content">
@@ -170,7 +171,7 @@
                     <td>: {{ $ayah2 ?? 'Nama' }}</td>
                 </tr>
                 <tr>
-                    <td colspan="2">Yang tercatat pada Kutipan Buku Nikah No: {{ $buku_nikah ?? 'Nomor' }}</td>
+                    <td colspan="2">Yang tercatat pada Kutipan {{ $buku_nikah ?? 'Nomor' }}</td>
                 </tr>
             </table>
 
