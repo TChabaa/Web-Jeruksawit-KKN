@@ -7,6 +7,8 @@ use App\Models\Destination;
 use App\Models\Article;
 use App\Models\Umkm;
 use App\Models\PerangkatDesa;
+use App\Models\GambarArticle;
+use App\Models\GambarUmkm;
 
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -78,9 +80,16 @@ class FrontendController extends Controller
 
     public function galleries()
     {
-        $galleries = Gallery::with('destination')->latest()->paginate(8);
+        // Get article images
+        $articleImages = GambarArticle::with('article')->latest()->get();
 
-        return view('components.pages.frontend.gallery', compact('galleries'));
+        // Get UMKM images
+        $umkmImages = GambarUmkm::with('umkm')->latest()->get();
+
+        // Get destination images (existing galleries)
+        $destinationImages = Gallery::with('destination')->latest()->get();
+
+        return view('components.pages.frontend.gallery', compact('articleImages', 'umkmImages', 'destinationImages'));
     }
 
     public function aboutUs()

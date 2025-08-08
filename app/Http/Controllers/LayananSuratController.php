@@ -40,6 +40,7 @@ use App\Mail\SuratRejectionMail;
 use App\Jobs\ProcessSuratApproval;
 use App\Jobs\ProcessSuratRejection;
 use App\Jobs\ProcessSuratSubmission;
+use RealRashid\SweetAlert\Facades\Alert;
 use Yajra\DataTables\Facades\DataTables;
 
 class LayananSuratController extends Controller
@@ -255,8 +256,8 @@ class LayananSuratController extends Controller
             // Handle redirect based on authentication status
             if (Auth::check()) {
                 $roleName = Auth::user()->role ?? 'admin';
-                return redirect()->route($roleName . '.layanan-surat')
-                    ->with('success', 'Permohonan surat berhasil diajukan.');
+                Alert::toast('Permohonan surat berhasil diajukan', 'success');
+                return redirect()->route($roleName . '.layanan-surat.create');
             } else {
                 // For non-authenticated users, redirect to layanan-surat page
                 return redirect()->route('layanan-surat')
