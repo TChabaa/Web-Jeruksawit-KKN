@@ -298,6 +298,25 @@
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
+
+                        <!-- Ibu Kandung -->
+                        <div>
+                            <label for="ibu" class="block text-sm font-medium text-gray-700">Nama Ibu Kandung *</label>
+                            <input type="text" name="ibu" id="ibu" value="{{ old('ibu') }}" required
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                            @error('ibu')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <!-- Ayah Kandung -->
+                        <div>
+                            <label for="ayah" class="block text-sm font-medium text-gray-700">  Nama Ayah Kandung *</label>
+                            <input type="text" name="ayah" id="ayah" value="{{ old('ayah') }}" required
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                            @error('ayah')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </div>
                 </div>
 

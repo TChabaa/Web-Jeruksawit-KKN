@@ -136,7 +136,7 @@
                 </tr>
                 <tr>
                     <td>Nama Ibu Kandung</td>
-                    <td>: {{ $ibu_kandung ?? 'SARMI' }}</td>
+                    <td>: {{ $ibu ?? 'SARMI' }}</td>
                 </tr>
                 <tr>
                     <td>Alamat</td>
@@ -144,7 +144,7 @@
                 </tr>
                 <tr>
                     <td>Istri dari</td>
-                    <td>: {{ $nama_ayah ?? 'SENEN' }}</td>
+                    <td>: {{ $ayah ?? 'SENEN' }}</td>
                 </tr>
                 <tr>
                     <td>Penolong Kelahiran</td>

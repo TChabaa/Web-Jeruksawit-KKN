@@ -210,7 +210,7 @@ class PDFController extends Controller
                 ->where('id_surat', $surat->id_surat)->first(),
             'Keterangan Kematian' => DetailKematian::select('id_surat', 'nama_almarhum', 'nik_almarhum', 'jenis_kelamin', 'alamat', 'umur', 'hari_kematian', 'tanggal_kematian', 'tempat_kematian', 'penyebab_kematian', 'hubungan_pelapor')
                 ->where('id_surat', $surat->id_surat)->first(),
-            'Keterangan Kelahiran' => DetailKelahiran::select('id_surat', 'nama_anak', 'jenis_kelamin_anak', 'hari_lahir', 'tanggal_lahir', 'tempat_lahir', 'penolong_kelahiran')
+            'Keterangan Kelahiran' => DetailKelahiran::select('id_surat', 'nama_anak', 'jenis_kelamin_anak', 'hari_lahir', 'tanggal_lahir', 'tempat_lahir', 'penolong_kelahiran', 'ibu', 'ayah')
                 ->where('id_surat', $surat->id_surat)->first(),
             'Orang yang Sama' => DetailOrangYangSama::select('id_surat', 'nama_2', 'tempat_lahir_2', 'tanggal_lahir_2', 'nama_ayah_2', 'dasar_dokumen_1')
                 ->where('id_surat', $surat->id_surat)->first(),
@@ -220,7 +220,7 @@ class PDFController extends Controller
                 ->where('id_surat', $surat->id_surat)->first(),
             'Domisili Kelompok' => DetailDomisiliKelompok::select('id_surat', 'nama_kelompok', 'alamat_kelompok', 'ketua', 'email_ketua', 'sekretaris', 'bendahara', 'keterangan_lokasi')
                 ->where('id_surat', $surat->id_surat)->first(),
-            'Domisili Orang' => DetailDomisiliOrang::select('id_surat')
+            'Domisili Orang' => DetailDomisiliOrang::select('id_surat', 'keperluan')
                 ->where('id_surat', $surat->id_surat)->first(),
             default => null
         };
@@ -235,7 +235,20 @@ class PDFController extends Controller
         $pemohon = $surat->pemohon;
 
         // Pre-calculate commonly used values
-        $ttl = ($pemohon->tempat_lahir ?? '') . ', ' . ($pemohon->tanggal_lahir ? \Carbon\Carbon::parse($pemohon->tanggal_lahir)->format('d-m-Y') : '');
+        $tempatLahir = $pemohon->tempat_lahir ?? '';
+        $tanggalLahir = $pemohon->tanggal_lahir ? \Carbon\Carbon::parse($pemohon->tanggal_lahir)->format('d-m-Y') : '';
+
+        // Construct TTL properly, avoiding empty values
+        if ($tempatLahir && $tanggalLahir) {
+            $ttl = $tempatLahir . ', ' . $tanggalLahir;
+        } elseif ($tempatLahir) {
+            $ttl = $tempatLahir;
+        } elseif ($tanggalLahir) {
+            $ttl = $tanggalLahir;
+        } else {
+            $ttl = '';
+        }
+
         $tanggalSurat = $surat->tanggal_surat ? \Carbon\Carbon::parse($surat->tanggal_surat)->format('d F Y') : now()->format('d F Y');
 
         // Base data for all surat types (minimized)
@@ -246,6 +259,7 @@ class PDFController extends Controller
             'nama' => $pemohon->nama_lengkap ?? '',
             'ttl' => $ttl,
             'ktp' => $pemohon->nik ?? '',
+            'nik' => $pemohon->nik ?? '', // Add nik for template compatibility
             'kk' => $pemohon->nomor_kk ?? '',
             'agama' => $pemohon->agama ?? '',
             'pekerjaan' => $pemohon->pekerjaan ?? '',
@@ -293,7 +307,8 @@ class PDFController extends Controller
                 'jumlah_tanggungan' => $detail->jumlah_tanggungan ?? '',
             ],
             'Belum Menikah' => [
-                'keperluan' => $detail->keperluan ?? '',
+                'keperluan' => 'Menerangkan bahwa orang tersebut sampai saat ini benar-benar belum menikah.',
+                'kegunaan' => $detail->keperluan ?? '',
             ],
             'Keterangan Kematian' => [
                 'nama_almarhum' => $detail->nama_almarhum ?? '',
@@ -314,17 +329,20 @@ class PDFController extends Controller
                 'tanggal_lahir_anak' => $detail->tanggal_lahir ? \Carbon\Carbon::parse($detail->tanggal_lahir)->format('d F Y') : '',
                 'tempat_lahir_anak' => $detail->tempat_lahir ?? '',
                 'penolong_kelahiran' => $detail->penolong_kelahiran ?? '',
+                'ibu' => $detail->ibu ?? '', // New field for mother's name
+                'ayah' => $detail->ayah ?? '', // New field for father's name
             ],
             'Orang yang Sama' => [
                 'nama1' => $pemohon->nama_lengkap ?? '',
                 'ttl1' => ($pemohon->tempat_lahir ?? '') . ', ' . ($pemohon->tanggal_lahir ? \Carbon\Carbon::parse($pemohon->tanggal_lahir)->format('d-m-Y') : ''),
                 'nik1' => $pemohon->nik ?? '',
                 'alamat1' => $pemohon->alamat ?? '',
+                'dasar1' => $detail->dasar_dokumen_1 ?? '',
                 'nama2' => $detail->nama_2 ?? '',
-                'ttl2' => ($detail->tempat_lahir_2 ?? '') . ', ' . ($detail->tanggal_lahir_2 ? \Carbon\Carbon::parse($detail->tanggal_lahir_2)->format('d-m-Y') : ''),
+                'ttl2' => ($detail->tempat_lahir_2  ?? '') . ', ' . ($detail->tanggal_lahir_2 ? \Carbon\Carbon::parse($detail->tanggal_lahir_2)->format('d-m-Y') : ''),
                 'ayah1' => $detail->nama_ayah_2 ?? '',
                 'ayah2' => $detail->nama_ayah_2 ?? '',
-                'buku_nikah' => $detail->dasar_dokumen_1 ?? '',
+                'dasar2' => $detail->dasar_dokumen_2 ?? '',
             ],
             'Pindah Keluar' => [
                 'alamat_tujuan' => $detail->alamat_tujuan ?? '',
@@ -348,7 +366,9 @@ class PDFController extends Controller
                 'bendahara' => $detail->bendahara ?? '',
                 'keterangan_lokasi' => $detail->keterangan_lokasi ?? '',
             ],
-            'Domisili Orang' => [], // No additional data needed
+            'Domisili Orang' => [
+                'keperluan' => $detail->keperluan ?? '',
+            ], // No additional data needed
             default => []
         };
     }

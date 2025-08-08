@@ -150,7 +150,7 @@
                     <td>: {{ $alamat1 ?? 'Alamat' }}</td>
                 </tr>
                 <tr>
-                    <td colspan="2">Yang tertulis di kartu KK No: {{ $kk ?? 'KK' }} atas nama kepala
+                    <td colspan="2">Yang tertulis di {{ $dasar1 ?? '' }} atas nama kepala
                         keluarga {{ $nama1 ?? 'Nama' }}</td>
                 </tr>
             </table>
@@ -171,7 +171,7 @@
                     <td>: {{ $ayah2 ?? 'Nama' }}</td>
                 </tr>
                 <tr>
-                    <td colspan="2">Yang tercatat pada Kutipan {{ $buku_nikah ?? 'Nomor' }}</td>
+                    <td colspan="2">Yang tercatat pada Kutipan {{ $dasar2 ?? 'Nomor' }}</td>
                 </tr>
             </table>
 

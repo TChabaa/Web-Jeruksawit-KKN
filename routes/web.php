@@ -213,6 +213,10 @@ Route::middleware([
         Route::get('/layanan-surat/{id}/show', [\App\Http\Controllers\LayananSuratController::class, 'show'])->name('layanan-surat.show');
         Route::post('/layanan-surat/{id}/status', [\App\Http\Controllers\LayananSuratController::class, 'updateStatus'])->name('layanan-surat.status');
         Route::get('/layanan-surat/{id}/download-pdf', [\App\Http\Controllers\LayananSuratController::class, 'downloadPdf'])->name('layanan-surat.download-pdf');
+
+        // Website Settings
+        Route::get('/website-settings', [\App\Http\Controllers\Admin\WebsiteSettingController::class, 'index'])->name('website-settings.index');
+        Route::put('/website-settings', [\App\Http\Controllers\Admin\WebsiteSettingController::class, 'update'])->name('website-settings.update');
     });
 
     // Admin
@@ -275,6 +279,10 @@ Route::middleware([
         Route::get('/layanan-surat/{id}/show', [\App\Http\Controllers\LayananSuratController::class, 'show'])->name('layanan-surat.show');
         Route::post('/layanan-surat/{id}/status', [\App\Http\Controllers\LayananSuratController::class, 'updateStatus'])->name('layanan-surat.status');
         Route::get('/layanan-surat/{id}/download-pdf', [\App\Http\Controllers\LayananSuratController::class, 'downloadPdf'])->name('layanan-surat.download-pdf');
+
+        // Website Settings
+        Route::get('/website-settings', [\App\Http\Controllers\Admin\WebsiteSettingController::class, 'index'])->name('website-settings.index');
+        Route::put('/website-settings', [\App\Http\Controllers\Admin\WebsiteSettingController::class, 'update'])->name('website-settings.update');
     });
 
     // owner
@@ -311,6 +319,10 @@ Route::middleware([
         Route::get('/layanan-surat', [\App\Http\Controllers\LayananSuratController::class, 'index'])->name('layanan-surat');
         Route::get('/layanan-surat/{type}/form', [\App\Http\Controllers\LayananSuratController::class, 'showForm'])->name('layanan-surat.form');
         Route::post('/layanan-surat/{type}/submit', [\App\Http\Controllers\LayananSuratController::class, 'submitForm'])->name('layanan-surat.submit');
+
+        // Website Settings
+        Route::get('/website-settings', [\App\Http\Controllers\Admin\WebsiteSettingController::class, 'index'])->name('website-settings.index');
+        Route::put('/website-settings', [\App\Http\Controllers\Admin\WebsiteSettingController::class, 'update'])->name('website-settings.update');
     });
 
     // Writer

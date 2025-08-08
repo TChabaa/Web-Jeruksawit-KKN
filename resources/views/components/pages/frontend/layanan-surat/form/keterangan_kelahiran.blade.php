@@ -22,8 +22,8 @@
 
         <!-- Form Section -->
         <div class="bg-white shadow rounded-lg">
-            <form action="{{ route('layanan-surat.submit', $type) }}" method="POST"
-                enctype="multipart/form-data" class="space-y-6">
+            <form action="{{ route('layanan-surat.submit', $type) }}" method="POST" enctype="multipart/form-data"
+                class="space-y-6">
                 @csrf
 
                 <div class="px-6 py-4 border-b border-gray-200">
@@ -56,7 +56,8 @@
 
                         <!-- Nomor KK -->
                         <div>
-                            <label for="nomor_kk" class="block text-sm font-medium text-gray-700">Nomor Kartu Keluarga *</label>
+                            <label for="nomor_kk" class="block text-sm font-medium text-gray-700">Nomor Kartu Keluarga
+                                *</label>
                             <input type="text" name="nomor_kk" id="nomor_kk" value="{{ old('nomor_kk') }}" required
                                 maxlength="16" pattern="[0-9]{16}"
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
@@ -67,7 +68,8 @@
 
                         <!-- Tempat Lahir -->
                         <div>
-                            <label for="tempat_lahir" class="block text-sm font-medium text-gray-700">Tempat Lahir *</label>
+                            <label for="tempat_lahir" class="block text-sm font-medium text-gray-700">Tempat Lahir
+                                *</label>
                             <input type="text" name="tempat_lahir" id="tempat_lahir"
                                 value="{{ old('tempat_lahir') }}" required
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
@@ -78,7 +80,8 @@
 
                         <!-- Tanggal Lahir -->
                         <div>
-                            <label for="tanggal_lahir" class="block text-sm font-medium text-gray-700">Tanggal Lahir *</label>
+                            <label for="tanggal_lahir" class="block text-sm font-medium text-gray-700">Tanggal Lahir
+                                *</label>
                             <input type="date" name="tanggal_lahir" id="tanggal_lahir"
                                 value="{{ old('tanggal_lahir') }}" required
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
@@ -89,12 +92,15 @@
 
                         <!-- Jenis Kelamin -->
                         <div>
-                            <label for="jenis_kelamin" class="block text-sm font-medium text-gray-700">Jenis Kelamin *</label>
+                            <label for="jenis_kelamin" class="block text-sm font-medium text-gray-700">Jenis Kelamin
+                                *</label>
                             <select name="jenis_kelamin" id="jenis_kelamin" required
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
                                 <option value="">Pilih Jenis Kelamin</option>
-                                <option value="L" {{ old('jenis_kelamin') == 'L' ? 'selected' : '' }}>Laki-laki</option>
-                                <option value="P" {{ old('jenis_kelamin') == 'P' ? 'selected' : '' }}>Perempuan</option>
+                                <option value="L" {{ old('jenis_kelamin') == 'L' ? 'selected' : '' }}>Laki-laki
+                                </option>
+                                <option value="P" {{ old('jenis_kelamin') == 'P' ? 'selected' : '' }}>Perempuan
+                                </option>
                             </select>
                             @error('jenis_kelamin')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -108,11 +114,14 @@
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
                                 <option value="">Pilih Agama</option>
                                 <option value="Islam" {{ old('agama') == 'Islam' ? 'selected' : '' }}>Islam</option>
-                                <option value="Kristen" {{ old('agama') == 'Kristen' ? 'selected' : '' }}>Kristen</option>
-                                <option value="Katolik" {{ old('agama') == 'Katolik' ? 'selected' : '' }}>Katolik</option>
+                                <option value="Kristen" {{ old('agama') == 'Kristen' ? 'selected' : '' }}>Kristen
+                                </option>
+                                <option value="Katolik" {{ old('agama') == 'Katolik' ? 'selected' : '' }}>Katolik
+                                </option>
                                 <option value="Hindu" {{ old('agama') == 'Hindu' ? 'selected' : '' }}>Hindu</option>
                                 <option value="Buddha" {{ old('agama') == 'Buddha' ? 'selected' : '' }}>Buddha</option>
-                                <option value="Konghucu" {{ old('agama') == 'Konghucu' ? 'selected' : '' }}>Konghucu</option>
+                                <option value="Konghucu" {{ old('agama') == 'Konghucu' ? 'selected' : '' }}>Konghucu
+                                </option>
                             </select>
                             @error('agama')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -121,14 +130,22 @@
 
                         <!-- Status Perkawinan -->
                         <div>
-                            <label for="status_perkawinan" class="block text-sm font-medium text-gray-700">Status Perkawinan *</label>
+                            <label for="status_perkawinan" class="block text-sm font-medium text-gray-700">Status
+                                Perkawinan *</label>
                             <select name="status_perkawinan" id="status_perkawinan" required
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
                                 <option value="">Pilih Status</option>
-                                <option value="Belum Kawin" {{ old('status_perkawinan') == 'Belum Kawin' ? 'selected' : '' }}>Belum Kawin</option>
-                                <option value="Kawin" {{ old('status_perkawinan') == 'Kawin' ? 'selected' : '' }}>Kawin</option>
-                                <option value="Cerai Hidup" {{ old('status_perkawinan') == 'Cerai Hidup' ? 'selected' : '' }}>Cerai Hidup</option>
-                                <option value="Cerai Mati" {{ old('status_perkawinan') == 'Cerai Mati' ? 'selected' : '' }}>Cerai Mati</option>
+                                <option value="Belum Kawin"
+                                    {{ old('status_perkawinan') == 'Belum Kawin' ? 'selected' : '' }}>Belum Kawin
+                                </option>
+                                <option value="Kawin" {{ old('status_perkawinan') == 'Kawin' ? 'selected' : '' }}>
+                                    Kawin</option>
+                                <option value="Cerai Hidup"
+                                    {{ old('status_perkawinan') == 'Cerai Hidup' ? 'selected' : '' }}>Cerai Hidup
+                                </option>
+                                <option value="Cerai Mati"
+                                    {{ old('status_perkawinan') == 'Cerai Mati' ? 'selected' : '' }}>Cerai Mati
+                                </option>
                             </select>
                             @error('status_perkawinan')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -138,7 +155,8 @@
                         <!-- Pekerjaan -->
                         <div>
                             <label for="pekerjaan" class="block text-sm font-medium text-gray-700">Pekerjaan *</label>
-                            <input type="text" name="pekerjaan" id="pekerjaan" value="{{ old('pekerjaan') }}" required
+                            <input type="text" name="pekerjaan" id="pekerjaan" value="{{ old('pekerjaan') }}"
+                                required
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
                             @error('pekerjaan')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -148,7 +166,8 @@
                         <!-- Email -->
                         <div>
                             <label for="email" class="block text-sm font-medium text-gray-700">Email *</label>
-                            <input type="email" name="email" id="email" value="{{ old('email') }}" required
+                            <input type="email" name="email" id="email" value="{{ old('email') }}"
+                                required
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
                             @error('email')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -157,8 +176,10 @@
 
                         <!-- Phone -->
                         <div>
-                            <label for="phone" class="block text-sm font-medium text-gray-700">Nomor Telepon *</label>
-                            <input type="tel" name="phone" id="phone" value="{{ old('phone') }}" required
+                            <label for="phone" class="block text-sm font-medium text-gray-700">Nomor Telepon
+                                *</label>
+                            <input type="tel" name="phone" id="phone" value="{{ old('phone') }}"
+                                required
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
                             @error('phone')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -188,8 +209,8 @@
                         <!-- Nama Anak -->
                         <div>
                             <label for="nama_anak" class="block text-sm font-medium text-gray-700">Nama Anak *</label>
-                            <input type="text" name="nama_anak" id="nama_anak"
-                                value="{{ old('nama_anak') }}" required
+                            <input type="text" name="nama_anak" id="nama_anak" value="{{ old('nama_anak') }}"
+                                required
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
                             @error('nama_anak')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -198,12 +219,15 @@
 
                         <!-- Jenis Kelamin Anak -->
                         <div>
-                            <label for="jenis_kelamin_anak" class="block text-sm font-medium text-gray-700">Jenis Kelamin Anak *</label>
+                            <label for="jenis_kelamin_anak" class="block text-sm font-medium text-gray-700">Jenis
+                                Kelamin Anak *</label>
                             <select name="jenis_kelamin_anak" id="jenis_kelamin_anak" required
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
                                 <option value="">Pilih Jenis Kelamin</option>
-                                <option value="L" {{ old('jenis_kelamin_anak') == 'L' ? 'selected' : '' }}>Laki-laki</option>
-                                <option value="P" {{ old('jenis_kelamin_anak') == 'P' ? 'selected' : '' }}>Perempuan</option>
+                                <option value="L" {{ old('jenis_kelamin_anak') == 'L' ? 'selected' : '' }}>
+                                    Laki-laki</option>
+                                <option value="P" {{ old('jenis_kelamin_anak') == 'P' ? 'selected' : '' }}>
+                                    Perempuan</option>
                             </select>
                             @error('jenis_kelamin_anak')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -212,17 +236,25 @@
 
                         <!-- Hari Lahir -->
                         <div>
-                            <label for="hari_lahir" class="block text-sm font-medium text-gray-700">Hari Lahir *</label>
+                            <label for="hari_lahir" class="block text-sm font-medium text-gray-700">Hari Lahir
+                                *</label>
                             <select name="hari_lahir" id="hari_lahir" required
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
                                 <option value="">Pilih Hari</option>
-                                <option value="Senin" {{ old('hari_lahir') == 'Senin' ? 'selected' : '' }}>Senin</option>
-                                <option value="Selasa" {{ old('hari_lahir') == 'Selasa' ? 'selected' : '' }}>Selasa</option>
-                                <option value="Rabu" {{ old('hari_lahir') == 'Rabu' ? 'selected' : '' }}>Rabu</option>
-                                <option value="Kamis" {{ old('hari_lahir') == 'Kamis' ? 'selected' : '' }}>Kamis</option>
-                                <option value="Jumat" {{ old('hari_lahir') == 'Jumat' ? 'selected' : '' }}>Jumat</option>
-                                <option value="Sabtu" {{ old('hari_lahir') == 'Sabtu' ? 'selected' : '' }}>Sabtu</option>
-                                <option value="Minggu" {{ old('hari_lahir') == 'Minggu' ? 'selected' : '' }}>Minggu</option>
+                                <option value="Senin" {{ old('hari_lahir') == 'Senin' ? 'selected' : '' }}>Senin
+                                </option>
+                                <option value="Selasa" {{ old('hari_lahir') == 'Selasa' ? 'selected' : '' }}>Selasa
+                                </option>
+                                <option value="Rabu" {{ old('hari_lahir') == 'Rabu' ? 'selected' : '' }}>Rabu
+                                </option>
+                                <option value="Kamis" {{ old('hari_lahir') == 'Kamis' ? 'selected' : '' }}>Kamis
+                                </option>
+                                <option value="Jumat" {{ old('hari_lahir') == 'Jumat' ? 'selected' : '' }}>Jumat
+                                </option>
+                                <option value="Sabtu" {{ old('hari_lahir') == 'Sabtu' ? 'selected' : '' }}>Sabtu
+                                </option>
+                                <option value="Minggu" {{ old('hari_lahir') == 'Minggu' ? 'selected' : '' }}>Minggu
+                                </option>
                             </select>
                             @error('hari_lahir')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -231,7 +263,8 @@
 
                         <!-- Tanggal Lahir Anak -->
                         <div>
-                            <label for="tanggal_lahir_anak" class="block text-sm font-medium text-gray-700">Tanggal Lahir Anak *</label>
+                            <label for="tanggal_lahir_anak" class="block text-sm font-medium text-gray-700">Tanggal
+                                Lahir Anak *</label>
                             <input type="date" name="tanggal_lahir_anak" id="tanggal_lahir_anak"
                                 value="{{ old('tanggal_lahir_anak') }}" required
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
@@ -242,7 +275,8 @@
 
                         <!-- Tempat Lahir Anak -->
                         <div>
-                            <label for="tempat_lahir_anak" class="block text-sm font-medium text-gray-700">Tempat Lahir Anak *</label>
+                            <label for="tempat_lahir_anak" class="block text-sm font-medium text-gray-700">Tempat
+                                Lahir Anak *</label>
                             <input type="text" name="tempat_lahir_anak" id="tempat_lahir_anak"
                                 value="{{ old('tempat_lahir_anak') }}" required
                                 placeholder="Contoh: RS Budi Sehat, Puskesmas, Rumah, dll"
@@ -254,12 +288,35 @@
 
                         <!-- Penolong Kelahiran -->
                         <div>
-                            <label for="penolong_kelahiran" class="block text-sm font-medium text-gray-700">Penolong Kelahiran *</label>
+                            <label for="penolong_kelahiran" class="block text-sm font-medium text-gray-700">Penolong
+                                Kelahiran *</label>
                             <input type="text" name="penolong_kelahiran" id="penolong_kelahiran"
                                 value="{{ old('penolong_kelahiran') }}" required
                                 placeholder="Contoh: Dr. Ahmad, Bidan Sari, dll"
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
                             @error('penolong_kelahiran')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <!-- Ibu Kandung -->
+                        <div>
+                            <label for="ibu" class="block text-sm font-medium text-gray-700">Nama Ibu Kandung
+                                *</label>
+                            <input type="text" name="ibu" id="ibu" value="{{ old('ibu') }}"
+                                required
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                            @error('ibu')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <!-- Ayah Kandung -->
+                        <div>
+                            <label for="ayah" class="block text-sm font-medium text-gray-700"> Nama Ayah Kandung
+                                *</label>
+                            <input type="text" name="ayah" id="ayah" value="{{ old('ayah') }}"
+                                required
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                            @error('ayah')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
@@ -276,8 +333,10 @@
                     <div class="grid grid-cols-1 gap-6">
                         <!-- Purpose -->
                         <div>
-                            <label for="purpose" class="block text-sm font-medium text-gray-700">Tujuan/Maksud Pengajuan *</label>
-                            <input type="text" name="purpose" id="purpose" value="{{ old('purpose') }}" required
+                            <label for="purpose" class="block text-sm font-medium text-gray-700">Tujuan/Maksud
+                                Pengajuan *</label>
+                            <input type="text" name="purpose" id="purpose" value="{{ old('purpose') }}"
+                                required
                                 placeholder="Contoh: Untuk pembuatan akta kelahiran, keperluan administrasi, dll"
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
                             @error('purpose')
@@ -287,7 +346,8 @@
 
                         <!-- Notes -->
                         <div>
-                            <label for="notes" class="block text-sm font-medium text-gray-700">Catatan Tambahan</label>
+                            <label for="notes" class="block text-sm font-medium text-gray-700">Catatan
+                                Tambahan</label>
                             <textarea name="notes" id="notes" rows="3"
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">{{ old('notes') }}</textarea>
                             @error('notes')
@@ -306,7 +366,8 @@
                         </a>
                         <button type="submit"
                             class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
-                            <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
                             </svg>

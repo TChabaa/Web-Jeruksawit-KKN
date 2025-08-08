@@ -15,6 +15,7 @@ class DetailDomisiliOrang extends Model
 
     protected $fillable = [
         'id_surat',
+        'keperluan',
     ];
 
     public function surat()

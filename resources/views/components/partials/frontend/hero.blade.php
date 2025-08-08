@@ -5,8 +5,12 @@
             <h1 id="slogan"
                 class="max-w-2xl mb-4 text-4xl font-extrabold leading-none tracking-tight font-inter md:text-5xl xl:text-6xl S">
             </h1>
-            <p class="max-w-2xl mb-6 font-inter font-light text-gray-700 lg:mb-8 md:text-lg lg:text-xl">Desa Jeruksawit,terletak di Kabupaten Karanganyar, Provinsi Jawa Tengah, Desa ini berada di wilayah strategis yang berbatasan langsung dengan Kota Surakarta, sehingga memiliki akses yang mudah menuju pusat kota maupun kawasan industri dan perdagangan sekitar.
-                Wilayah Desa Jeruksawit didominasi oleh lahan pertanian dan pemukiman, dengan penduduk yang sebagian besar bermata pencaharian sebagai buruh, petani, dan pelaku usaha kecil menengah (UKM).
+            <p class="max-w-2xl mb-6 font-inter font-light text-gray-700 lg:mb-8 md:text-lg lg:text-xl">Desa
+                Jeruksawit,terletak di Kabupaten Karanganyar, Provinsi Jawa Tengah, Desa ini berada di wilayah strategis
+                yang berbatasan langsung dengan Kota Surakarta, sehingga memiliki akses yang mudah menuju pusat kota
+                maupun kawasan industri dan perdagangan sekitar.
+                Wilayah Desa Jeruksawit didominasi oleh lahan pertanian dan pemukiman, dengan penduduk yang sebagian
+                besar bermata pencaharian sebagai buruh, petani, dan pelaku usaha kecil menengah (UKM).
             </p>
             <div class="space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
                 <a href="{{ route('destinations') }}"
@@ -15,10 +19,14 @@
             </div>
         </div>
         <div class="hidden lg:mt-0 lg:col-span-5 lg:flex">
-            <iframe loading="lazy" title="DESA JERUKSAWIT KAB. KARANGANYAR" class="w-full h-full rounded-lg"
-                src="https://www.youtube.com/embed/i4alQJYhKtw?si=jqo-1bsz6RHNOyDP" frameborder="0"
+            <iframe loading="lazy"
+                title="{{ \App\Models\WebsiteSetting::getValue('hero_youtube_title', 'DESA JERUKSAWIT KAB. KARANGANYAR') }}"
+                class="w-full h-full rounded-lg"
+                src="{{ \App\Models\WebsiteSetting::getValue('hero_youtube_url', 'https://www.youtube.com/embed/i4alQJYhKtw?si=jqo-1bsz6RHNOyDP') }}"
+                frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen=""></iframe>
+                allowfullscreen="">
+            </iframe>
         </div>
     </div>
 </section>

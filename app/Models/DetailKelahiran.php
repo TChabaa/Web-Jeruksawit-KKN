@@ -21,6 +21,9 @@ class DetailKelahiran extends Model
         'tanggal_lahir',
         'tempat_lahir',
         'penolong_kelahiran',
+        'ibu',
+        'ayah'
+
     ];
 
     public function surat()

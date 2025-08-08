@@ -1,5 +1,5 @@
 <div>
-    <div id="deleteModal" tabindex="-1" class="fixed   inset-0 z-50 flex items-center justify-center hidden">
+    <div id="deleteModal" tabindex="-1" class="fixed inset-0 z-50 items-center justify-center hidden">
         <div
             class="bg-white dark:bg-black rounded-lg space-y-4 shadow-2xl dark:shadow-gray-500 dark:shadow-md border p-6">
             <div class="flex justify-center items-center">
@@ -30,6 +30,10 @@
 
 <script>
     function closeModal() {
-        $('#deleteModal').addClass('hidden');
+        $('#deleteModal').addClass('hidden').removeClass('flex');
+    }
+
+    function openModal() {
+        $('#deleteModal').removeClass('hidden').addClass('flex');
     }
 </script>

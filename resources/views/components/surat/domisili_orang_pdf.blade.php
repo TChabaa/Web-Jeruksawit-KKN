@@ -142,11 +142,7 @@
                     <td>: {{ $keperluan ?? 'Mengurus surat SKCK ke POLSEK Gondangrejo' }}</td>
                 </tr>
                 <tr>
-                    <td>9. Mulai Berlaku</td>
-                    <td>: {{ $mulai ?? '12-06-2025' }} s/d {{ $berakhir ?? '12-07-2025' }}</td>
-                </tr>
-                <tr>
-                    <td>10. Keterangan Lain-lain</td>
+                    <td>9. Keterangan Lain-lain</td>
                     <td>: Orang tersebut benar warga kami yang berkelakuan dan beradat istiadat baik.</td>
                 </tr>
             </table>

@@ -26,7 +26,7 @@ class SuratKeteranganKelahiranRequest extends FormRequest
             'agama' => 'required|string|max:50',
             'pekerjaan' => 'required|string|max:100',
             'status_perkawinan' => 'required|string|max:50',
-            
+
             // Detail Keterangan Kelahiran
             'nama_anak' => 'required|string|max:255',
             'jenis_kelamin_anak' => 'required|in:L,P',
@@ -34,7 +34,9 @@ class SuratKeteranganKelahiranRequest extends FormRequest
             'tanggal_lahir_anak' => 'required|date',
             'tempat_lahir_anak' => 'required|string|max:255',
             'penolong_kelahiran' => 'required|string|max:255',
-            
+            'ibu' => 'required|string|max:255', // New field for mother's name
+            'ayah' => 'required|string|max:255', // New field for father's name
+
             // General
             'purpose' => 'required|string|max:255',
             'notes' => 'nullable|string|max:1000',
