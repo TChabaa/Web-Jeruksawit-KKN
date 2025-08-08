@@ -6,7 +6,11 @@ use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Models\Destination;
 use App\Models\User;
+use App\Models\Surat;
+use App\Models\PerangkatDesa;
+use App\Models\JenisSurat;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -51,9 +55,10 @@ class DashboardController extends Controller
         $totalArticle = Article::count();
         $totalDestination = Destination::count();
         $totalUser = User::where('role', '!=', 'super_admin')->count();
+        $totalSurat = Surat::count();
+        $totalPerangkatDesa = PerangkatDesa::count();
 
         // Mengambil 5 acara dengan views terbanyak
-    
 
         // Mengambil 5 wisata dengan views terbanyak
         $destinations = Destination::orderBy('views', 'desc')->take(5)->get();
@@ -77,7 +82,18 @@ class DashboardController extends Controller
             'articleData' => $articleData
         ];
 
-        return view('components.pages.dashboard.index', compact('totalDestination', 'totalArticle', 'totalUser', 'dataArticle', 'dataDestination'));
+        // Mengambil data surat berdasarkan jenis untuk grafik
+        $suratByJenis = JenisSurat::withCount('surat')->orderBy('surat_count', 'desc')->get();
+
+        $suratLabels = $suratByJenis->pluck('nama_jenis');
+        $suratData = $suratByJenis->pluck('surat_count');
+
+        $dataSurat = [
+            'suratLabels' => $suratLabels,
+            'suratData' => $suratData
+        ];
+
+        return view('components.pages.dashboard.index', compact('totalDestination', 'totalArticle', 'totalUser', 'totalSurat', 'totalPerangkatDesa', 'dataArticle', 'dataDestination', 'dataSurat'));
     }
 
     public function superAdmin()
@@ -85,6 +101,8 @@ class DashboardController extends Controller
         $totalArticle = Article::count();
         $totalDestination = Destination::count();
         $totalUser = User::count();
+        $totalSurat = Surat::count();
+        $totalPerangkatDesa = PerangkatDesa::count();
 
         // Mengambil 5 acara dengan views terbanyak
 
@@ -110,6 +128,17 @@ class DashboardController extends Controller
             'articleData' => $articleData
         ];
 
-        return view('components.pages.dashboard.index', compact('totalDestination', 'totalArticle', 'totalUser', 'dataArticle', 'dataDestination'));
+        // Mengambil data surat berdasarkan jenis untuk grafik
+        $suratByJenis = JenisSurat::withCount('surat')->orderBy('surat_count', 'desc')->get();
+
+        $suratLabels = $suratByJenis->pluck('nama_jenis');
+        $suratData = $suratByJenis->pluck('surat_count');
+
+        $dataSurat = [
+            'suratLabels' => $suratLabels,
+            'suratData' => $suratData
+        ];
+
+        return view('components.pages.dashboard.index', compact('totalDestination', 'totalArticle', 'totalUser', 'totalSurat', 'totalPerangkatDesa', 'dataArticle', 'dataDestination', 'dataSurat'));
     }
 }

@@ -2,7 +2,7 @@
 
     @if (auth()->user()->role == 'super_admin' || auth()->user()->role == 'admin')
         <div class="">
-            <div class="grid xl:grid-cols-4 md:grid-cols-2 gap-4 justify-items-center">
+            <div class="grid xl:grid-cols-5 md:grid-cols-2 gap-4 justify-items-center">
                 <div class="border-2 border-black p-10 w-[250px] space-y-2 text-center rounded-lg">
                     <h1 class="text-4xl font-bold">{{ $totalDestination }}</h1>
                     <p class="text-lg">Jumlah Tempat Wisata</p>
@@ -11,11 +11,17 @@
                     <h1 class="text-4xl font-bold">{{ $totalUser }}</h1>
                     <p class="text-lg">Jumlah Pengguna</p>
                 </div>
-
-
                 <div class="border-2 border-black p-10 w-[250px] space-y-2 text-center rounded-lg">
                     <h1 class="text-4xl font-bold">{{ $totalArticle }}</h1>
                     <p class="text-lg">Jumlah Artikel</p>
+                </div>
+                <div class="border-2 border-black p-10 w-[250px] space-y-2 text-center rounded-lg">
+                    <h1 class="text-4xl font-bold">{{ $totalSurat }}</h1>
+                    <p class="text-lg">Jumlah Surat</p>
+                </div>
+                <div class="border-2 border-black p-10 w-[250px] space-y-2 text-center rounded-lg">
+                    <h1 class="text-4xl font-bold">{{ $totalPerangkatDesa }}</h1>
+                    <p class="text-lg">Jumlah Perangkat Desa</p>
                 </div>
             </div>
             <div class="mt-6 w-full">
@@ -40,8 +46,8 @@
 
 
     @if (auth()->user()->role == 'super_admin' || auth()->user()->role == 'admin')
-        <div class=""">
-            <div class="grid md:grid-cols-2 ">
+        <div class="">
+            <div class="grid md:grid-cols-2 gap-6">
                 <div style="width: 100%; margin: auto;">
                     <canvas id="chartArticle"></canvas>
                 </div>
@@ -51,6 +57,11 @@
                 </div>
             </div>
 
+            <div class="mt-6">
+                <div style="width: 100%; margin: auto;">
+                    <canvas id="chartSurat"></canvas>
+                </div>
+            </div>
         </div>
     @endif
 
@@ -149,6 +160,55 @@
                                 // Menampilkan label asli pada tooltip
                                 var index = tooltipItems[0].dataIndex;
                                 return destinationLabels[index];
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+@endif
+
+@if (auth()->user()->role == 'super_admin' || auth()->user()->role == 'admin')
+    <script>
+        var ctx = document.getElementById('chartSurat').getContext('2d');
+        var suratLabels = @json($dataSurat['suratLabels']);
+
+        // Memotong label jika terlalu panjang
+        var shortLabels = suratLabels.map(function(label) {
+            return label.length > 15 ? label.substr(0, 12) + '...' : label;
+        });
+
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: shortLabels,
+                datasets: [{
+                    label: 'Jumlah Surat',
+                    data: @json($dataSurat['suratData']),
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Distribusi Jenis Surat'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                // Menampilkan label asli pada tooltip
+                                var index = tooltipItems[0].dataIndex;
+                                return suratLabels[index];
                             }
                         }
                     }

@@ -33,6 +33,7 @@
 }
 
 @layer base {
+
     .body {
       @apply relative text-base font-normal z-1 bg-whiten font-inter text-body;
     }
@@ -92,3 +93,4 @@
 .dataTables_wrapper .dataTables_paginate .paginate_button{
       @apply text-black-dashboard dark:text-white-dahsboard !important
   }
+  
