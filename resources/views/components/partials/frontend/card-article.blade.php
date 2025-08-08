@@ -1,6 +1,6 @@
         {{-- card  --}}
         <div
-            class="group h-[480px] overflow-hidden  max-w-[26rem]  flex flex-col justify-between shadow-lg border-2 rounded-md hover:bg-green-new font-inter transition-all duration-500 ">
+            class="group h-[480px] overflow-hidden  max-w-[26rem]  flex flex-col justify-between shadow-lg border-2 rounded-md hover:bg-[#A2AF9B] font-inter transition-all duration-500 ">
             <div class="p-6 w-full overflow-hidden ">
                 <div
                     class="pb-3 mb-4 border-b group-hover:text-white border-stone-200 text-xs font-medium flex space-y-2 flex-col justify-between text-black">
@@ -37,7 +37,7 @@
             </div>
             <div class="text-center">
                 <a href="{{ route('articles.show', $article->slug) }}"
-                    class="my-6 inline-flex items-center px-3 py-2 text-sm font-medium text-center group-hover:bg-white group-hover:text-green-new text-white bg-green-new rounded-md focus:ring-4 focus:outline-none focus:ring-blue-300 ">
+                    class="my-6 inline-flex items-center px-3 py-2 text-sm font-medium text-center group-hover:bg-white group-hover:text-green-new text-white bg-[#A2AF9B] rounded-md focus:ring-4 focus:outline-none focus:ring-blue-300 ">
                     Selengkapnya
                     <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                         fill="none" viewBox="0 0 14 10">

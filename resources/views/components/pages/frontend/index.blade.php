@@ -100,7 +100,7 @@
         </div>
     </section>
 
-    <section class="bg-green-new">
+    <section class="bg-[#A2AF9B]">
         <div class="grid py-20 mx-auto md:grid-cols-2 max-w-7xl">
             <div class="pl-10 mb-8 space-y-10 text-white text-balance ">
                 <h1 class="text-4xl font-extrabold font-inter">Layanan Surat Menyurat</h1>
