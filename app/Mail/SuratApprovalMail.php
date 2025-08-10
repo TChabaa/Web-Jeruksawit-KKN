@@ -68,9 +68,13 @@ class SuratApprovalMail extends Mailable implements ShouldQueue
      */
     public function attachments(): array
     {
+        // Use the same filename format as web download
+        $cleanNomorSurat = str_replace(['/', '\\'], '_', $this->surat->nomor_surat);
+        $fileName = 'surat_' . str_replace(' ', '_', strtolower($this->surat->jenisSurat->nama_jenis)) . '_' . $cleanNomorSurat . '.pdf';
+
         return [
             Attachment::fromPath($this->pdfPath)
-                ->as('surat_' . str_replace(' ', '_', strtolower($this->surat->jenisSurat->nama_jenis)) . '.pdf')
+                ->as($fileName)
                 ->withMime('application/pdf'),
         ];
     }
