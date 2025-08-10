@@ -26,7 +26,7 @@ class SuratIzinKeramaianRequest extends FormRequest
             'agama' => 'required|string|max:50',
             'pekerjaan' => 'required|string|max:100',
             'status_perkawinan' => 'required|string|max:50',
-            
+
             // Detail Izin Keramaian
             'keperluan' => 'required|string|max:255',
             'jenis_hiburan' => 'required|string|max:255',
@@ -34,11 +34,11 @@ class SuratIzinKeramaianRequest extends FormRequest
             'hari_acara' => 'required|string|max:50',
             'tanggal_acara' => 'required|date',
             'jumlah_undangan' => 'required|integer|min:1',
-            
+
             // General
             'purpose' => 'required|string|max:255',
             'notes' => 'nullable|string|max:1000',
-            'attachment' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'attachment' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:4146176',
         ];
     }
 

@@ -32,7 +32,7 @@ class UmkmCreateRequest extends FormRequest
             'opening_hours.last_day' => 'required|string|in:senin,selasa,rabu,kamis,jumat,sabtu,minggu',
             'opening_hours.open' => 'required|string|date_format:H:i',
             'opening_hours.close' => 'required|string|date_format:H:i',
-            'galleries.*' => 'required|image|mimes:jpeg,png,jpg|max:1048|',
+            'galleries.*' => 'required|image|mimes:jpeg,png,jpg|max:4146176|',
             'contact_details' => 'array',
             'contact_details.phone' => 'nullable|string|max:20',
             'contact_details.email' => 'nullable|string|max:50',

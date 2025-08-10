@@ -35,7 +35,7 @@ class SuratSkckRequest extends FormRequest
             // General
             'purpose' => 'required|string|max:255',
             'notes' => 'nullable|string|max:1000',
-            'attachment' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'attachment' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:4146176',
         ];
     }
 

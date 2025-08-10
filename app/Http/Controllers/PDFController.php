@@ -253,7 +253,7 @@ class PDFController extends Controller
 
         // Base data for all surat types (minimized)
         $data = [
-            'nomor' => $this->extractNomorFromSurat($surat->nomor_surat ?? ''),
+            'nomor' => $surat->nomor_surat ?? '474/001/I/' . date('Y'),
             'tahun' => date('Y'),
             'nama_kepala' => 'MIDI',
             'nama' => $pemohon->nama_lengkap ?? '',

@@ -30,7 +30,7 @@
                     Foto Perangkat Desa
                 </label>
                 <p class="text-xs font-medium text-gray-400">* Format yang didukung: jpeg, jpg, png</p>
-                <p class="text-xs font-medium text-gray-400">* Maksimal ukuran file 1MB</p>
+                <p class="text-xs font-medium text-gray-400">* Maksimal ukuran file 4049MB</p>
                 <div id="imagePreviewContainer" class="flex flex-wrap gap-5 mt-3"></div>
                 <input type="file" accept="image/*" name="gambar" id="gambar" class="mt-3">
                 <x-partials.dashboard.input-error :messages="$errors->get('gambar')" />

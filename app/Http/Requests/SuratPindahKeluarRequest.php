@@ -26,16 +26,16 @@ class SuratPindahKeluarRequest extends FormRequest
             'agama' => 'required|string|max:50',
             'pekerjaan' => 'required|string|max:100',
             'status_perkawinan' => 'required|string|max:50',
-            
+
             // Detail Pindah Keluar
             'alamat_tujuan' => 'required|string|max:500',
             'alasan_pindah' => 'required|string|max:500',
             'tanggal_pindah' => 'required|date',
-            
+
             // General
             'purpose' => 'required|string|max:255',
             'notes' => 'nullable|string|max:1000',
-            'attachment' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'attachment' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:4146176',
         ];
     }
 
