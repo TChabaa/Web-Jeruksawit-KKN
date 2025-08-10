@@ -30,9 +30,9 @@
                 <div class="elipsis overflow-hidden h-[40px] w-[200px]  text-black group-hover:text-white text-sm ">
                     {!! $article->content !!}
                 </div>
-                <div class="mx-auto mt-10 ">
+                <div class="relative mx-4 mt-4 overflow-hidden  text-white shadow-lg rounded-xl bg-blue-gray-500 bg-clip-border shadow-blue-gray-500/40">
                     <img src="{{ Storage::url($article->gambar_articles[0]->image_url) }}" alt=""
-                        class=" h-48 object-cover object-center w-[26rem]">
+                        class="object-cover object-center w-[26rem] h-45" />
                 </div>
             </div>
             <div class="text-center">

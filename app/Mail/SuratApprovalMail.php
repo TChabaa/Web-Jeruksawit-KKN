@@ -55,7 +55,7 @@ class SuratApprovalMail extends Mailable implements ShouldQueue
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.surat-approval',
+            view: 'emails.surat-approval',
             with: [
                 'surat' => $this->surat,
                 'pemohon' => $this->pemohon,

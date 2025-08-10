@@ -9,31 +9,19 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class SuratSubmissionMail extends Mailable implements ShouldQueue
+class SimpleTestMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    public $surat;
-    public $pemohon;
     public $tries = 3;
     public $timeout = 120;
-    public $retryUntil;
-    public $backoff = [30, 60, 120]; // More conservative retry intervals
 
     /**
      * Create a new message instance.
      */
-    public function __construct($surat, $pemohon)
+    public function __construct()
     {
-        $this->surat = $surat;
-        $this->pemohon = $pemohon;
-
-        // Set queue configuration
         $this->onQueue('emails');
-        $this->retryUntil = now()->addHours(6); // Retry for up to 6 hours
-
-        // Rate limiting - delay between emails to prevent spam
-        $this->delay(now()->addSeconds(rand(5, 15)));
     }
 
     /**
@@ -42,7 +30,7 @@ class SuratSubmissionMail extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Konfirmasi Pengajuan Surat - ' . $this->surat->jenisSurat->nama_jenis,
+            subject: 'Test Email Simple',
         );
     }
 
@@ -52,11 +40,7 @@ class SuratSubmissionMail extends Mailable implements ShouldQueue
     public function content(): Content
     {
         return new Content(
-            view: 'emails.surat-submission',
-            with: [
-                'surat' => $this->surat,
-                'pemohon' => $this->pemohon,
-            ]
+            html: '<h1>Test Email</h1><p>This is a simple test email.</p>',
         );
     }
 
