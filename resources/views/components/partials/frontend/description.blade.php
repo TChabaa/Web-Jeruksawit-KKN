@@ -1,4 +1,3 @@
-
 <div class="grid grid-cols-1 font-inter">
 
     <div class="items-center">
@@ -11,40 +10,12 @@
         </p>
     </div>
 
-
-
-    <div class="flex flex-wrap justify-center px-2 py-10 lg:mb-10">
-        <div class="w-full p-2 m-0 sm:w-1/2 md:w-1/3">
-            <img class="w-full h-[430px] object-cover rounded-lg" src="{{ asset('assets/img/desa1.jpeg') }}"
-                alt="">
-        </div>
-        <div class="w-full p-2 m-0 sm:w-1/2 md:w-1/3">
-            <img class="w-full h-[430px] object-cover rounded-lg" src="{{ asset('assets/img/desa2.jpeg') }}"
-                alt="">
-        </div>
-        <div class="w-full p-2 m-0 sm:w-1/2 md:w-1/3">
-            <img class="w-full h-[430px] object-cover rounded-lg" src="{{ asset('assets/img/desa3.jpeg') }}"
-                alt="">
-        </div>
-        <div class="w-full p-2 m-0 sm:w-1/2 md:w-1/3">
-            <img class="w-full h-[430px] object-cover rounded-lg" src="{{ asset('assets/img/desa4.jpeg') }}"
-                alt="">
-        </div>
-        <div class="w-full p-2 m-0 sm:w-1/2 md:w-1/3">
-            <img class="w-full h-[430px] object-cover rounded-lg" src="{{ asset('assets/img/desa5.jpeg') }}"
-                alt="">
-        </div>
-        <div class="w-full p-2 m-0 sm:w-1/2 md:w-1/3">
-            <img class="w-full h-[430px] object-cover rounded-lg" src="{{ asset('assets/img/desa6.jpeg') }}"
-                alt="">
-        </div>
-    </div>
-
     <p class="text-center font-bold text-lg text-[22px] lg:mb-8 lg:text-[25px]">
         Misi Desa Jeruksawit
     </p>
     <div class="flex justify-center">
-        <ol class="list-decimal text-[17px] mt-0 ml-8 p-7 text-pretty m-5 max-w-2xl lg:max-w-5xl mb-0 font-normal text-lg lg:mb-4 lg:text-[20px] font-inter">
+        <ol
+            class="list-decimal text-[17px] mt-0 ml-8 p-7 text-pretty m-5 max-w-2xl lg:max-w-5xl mb-0 font-normal text-lg lg:mb-4 lg:text-[20px] font-inter">
             <li>Peningkatan kualitas SDM</li><br>
             <li>Menciptakan pembangunan ekonomi yang berdaya saing</li><br>
             <li>Menciptakan pemerintahan desa yang Transparan</li><br>
@@ -62,13 +33,16 @@
     <div class="flex flex-col">
         <div class="m-5 text-lg font-semibold text-center lg:mb-5 lg:text-xl">
             <p class="text-center font-bold text-lg lg:mb-4 text-[22px] lg:text-[25px] font-inter">
-                Sejarah Desa Sukarame
+                Sejarah Desa Jeruksawit
             </p>
         </div>
         <div class="flex p-3">
-            <p class="p-2 pt-0 text-center mb-3 text-black-500 dark:text-gray-400 text-[17px] lg:text-[20px] lg:mb-6 font-inter">
-                Desa Jeruksawit adalah desa yang terletak di Kecamatan Gondang Rejo, Kabupaten Karanganyar. Desa Jeruksawit memiliki 17 dusun diantaranya Banyuurip, Banyubening, Blimbing, 
-                Depel, Jeruksawit, Dukuhan, Jenggrik, Jurangkambil, Karanglo, Bendorjo, Kedunggong, Mojorejo, Plosokerep, Banyuanyar, Sebrungan, Plosorejo, Watugajah.
+            <p
+                class="p-2 pt-0 text-center mb-3 text-black-500 dark:text-gray-400 text-[17px] lg:text-[20px] lg:mb-6 font-inter">
+                Desa Jeruksawit adalah desa yang terletak di Kecamatan Gondangrejo, Kabupaten Karanganyar. Desa
+                Jeruksawit memiliki 17 dusun diantaranya Banyuurip, Banyubening, Blimbing,
+                Depel, Jeruksawit, Dukuhan, Jenggrik, Jurangkambil, Karanglo, Bendorjo, Kedunggong, Mojorejo,
+                Plosokerep, Banyuanyar, Sebrungan, Plosorejo, Watugajah.
             </p>
         </div>
     </div>
@@ -80,7 +54,7 @@
 </div>
 <div class="p-5">
     <iframe class="mx-auto max-w-7xl"
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3959.4550427283443!2d107.7041192737536!3d-7.0731228693242505!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68c1005c3b0879%3A0x8db0678cc127d24!2sDesa%20sukarame!5e0!3m2!1sid!2sid!4v1718893102192!5m2!1sid!2sid"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1398.5058800016538!2d110.85417213417225!3d-7.51241175725364!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a1127b0c25e6f%3A0xf8301cf067a5bd9a!2sKANTOR%20DESA%20JERUKSAWIT!5e0!3m2!1sen!2sid!4v1754792931754!5m2!1sen!2sid"
         width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"
         referrerpolicy="no-referrer-when-downgrade"></iframe>
 </div>

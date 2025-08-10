@@ -6,8 +6,8 @@
         <div class="mb-8">
             <div class="sm:flex sm:items-center sm:justify-between">
                 <div>
-                    <h1 class="text-2xl font-bold text-gray-900">Layanan Surat Menyurat</h1>
-                    <p class="mt-2 text-sm text-gray-700">Kelola permohonan surat dari masyarakat</p>
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white-dahsboard">Layanan Surat Menyurat</h1>
+                    <p class="mt-2 text-sm text-gray-700 dark:text-gray-400">Kelola permohonan surat dari masyarakat</p>
                 </div>
                 <div class="mt-4 sm:mt-0">
                     <a href="{{ route(auth()->user()->role . '.layanan-surat.create') }}"
@@ -24,7 +24,7 @@
 
         <!-- Statistics Cards -->
         <div class="grid grid-cols-1 gap-5 mb-8 sm:grid-cols-2 lg:grid-cols-4">
-            <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="bg-white dark:bg-boxdark overflow-hidden shadow rounded-lg">
                 <div class="p-5">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
@@ -38,15 +38,17 @@
                         </div>
                         <div class="ml-5 w-0 flex-1">
                             <dl>
-                                <dt class="text-sm font-medium text-gray-500 truncate">Menunggu Verifikasi</dt>
-                                <dd class="text-lg font-medium text-gray-900">{{ $statistics['pending'] ?? 0 }}</dd>
+                                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Menunggu
+                                    Verifikasi</dt>
+                                <dd class="text-lg font-medium text-gray-900 dark:text-white-dahsboard">
+                                    {{ $statistics['pending'] ?? 0 }}</dd>
                             </dl>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="bg-white dark:bg-boxdark overflow-hidden shadow rounded-lg">
                 <div class="p-5">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
@@ -60,15 +62,16 @@
                         </div>
                         <div class="ml-5 w-0 flex-1">
                             <dl>
-                                <dt class="text-sm font-medium text-gray-500 truncate">Disetujui</dt>
-                                <dd class="text-lg font-medium text-gray-900">{{ $statistics['approved'] ?? 0 }}</dd>
+                                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Disetujui</dt>
+                                <dd class="text-lg font-medium text-gray-900 dark:text-white-dahsboard">
+                                    {{ $statistics['approved'] ?? 0 }}</dd>
                             </dl>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="bg-white dark:bg-boxdark overflow-hidden shadow rounded-lg">
                 <div class="p-5">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
@@ -82,15 +85,16 @@
                         </div>
                         <div class="ml-5 w-0 flex-1">
                             <dl>
-                                <dt class="text-sm font-medium text-gray-500 truncate">Ditolak</dt>
-                                <dd class="text-lg font-medium text-gray-900">{{ $statistics['rejected'] ?? 0 }}</dd>
+                                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Ditolak</dt>
+                                <dd class="text-lg font-medium text-gray-900 dark:text-white-dahsboard">
+                                    {{ $statistics['rejected'] ?? 0 }}</dd>
                             </dl>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="bg-white dark:bg-boxdark overflow-hidden shadow rounded-lg">
                 <div class="p-5">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
@@ -105,8 +109,10 @@
                         </div>
                         <div class="ml-5 w-0 flex-1">
                             <dl>
-                                <dt class="text-sm font-medium text-gray-500 truncate">Total Surat</dt>
-                                <dd class="text-lg font-medium text-gray-900">{{ $statistics['total'] ?? 0 }}</dd>
+                                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Total Surat
+                                </dt>
+                                <dd class="text-lg font-medium text-gray-900 dark:text-white-dahsboard">
+                                    {{ $statistics['total'] ?? 0 }}</dd>
                             </dl>
                         </div>
                     </div>
@@ -115,10 +121,11 @@
         </div>
 
         <!-- Data Table -->
-        <div class="bg-white shadow rounded-lg">
+        <div class="bg-white dark:bg-boxdark shadow rounded-lg">
             <div class="px-4 py-5 sm:p-6">
                 <div class="sm:flex sm:items-center sm:justify-between mb-6">
-                    <h3 class="text-lg leading-6 font-medium text-gray-900">Daftar Permohonan Surat</h3>
+                    <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white-dahsboard">Daftar Permohonan
+                        Surat</h3>
 
                     <!-- Filters Section -->
                     <div class="mt-4 sm:mt-0">
@@ -145,10 +152,11 @@
 
                             <!-- Jenis Surat Filter Dropdown -->
                             <div class="flex items-center gap-2">
-                                <label for="jenis-surat-filter" class="text-sm font-medium text-gray-700">Jenis
+                                <label for="jenis-surat-filter"
+                                    class="text-sm font-medium text-gray-700 dark:text-gray-300">Jenis
                                     Surat:</label>
                                 <select id="jenis-surat-filter"
-                                    class="px-3 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    class="px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-boxdark text-gray-900 dark:text-white-dahsboard">
                                     <option value="all">Semua Jenis</option>
                                     @foreach ($jenisSurat as $jenis)
                                         <option value="{{ $jenis->id_jenis }}">{{ $jenis->nama_jenis }}</option>
@@ -159,28 +167,28 @@
                     </div>
                 </div>
 
-                <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-                    <table id="surat-table" class="min-w-full divide-y divide-gray-300">
-                        <thead class="bg-gray-50">
+                <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 dark:ring-gray-600 md:rounded-lg">
+                    <table id="surat-table" class="min-w-full divide-y divide-gray-300 dark:divide-gray-600">
+                        <thead class="bg-gray-50 dark:bg-gray-800">
                             <tr>
                                 <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                     No. Surat
                                 </th>
                                 <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                     Nama Pemohon
                                 </th>
                                 <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                     Jenis Surat
                                 </th>
                                 <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                     Status
                                 </th>
                                 <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                     Tanggal
                                 </th>
                                 <th scope="col" class="relative px-6 py-3">
@@ -188,7 +196,7 @@
                                 </th>
                             </tr>
                         </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
+                        <tbody class="bg-white dark:bg-boxdark divide-y divide-gray-200 dark:divide-gray-600">
                             <!-- Data will be populated by DataTables -->
                         </tbody>
                     </table>
@@ -198,6 +206,54 @@
     </div>
 
     @push('script')
+        <style>
+            /* DataTable Dark Mode Customizations */
+            .dark .dataTables_wrapper .dataTables_length label,
+            .dark .dataTables_wrapper .dataTables_filter label {
+                color: #e5e7eb !important;
+            }
+
+            .dark .dataTables_wrapper .dataTables_filter input,
+            .dark .dataTables_wrapper .dataTables_length select {
+                background-color: #24303f !important;
+                border-color: #374151 !important;
+                color: #e5e7eb !important;
+            }
+
+            .dark .dataTables_wrapper .dataTables_info {
+                color: #e5e7eb !important;
+            }
+
+            .dark .dataTables_wrapper .dataTables_paginate .paginate_button {
+                color: #e5e7eb !important;
+                background: #24303f !important;
+                border-color: #374151 !important;
+            }
+
+            .dark .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+                background: #374151 !important;
+                border-color: #4b5563 !important;
+            }
+
+            .dark .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+                background: #3b82f6 !important;
+                border-color: #3b82f6 !important;
+                color: #ffffff !important;
+            }
+
+            .dark #surat-table tbody tr {
+                background-color: #24303f !important;
+            }
+
+            .dark #surat-table tbody tr:hover {
+                background-color: #374151 !important;
+            }
+
+            .dark #surat-table tbody td {
+                color: #e5e7eb !important;
+                border-color: #374151 !important;
+            }
+        </style>
         <script>
             $(document).ready(function() {
                 // Initialize DataTable
@@ -278,7 +334,7 @@
                     // Update active state
                     $('.filter-btn').removeClass(
                             'active bg-blue-100 text-blue-800 bg-yellow-100 text-yellow-800 bg-green-100 text-green-800 bg-red-100 text-red-800'
-                            )
+                        )
                         .addClass('bg-gray-100 text-gray-800');
 
                     $(this).removeClass('bg-gray-100 text-gray-800').addClass(

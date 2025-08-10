@@ -1,6 +1,56 @@
 <x-layouts.visitor-layout>
 
-    <x-slot:title>Tempat Wisata | </x-slot:title>
+    <x-slot:title>Tempat Wisata</x-slot:title>
+    <x-slot:pageTitle>Tempat Wisata Desa Jeruksawit - Destinasi Wisata Terbaik Karanganyar</x-slot:pageTitle>
+    <x-slot:metaDescription>Jelajahi tempat wisata menarik di Desa Jeruksawit, Karanganyar. Nikmati keindahan alam, wisata
+        budaya, dan berbagai destinasi menarik di desa wisata terbaik Jawa Tengah dengan pemandangan yang
+        memukau.</x-slot:metaDescription>
+    <x-slot:metaKeywords>wisata jeruksawit, tempat wisata karanganyar, destinasi jeruksawit, wisata desa jeruksawit,
+        wisata alam karanganyar, objek wisata jeruksawit, desa wisata jawa tengah</x-slot:metaKeywords>
+    <x-slot:ogTitle>Tempat Wisata Desa Jeruksawit - Destinasi Menarik Karanganyar</x-slot:ogTitle>
+    <x-slot:ogDescription>Temukan pesona wisata Desa Jeruksawit dengan berbagai destinasi menarik. Nikmati keindahan
+        alam, budaya lokal, dan pengalaman wisata tak terlupakan di Karanganyar.</x-slot:ogDescription>
+
+    @push('structured-data')
+        <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "TouristDestination",
+        "name": "Tempat Wisata Desa Jeruksawit",
+        "description": "Kumpulan destinasi wisata menarik di Desa Jeruksawit, Karanganyar yang menawarkan keindahan alam dan budaya lokal.",
+        "url": "{{ route('destinations') }}",
+        "isPartOf": {
+            "@type": "WebSite",
+            "name": "Desa Jeruksawit",
+            "url": "{{ url('/') }}"
+        },
+        "touristType": ["EcoTourist", "CulturalTourist", "NatureTourist"],
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Jeruksawit",
+            "addressRegion": "Karanganyar",
+            "addressCountry": "ID"
+        },
+        "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Beranda",
+                    "item": "{{ route('index') }}"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Wisata",
+                    "item": "{{ route('destinations') }}"
+                }
+            ]
+        }
+    }
+    </script>
+    @endpush
 
     <section class="px-6 mx-auto py-30 max-w-7xl font-inter">
         <div class="text-4xl font-extrabold text-center">

@@ -1,5 +1,65 @@
 <x-layouts.visitor-layout>
-    <x-slot:title>Wisata Selengkapnya | </x-slot:title>
+    <x-slot:title>{{ $destination->name }}</x-slot:title>
+    <x-slot:pageTitle>{{ $destination->name }} - Wisata Desa Jeruksawit Karanganyar</x-slot:pageTitle>
+    <x-slot:metaDescription>{{ Str::limit(strip_tags($destination->description), 155) ?: 'Nikmati keindahan ' . $destination->name . ' di Desa Jeruksawit, Karanganyar. Destinasi wisata menarik dengan pemandangan yang memukau dan fasilitas lengkap.' }}</x-slot:metaDescription>
+    <x-slot:metaKeywords>{{ strtolower($destination->name) }}, wisata {{ strtolower($destination->name) }}, destinasi
+        jeruksawit, wisata karanganyar, tempat wisata jeruksawit, {{ strtolower($destination->name) }}
+        karanganyar</x-slot:metaKeywords>
+    <x-slot:ogTitle>{{ $destination->name }} - Wisata Desa Jeruksawit</x-slot:ogTitle>
+    <x-slot:ogDescription>{{ Str::limit(strip_tags($destination->description), 155) ?: 'Jelajahi keindahan ' . $destination->name . ' di Desa Jeruksawit, Karanganyar. Destinasi wisata yang menawarkan pengalaman tak terlupakan.' }}</x-slot:ogDescription>
+    <x-slot:ogImage>{{ $destination->galleries->isNotEmpty() ? Storage::url($destination->galleries->first()->image_url) : asset('assets/img/Karanganyar.png') }}</x-slot:ogImage>
+
+    @push('structured-data')
+        <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "TouristAttraction",
+        "name": "{{ $destination->name }}",
+        "description": "{{ strip_tags($destination->description) }}",
+        "url": "{{ route('destinations.show', $destination->slug) }}",
+        @if($destination->galleries->isNotEmpty())
+        "image": [
+            @foreach($destination->galleries as $gallery)
+            "{{ Storage::url($gallery->image_url) }}"{{ !$loop->last ? ',' : '' }}
+            @endforeach
+        ],
+        @endif
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Jeruksawit",
+            "addressRegion": "Karanganyar",
+            "addressCountry": "ID"
+        },
+        "isPartOf": {
+            "@type": "TouristDestination",
+            "name": "Desa Jeruksawit"
+        },
+        "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Beranda",
+                    "item": "{{ route('index') }}"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Wisata",
+                    "item": "{{ route('destinations') }}"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 3,
+                    "name": "{{ $destination->name }}",
+                    "item": "{{ route('destinations.show', $destination->slug) }}"
+                }
+            ]
+        }
+    }
+    </script>
+    @endpush
 
     <div class="grid gap-5 px-4 mx-auto max-w-7xl md:grid-cols-2 md:px-6 pt-35 font-inter">
         <div class="">

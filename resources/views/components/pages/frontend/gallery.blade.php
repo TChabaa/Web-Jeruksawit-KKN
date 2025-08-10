@@ -1,5 +1,47 @@
 <x-layouts.visitor-layout>
-    <x-slot:title>Galeri | </x-slot:title>
+    <x-slot:title>Galeri</x-slot:title>
+    <x-slot:pageTitle>Galeri Foto Desa Jeruksawit - Dokumentasi Wisata dan Kegiatan</x-slot:pageTitle>
+    <x-slot:metaDescription>Kumpulan foto dan dokumentasi kegiatan di Desa Jeruksawit, Karanganyar. Lihat galeri wisata,
+        acara desa, dan momen bersejarah yang menampilkan keindahan dan kehidupan masyarakat Desa Jeruksawit.</x-slot:metaDescription>
+    <x-slot:metaKeywords>galeri desa jeruksawit, foto wisata jeruksawit, dokumentasi desa, galeri karanganyar, foto
+        kegiatan desa, wisata jeruksawit, galeri artikel</x-slot:metaKeywords>
+    <x-slot:ogTitle>Galeri Desa Jeruksawit - Dokumentasi Wisata dan Kegiatan</x-slot:ogTitle>
+    <x-slot:ogDescription>Nikmati koleksi foto dan dokumentasi kegiatan di Desa Jeruksawit. Temukan keindahan wisata dan
+        kehidupan masyarakat desa melalui galeri lengkap kami.</x-slot:ogDescription>
+
+    @push('structured-data')
+        <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "ImageGallery",
+        "name": "Galeri Desa Jeruksawit",
+        "description": "Kumpulan foto dan dokumentasi kegiatan di Desa Jeruksawit, Karanganyar.",
+        "url": "{{ route('galleries') }}",
+        "isPartOf": {
+            "@type": "WebSite",
+            "name": "Desa Jeruksawit",
+            "url": "{{ url('/') }}"
+        },
+        "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Beranda",
+                    "item": "{{ route('index') }}"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Galeri",
+                    "item": "{{ route('galleries') }}"
+                }
+            ]
+        }
+    }
+    </script>
+    @endpush
 
     <div class="pt-30 px-7">
         <div class="">

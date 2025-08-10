@@ -1,5 +1,55 @@
 <x-layouts.visitor-layout>
     <x-slot:title>Form {{ $title }}</x-slot:title>
+    <x-slot:pageTitle>Form {{ $title }} - Layanan Surat Online Desa Jeruksawit</x-slot:pageTitle>
+    <x-slot:metaDescription>Ajukan permohonan {{ $title }} (Surat Keterangan Tidak Mampu) secara online di Desa
+        Jeruksawit, Karanganyar. Untuk bantuan sosial, pembebasan biaya sekolah, dan keperluan administrasi
+        lainnya.</x-slot:metaDescription>
+    <x-slot:metaKeywords>form sktm jeruksawit, permohonan sktm online, surat keterangan tidak mampu, layanan surat
+        jeruksawit, sktm karanganyar, bantuan sosial jeruksawit</x-slot:metaKeywords>
+    <x-slot:ogTitle>Form {{ $title }} - Layanan Surat Online Desa Jeruksawit</x-slot:ogTitle>
+    <x-slot:ogDescription>Lengkapi formulir permohonan {{ $title }} secara online untuk bantuan sosial dan
+        keperluan administrasi lainnya.</x-slot:ogDescription>
+    <x-slot:metaRobots>noindex, follow</x-slot:metaRobots>
+
+    @push('structured-data')
+        <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Form {{ $title }}",
+        "description": "Formulir permohonan {{ $title }} online untuk masyarakat Desa Jeruksawit yang membutuhkan bantuan sosial.",
+        "url": "{{ route('layanan-surat.form', 'sktm') }}",
+        "isPartOf": {
+            "@type": "WebSite",
+            "name": "Desa Jeruksawit",
+            "url": "{{ url('/') }}"
+        },
+        "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Beranda",
+                    "item": "{{ route('index') }}"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Layanan Surat",
+                    "item": "{{ route('layanan-surat') }}"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 3,
+                    "name": "Form {{ $title }}",
+                    "item": "{{ route('layanan-surat.form', 'sktm') }}"
+                }
+            ]
+        }
+    }
+    </script>
+    @endpush
 
     <div class="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <!-- Header Section -->

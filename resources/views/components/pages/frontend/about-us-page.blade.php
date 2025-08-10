@@ -1,5 +1,59 @@
 <x-Layouts.visitor-layout>
-    <x-slot:title>Tentang Kami | </x-slot:title>
+    <x-slot:title>Tentang Kami</x-slot:title>
+    <x-slot:pageTitle>Tentang Kami - Profil Desa Jeruksawit Karanganyar</x-slot:pageTitle>
+    <x-slot:metaDescription>Pelajari lebih lanjut tentang Desa Jeruksawit, Karanganyar. Kenali sejarah, visi misi, perangkat
+        desa, dan komitmen kami dalam membangun desa wisata yang berkelanjutan dan sejahtera bagi masyarakat.</x-slot:metaDescription>
+    <x-slot:metaKeywords>tentang desa jeruksawit, profil desa jeruksawit, sejarah jeruksawit, perangkat desa jeruksawit,
+        visi misi jeruksawit, pemerintah desa karanganyar, profil karanganyar</x-slot:metaKeywords>
+    <x-slot:ogTitle>Tentang Kami - Profil Desa Jeruksawit Karanganyar</x-slot:ogTitle>
+    <x-slot:ogDescription>Mengenal lebih dekat Desa Jeruksawit, sejarah, perangkat desa, dan komitmen dalam membangun
+        desa wisata yang berkelanjutan di Karanganyar, Jawa Tengah.</x-slot:ogDescription>
+
+    @push('structured-data')
+        <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "AboutPage",
+        "name": "Tentang Desa Jeruksawit",
+        "description": "Halaman tentang Desa Jeruksawit yang berisi profil, sejarah, visi misi, dan informasi perangkat desa.",
+        "url": "{{ route('about-us') }}",
+        "mainEntity": {
+            "@type": "GovernmentOrganization",
+            "name": "Pemerintah Desa Jeruksawit",
+            "description": "Pemerintahan desa yang berkomitmen membangun Desa Jeruksawit sebagai desa wisata berkelanjutan.",
+            "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Jeruksawit",
+                "@type": "PostalAddress",
+                "addressRegion": "Karanganyar",
+                "addressCountry": "ID"
+            }
+        },
+        "isPartOf": {
+            "@type": "WebSite",
+            "name": "Desa Jeruksawit",
+            "url": "{{ url('/') }}"
+        },
+        "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Beranda",
+                    "item": "{{ route('index') }}"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Tentang Kami",
+                    "item": "{{ route('about-us') }}"
+                }
+            ]
+        }
+    }
+    </script>
+    @endpush
     <header>
         <x-partials.frontend.header />
     </header>

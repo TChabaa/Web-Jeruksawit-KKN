@@ -1,5 +1,13 @@
 <x-Layouts.visitor-layout>
-    <x-slot:title>404 - Halaman Tidak Ditemukan | </x-slot:title>
+    <x-slot:title>404 - Halaman Tidak Ditemukan</x-slot:title>
+    <x-slot:pageTitle>404 - Halaman Tidak Ditemukan | Desa Jeruksawit</x-slot:pageTitle>
+    <x-slot:metaDescription>Halaman yang Anda cari tidak ditemukan. Silakan kembali ke beranda atau gunakan navigasi untuk
+        menemukan informasi yang Anda butuhkan di website Desa Jeruksawit, Karanganyar.</x-slot:metaDescription>
+    <x-slot:metaKeywords>404, halaman tidak ditemukan, error, desa jeruksawit, karanganyar</x-slot:metaKeywords>
+    <x-slot:ogTitle>404 - Halaman Tidak Ditemukan | Desa Jeruksawit</x-slot:ogTitle>
+    <x-slot:ogDescription>Halaman yang Anda cari tidak tersedia. Silakan kembali ke halaman utama Desa
+        Jeruksawit.</x-slot:ogDescription>
+    <x-slot:metaRobots>noindex, nofollow</x-slot:metaRobots>
     <header>
         <x-partials.frontend.header />
     </header>

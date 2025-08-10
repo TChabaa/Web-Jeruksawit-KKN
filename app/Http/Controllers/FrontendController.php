@@ -14,6 +14,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Artisan;
 use App\Mail\SuratSubmissionMail;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\JenisSurat;
@@ -508,5 +509,141 @@ class FrontendController extends Controller
             ],
             default => []
         };
+    }
+
+    /**
+     * Generate sitemap.xml for SEO
+     */
+    public function sitemap()
+    {
+        // Check if sitemap.xml exists in public directory
+        $sitemapPath = public_path('sitemap.xml');
+
+        if (file_exists($sitemapPath)) {
+            // Return the generated sitemap file
+            return response()->file($sitemapPath, [
+                'Content-Type' => 'application/xml'
+            ]);
+        }
+
+        // If sitemap doesn't exist, generate it on the fly
+        $this->generateSitemapOnTheFly();
+
+        if (file_exists($sitemapPath)) {
+            return response()->file($sitemapPath, [
+                'Content-Type' => 'application/xml'
+            ]);
+        }
+
+        // Fallback: return basic XML response
+        return $this->generateBasicSitemap();
+    }
+
+    /**
+     * Generate sitemap on the fly using Artisan command
+     */
+    private function generateSitemapOnTheFly()
+    {
+        try {
+            Artisan::call('sitemap:generate');
+        } catch (\Exception $e) {
+            Log::error('Failed to generate sitemap: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Fallback method to generate basic sitemap
+     */
+    private function generateBasicSitemap()
+    {
+        $urls = collect();
+
+        // Static pages
+        $staticPages = [
+            ['url' => route('index'), 'priority' => '1.0', 'changefreq' => 'daily'],
+            ['url' => route('destinations'), 'priority' => '0.9', 'changefreq' => 'weekly'],
+            ['url' => route('umkm'), 'priority' => '0.9', 'changefreq' => 'weekly'],
+            ['url' => route('articles'), 'priority' => '0.8', 'changefreq' => 'daily'],
+            ['url' => route('galleries'), 'priority' => '0.7', 'changefreq' => 'weekly'],
+            ['url' => route('about-us'), 'priority' => '0.6', 'changefreq' => 'monthly'],
+            ['url' => route('layanan-surat'), 'priority' => '0.8', 'changefreq' => 'monthly'],
+        ];
+
+        foreach ($staticPages as $page) {
+            $urls->push([
+                'url' => $page['url'],
+                'lastmod' => now()->toAtomString(),
+                'priority' => $page['priority'],
+                'changefreq' => $page['changefreq']
+            ]);
+        }
+
+        // Dynamic destinations
+        $destinations = Destination::latest()->get();
+        foreach ($destinations as $destination) {
+            $urls->push([
+                'url' => route('destinations.show', $destination->slug),
+                'lastmod' => $destination->updated_at->toAtomString(),
+                'priority' => '0.8',
+                'changefreq' => 'monthly'
+            ]);
+        }
+
+        // Dynamic UMKM
+        $umkms = Umkm::latest()->get();
+        foreach ($umkms as $umkm) {
+            $urls->push([
+                'url' => route('umkm.show', $umkm->slug),
+                'lastmod' => $umkm->updated_at->toAtomString(),
+                'priority' => '0.7',
+                'changefreq' => 'monthly'
+            ]);
+        }
+
+        // Dynamic articles
+        $articles = Article::latest()->get();
+        foreach ($articles as $article) {
+            $urls->push([
+                'url' => route('articles.show', $article->slug),
+                'lastmod' => $article->updated_at->toAtomString(),
+                'priority' => '0.6',
+                'changefreq' => 'weekly'
+            ]);
+        }
+
+        $xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+        $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
+
+        foreach ($urls as $url) {
+            $xml .= '  <url>' . "\n";
+            $xml .= '    <loc>' . htmlspecialchars($url['url']) . '</loc>' . "\n";
+            $xml .= '    <lastmod>' . $url['lastmod'] . '</lastmod>' . "\n";
+            $xml .= '    <priority>' . $url['priority'] . '</priority>' . "\n";
+            $xml .= '    <changefreq>' . $url['changefreq'] . '</changefreq>' . "\n";
+            $xml .= '  </url>' . "\n";
+        }
+
+        $xml .= '</urlset>';
+
+        return response($xml, 200)->header('Content-Type', 'application/xml');
+    }
+
+    /**
+     * Generate robots.txt for SEO
+     */
+    public function robots()
+    {
+        $content = "User-agent: *\n";
+        $content .= "Disallow: /admin/\n";
+        $content .= "Disallow: /superadmin/\n";
+        $content .= "Disallow: /login\n";
+        $content .= "Disallow: /register\n";
+        $content .= "Disallow: /password/\n";
+        $content .= "Disallow: /profile\n";
+        $content .= "Allow: /\n";
+        $content .= "\n";
+        $content .= "Sitemap: " . route('sitemap') . "\n";
+
+        return response($content, 200)->header('Content-Type', 'text/plain');
     }
 }

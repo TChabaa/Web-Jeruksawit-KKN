@@ -3,18 +3,23 @@
     <div class="items-center gap-8 lg:grid lg:grid-cols-2 xl:gap-16">
         <div class="text-gray-700 sm:text-lg ">
             <h2 class="mb-4 text-3xl font-extrabold tracking-tight text-gray-900 gs_reveal ">Tentang Kami</h2>
-            <p class="gs_reveal gs_reveal_fromLeft">Desa Jeruksawit adalah desa yang terletak di Kecamatan Gondang Rejo, Kabupaten Karanganyar. Desa Jeruksawit memiliki 17 dusun diantaranya Banyuurip, Banyubening, Blimbing, Depel, Jeruksawit, 
-                Dukuhan, Jenggrik, Jurangkambil, Karanglo, Bendorjo, Kedunggong, Mojorejo, Plosokerep, Banyuanyar, Sebrungan, Plosorejo, Watugajah.
-            </p>
-            <a href="{{ route('about-us') }}"
-                class="gs_reveal gs_reveal_fromLeft inline-flex mt-3 items-center px-3 py-2 text-sm font-medium text-center text-white bg-[#A2AF9B] rounded-md focus:ring-4 focus:outline-none focus:ring-blue-300 hover:bg-opacity-90 ">
-                SELENGKAPNYA
-                <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                    fill="none" viewBox="0 0 14 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M1 5h12m0 0L9 1m4 4L9 9" />
-                </svg>
-            </a>
+            <p class="gs_reveal gs_reveal_fromLeft"><strong>Desa Jeruksawit</strong> di Kabupaten Karanganyar, Provinsi
+                Jawa Tengah. Desa ini berbatasan
+                langsung dengan <strong>Kota Surakarta</strong>,
+                memiliki akses strategis ke pusat kota dan kawasan industri.
+                <br><br>
+                Dikenal sebagai <strong>sentra peternakan ayam petelur & broiler</strong> sekaligus lokasi
+                <strong>berkembangnya cluster perumahan modern</strong>, Jeruksawit menjadi pilihan tepat untuk hunian
+                dan peluang usaha.
+                <a href="{{ route('about-us') }}"
+                    class="gs_reveal gs_reveal_fromLeft inline-flex mt-3 items-center px-3 py-2 text-sm font-medium text-center text-white bg-[#A2AF9B] rounded-md focus:ring-4 focus:outline-none focus:ring-blue-300 hover:bg-opacity-90 ">
+                    SELENGKAPNYA
+                    <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                        fill="none" viewBox="0 0 14 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M1 5h12m0 0L9 1m4 4L9 9" />
+                    </svg>
+                </a>
         </div>
         <img class="hidden w-full mb-4 rounded-lg lg:mb-0 lg:flex gs_reveal gs_reveal_fromRight"
             src="{{ asset('assets/img/dummy-vilage.jpg') }}" alt="dashboard feature image">

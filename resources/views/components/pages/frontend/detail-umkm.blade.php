@@ -1,5 +1,69 @@
 <x-layouts.visitor-layout>
-    <x-slot:title>UMKM Selengkapnya | </x-slot:title>
+    <x-slot:title>{{ $umkm->name }}</x-slot:title>
+    <x-slot:pageTitle>{{ $umkm->name }} - UMKM Desa Jeruksawit Karanganyar</x-slot:pageTitle>
+    <x-slot:metaDescription>{{ Str::limit(strip_tags($umkm->description), 155) ?: 'Produk berkualitas dari ' . $umkm->name . ', UMKM unggulan di Desa Jeruksawit, Karanganyar. Dukung ekonomi lokal dengan produk asli dan berkualitas tinggi.' }}</x-slot:metaDescription>
+    <x-slot:metaKeywords>{{ strtolower($umkm->name) }}, umkm {{ strtolower($umkm->name) }}, produk jeruksawit, umkm
+        karanganyar, usaha lokal jeruksawit, {{ strtolower($umkm->name) }} karanganyar</x-slot:metaKeywords>
+    <x-slot:ogTitle>{{ $umkm->name }} - UMKM Desa Jeruksawit</x-slot:ogTitle>
+    <x-slot:ogDescription>{{ Str::limit(strip_tags($umkm->description), 155) ?: 'Temukan produk berkualitas dari ' . $umkm->name . ', salah satu UMKM unggulan di Desa Jeruksawit, Karanganyar.' }}</x-slot:ogDescription>
+    <x-slot:ogImage>{{ $umkm->gambarUmkm->isNotEmpty() ? Storage::url($umkm->gambarUmkm->first()->image_url) : asset('assets/img/Karanganyar.png') }}</x-slot:ogImage>
+
+    @push('structured-data')
+        <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "{{ $umkm->name }}",
+        "description": "{{ strip_tags($umkm->description) }}",
+        "url": "{{ route('umkm.show', $umkm->slug) }}",
+        @if($umkm->gambarUmkm->isNotEmpty())
+        "image": [
+            @foreach($umkm->gambarUmkm as $gambar)
+            "{{ Storage::url($gambar->image_url) }}"{{ !$loop->last ? ',' : '' }}
+            @endforeach
+        ],
+        @endif
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Jeruksawit",
+            "addressRegion": "Karanganyar",
+            "addressCountry": "ID"
+        },
+        "telephone": "{{ $umkm->contactUmkm->phone ?? '' }}",
+        "email": "{{ $umkm->contactUmkm->email ?? '' }}",
+        "priceRange": "$$",
+        "openingHoursSpecification": {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+            "opens": "08:00",
+            "closes": "17:00"
+        },
+        "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Beranda",
+                    "item": "{{ route('index') }}"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "UMKM",
+                    "item": "{{ route('umkm') }}"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 3,
+                    "name": "{{ $umkm->name }}",
+                    "item": "{{ route('umkm.show', $umkm->slug) }}"
+                }
+            ]
+        }
+    }
+    </script>
+    @endpush
 
     <div class="grid gap-5 px-4 mx-auto max-w-7xl md:grid-cols-2 md:px-6 pt-35 font-inter">
         <div class="">

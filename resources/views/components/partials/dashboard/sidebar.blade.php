@@ -180,6 +180,17 @@
                                 </a>
                             </li>
                         @endif
+
+                        <!-- Back to Frontend Button -->
+                        <li class="mt-6 pt-4 border-t border-graydark-dashboard">
+                            <a class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out bg-green-700 hover:bg-green-800"
+                                href="{{ route('index') }}" target="_blank">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                    style="fill: rgb(255, 255, 255);transform: ;msFilter:;">
+                                    <path d="M12 2.1L1 12h3v9h6v-6h4v6h6v-9h3L12 2.1z"></path>
+                                </svg> Kembali ke Website
+                            </a>
+                        </li>
                     </ul>
                 </div>
             @else

@@ -1,6 +1,48 @@
 <x-layouts.visitor-layout>
 
-    <x-slot:title>UMKM | </x-slot:title>
+    <x-slot:title>UMKM</x-slot:title>
+    <x-slot:pageTitle>UMKM Desa Jeruksawit - Produk Lokal Unggulan Karanganyar</x-slot:pageTitle>
+    <x-slot:metaDescription>Temukan berbagai produk UMKM unggulan dari Desa Jeruksawit, Karanganyar. Dukung ekonomi lokal
+        dengan membeli produk berkualitas dari usaha mikro kecil menengah terbaik di desa wisata Jeruksawit.</x-slot:metaDescription>
+    <x-slot:metaKeywords>umkm jeruksawit, produk lokal jeruksawit, usaha desa jeruksawit, ekonomi kreatif karanganyar,
+        umkm karanganyar, produk unggulan jeruksawit, usaha mikro jeruksawit</x-slot:metaKeywords>
+    <x-slot:ogTitle>UMKM Desa Jeruksawit - Produk Lokal Unggulan</x-slot:ogTitle>
+    <x-slot:ogDescription>Jelajahi berbagai produk UMKM berkualitas dari Desa Jeruksawit. Dukung ekonomi lokal dan
+        temukan produk unik dari pengusaha kreatif desa wisata terbaik di Karanganyar.</x-slot:ogDescription>
+
+    @push('structured-data')
+        <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "UMKM Desa Jeruksawit",
+        "description": "Kumpulan produk UMKM unggulan dari Desa Jeruksawit, Karanganyar yang mendukung ekonomi lokal dan kreativitas masyarakat desa.",
+        "url": "{{ route('umkm') }}",
+        "isPartOf": {
+            "@type": "WebSite",
+            "name": "Desa Jeruksawit",
+            "url": "{{ url('/') }}"
+        },
+        "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Beranda",
+                    "item": "{{ route('index') }}"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "UMKM",
+                    "item": "{{ route('umkm') }}"
+                }
+            ]
+        }
+    }
+    </script>
+    @endpush
 
     <section class="px-6 mx-auto py-30 max-w-7xl font-inter">
         <div class="text-4xl font-extrabold text-center">

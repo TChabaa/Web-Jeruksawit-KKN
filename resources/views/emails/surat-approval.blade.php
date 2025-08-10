@@ -1,21 +1,44 @@
 <x-mail::message>
-    # Surat {{ $surat->jenisSurat->nama_jenis }} Disetujui
+    <div style="text-align: center; margin-bottom: 20px; font-family: Calibri, Arial, sans-serif;">
+        <img src="{{ asset('assets/img/logo.png') }}" alt="Logo Pemerintah Desa Jeruksawit"
+            style="width: 120px; height: auto; margin: 0 auto;">
+    </div>
 
-    Yth. {{ $pemohon->nama_lengkap }},
+    <h1
+        style="font-family: Calibri, Arial, sans-serif; font-weight: 700; font-size: 24px; color: #0d9488; margin-bottom: 20px;">
+        Pemberitahuan Persetujuan Surat {{ $surat->jenisSurat->nama_jenis }}
+    </h1>
 
-    Kami dengan senang hati menginformasikan bahwa permohonan surat {{ $surat->jenisSurat->nama_jenis }} Anda telah
-    **disetujui**.
+    <p style="font-family: Calibri, Arial, sans-serif;">Yth. <strong>{{ $pemohon->nama_lengkap }}</strong>,</p>
 
-    ## Detail Surat
-    - **Jenis Surat**: {{ $surat->jenisSurat->nama_jenis }}
-    - **Nomor Surat**: {{ $surat->nomor_surat }}
-    - **Tanggal Persetujuan**: {{ \Carbon\Carbon::parse($surat->updated_at)->format('d F Y') }}
+    <p style="font-family: Calibri, Arial, sans-serif;">
+        Dengan hormat,<br>
+        Kami informasikan bahwa permohonan <strong>Surat {{ $surat->jenisSurat->nama_jenis }}</strong> Anda telah
+        <span style="color: #059669; font-weight: 600;">disetujui</span> oleh Pemerintah Desa Jeruksawit.
+    </p>
 
-    Surat resmi telah dilampirkan dalam email ini dalam format PDF. Silakan download dan simpan surat tersebut untuk
-    keperluan Anda.
+    <h2
+        style="font-family: Calibri, Arial, sans-serif; font-weight: 600; font-size: 18px; margin-top: 30px; margin-bottom: 10px;">
+        Detail Surat</h2>
+    <ul
+        style="font-family: Calibri, Arial, sans-serif; list-style-type: none; padding-left: 0; font-size: 14px; line-height: 1.6;">
+        <li><strong>Jenis Surat:</strong> {{ $surat->jenisSurat->nama_jenis }}</li>
+        <li><strong>Nomor Surat:</strong> {{ $surat->nomor_surat }}</li>
+        <li><strong>Tanggal Persetujuan:</strong> {{ \Carbon\Carbon::parse($surat->updated_at)->format('d F Y') }}</li>
+    </ul>
 
-    Terima kasih atas kepercayaan Anda kepada layanan kami.
+    <p style="font-family: Calibri, Arial, sans-serif;">
+        Surat resmi dalam format PDF telah kami lampirkan pada email ini. Silakan unduh dan simpan untuk keperluan
+        administrasi Anda.
+    </p>
 
-    Hormat kami,<br>
-    **Pemerintah Desa Jeruksawit**
+    <p style="font-family: Calibri, Arial, sans-serif;">
+        Terima kasih atas kepercayaan dan kerjasama Anda menggunakan layanan kami.
+    </p>
+
+    <br>
+    <p style="font-family: Calibri, Arial, sans-serif;">
+        Hormat kami,<br>
+        <strong>Pemerintah Desa Jeruksawit</strong>
+    </p>
 </x-mail::message>

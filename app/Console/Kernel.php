@@ -40,6 +40,14 @@ class Kernel extends ConsoleKernel
             ->at('04:00')
             ->name('queue-restart')
             ->withoutOverlapping();
+
+        // Generate sitemap daily at 1 AM
+        $schedule->command('sitemap:generate')
+            ->daily()
+            ->at('01:00')
+            ->name('sitemap-generate')
+            ->withoutOverlapping()
+            ->onOneServer();
     }
 
     /**

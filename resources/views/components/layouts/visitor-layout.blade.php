@@ -1,27 +1,95 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id" dir="ltr">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    {{-- Basic SEO Meta Tags --}}
+    <title>{{ $title ?? 'Beranda' }} Desa Jeruksawit - {{ $pageTitle ?? 'Portal Resmi Desa Jeruksawit Karanganyar' }}
+    </title>
+    <meta name="description"
+        content="{{ $metaDescription ?? 'Portal resmi Desa Jeruksawit, Karanganyar. Nikmati wisata, UMKM lokal, layanan surat menyurat online, dan informasi terkini tentang desa wisata terbaik di Karanganyar.' }}">
+    <meta name="keywords"
+        content="{{ $metaKeywords ?? 'desa jeruksawit, karanganyar, wisata desa, umkm, layanan surat, pemerintah desa, wisata karanganyar, desa wisata jawa tengah' }}">
+    <meta name="author" content="Pemerintah Desa Jeruksawit">
+    <meta name="robots" content="{{ $metaRobots ?? 'index, follow' }}">
+    <link rel="canonical" href="{{ $canonicalUrl ?? url()->current() }}">
+
+    {{-- Open Graph Meta Tags --}}
+    <meta property="og:title" content="{{ $ogTitle ?? ($title ?? 'Beranda') . ' Desa Jeruksawit' }}">
+    <meta property="og:description"
+        content="{{ $ogDescription ?? ($metaDescription ?? 'Portal resmi Desa Jeruksawit, Karanganyar. Nikmati wisata, UMKM lokal, layanan surat menyurat online, dan informasi terkini tentang desa wisata terbaik di Karanganyar.') }}">
+    <meta property="og:image" content="{{ $ogImage ?? asset('assets/img/Karanganyar.png') }}">
+    <meta property="og:url" content="{{ $ogUrl ?? url()->current() }}">
+    <meta property="og:type" content="{{ $ogType ?? 'website' }}">
+    <meta property="og:site_name" content="Desa Jeruksawit">
+    <meta property="og:locale" content="id_ID">
+
+    {{-- Twitter Card Meta Tags --}}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $twitterTitle ?? ($title ?? 'Beranda') . ' Desa Jeruksawit' }}">
+    <meta name="twitter:description"
+        content="{{ $twitterDescription ?? ($metaDescription ?? 'Portal resmi Desa Jeruksawit, Karanganyar. Nikmati wisata, UMKM lokal, layanan surat menyurat online, dan informasi terkini tentang desa wisata terbaik di Karanganyar.') }}">
+    <meta name="twitter:image" content="{{ $twitterImage ?? asset('assets/img/Karanganyar.png') }}">
+
+    {{-- Additional SEO Meta Tags --}}
+    <meta name="theme-color" content="#A2AF9B">
+    <meta name="msapplication-TileColor" content="#A2AF9B">
+    <meta name="geo.region" content="ID-JI">
+    <meta name="geo.placename" content="Jeruksawit, Karanganyar">
+    <meta name="ICBM" content="-7.5167, 110.8167">
+    <meta name="language" content="Indonesian">
+    <meta name="distribution" content="global">
+    <meta name="rating" content="general">
+    <meta name="coverage" content="Worldwide">
+    <meta name="target" content="all">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    {{-- Favicon and Icons --}}
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/img/Karanganyar.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/img/Karanganyar.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('assets/img/Karanganyar.png') }}">
     <link rel="shortcut icon" href="{{ asset('assets/img/Karanganyar.png') }}" type="image/x-icon">
 
-    {{-- FLowbite --}}
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
+    {{-- Structured Data for Organization --}}
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "GovernmentOrganization",
+        "name": "Pemerintah Desa Jeruksawit",
+        "alternateName": "Desa Jeruksawit",
+        "description": "Portal resmi Pemerintah Desa Jeruksawit, Karanganyar yang menyediakan informasi wisata, UMKM, dan layanan administrasi kepada masyarakat.",
+        "url": "{{ url('/') }}",
+        "logo": "{{ asset('assets/img/Karanganyar.png') }}",
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Jeruksawit",
+            "addressRegion": "Karanganyar",
+            "addressCountry": "ID"
+        },
+        "areaServed": {
+            "@type": "Place",
+            "name": "Desa Jeruksawit, Karanganyar"
+        }
+    }
+    </script>
 
-    {{-- Aos --}}
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
-    {{-- google fonts --}}
+    {{-- External CSS with Performance Optimization --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     @stack('style')
+    @stack('structured-data')
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <title>{{ $title ?? '' }} Desa Jeruksawit</title>
 </head>
 
 <body>
@@ -29,7 +97,8 @@
         <nav class="bg-white border-gray-200 py-2.5">
             <div class="flex flex-wrap items-center justify-between max-w-screen-xl px-4 mx-auto lg:px-8 ">
                 <div href="#" class="flex items-center">
-                    <img src="{{ asset('assets/img/Karanganyar.png') }}" class="h-12 mr-3 md:h-20" alt="Desa Jeruksawit" />
+                    <img src="{{ asset('assets/img/Karanganyar.png') }}" class="h-12 mr-3 md:h-20"
+                        alt="Desa Jeruksawit" />
                 </div>
 
                 <button data-collapse-toggle="mobile-menu-2" type="button"
