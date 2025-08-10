@@ -10,6 +10,7 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\UmkmController;
+use App\Http\Controllers\EmailQueueController;
 
 
 // Route untuk melihat bentuk PDF
@@ -283,6 +284,13 @@ Route::middleware([
         // Website Settings
         Route::get('/website-settings', [\App\Http\Controllers\Admin\WebsiteSettingController::class, 'index'])->name('website-settings.index');
         Route::put('/website-settings', [\App\Http\Controllers\Admin\WebsiteSettingController::class, 'update'])->name('website-settings.update');
+
+        // Email Queue Management (cPanel Friendly)
+        Route::get('/email-queue', [EmailQueueController::class, 'index'])->name('email-queue.index');
+        Route::post('/email-queue/process', [EmailQueueController::class, 'processQueue'])->name('email-queue.process');
+        Route::post('/email-queue/test', [EmailQueueController::class, 'testEmail'])->name('email-queue.test');
+        Route::post('/email-queue/clear-failed', [EmailQueueController::class, 'clearFailedJobs'])->name('email-queue.clear-failed');
+        Route::get('/email-queue/stats', [EmailQueueController::class, 'getStats'])->name('email-queue.stats');
     });
 
     // owner

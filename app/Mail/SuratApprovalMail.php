@@ -18,7 +18,9 @@ class SuratApprovalMail extends Mailable implements ShouldQueue
     public $pemohon;
     public $pdfPath;
     public $tries = 3;
-    public $backoff = [30, 60, 120]; // Retry after 30s, 60s, 120s
+    public $timeout = 300; // Longer timeout for PDF attachments
+    public $retryUntil;
+    public $backoff = [60, 120, 300]; // Longer delays for PDF emails
 
     /**
      * Create a new message instance.
@@ -28,7 +30,13 @@ class SuratApprovalMail extends Mailable implements ShouldQueue
         $this->surat = $surat;
         $this->pemohon = $pemohon;
         $this->pdfPath = $pdfPath;
-        $this->onQueue('emails'); // Use dedicated email queue
+
+        // Set queue configuration
+        $this->onQueue('emails');
+        $this->retryUntil = now()->addHours(12); // Longer retry for important approval emails
+
+        // Slight delay to prevent spam
+        $this->delay(now()->addSeconds(rand(10, 30)));
     }
 
     /**

@@ -490,7 +490,7 @@ class LayananSuratController extends Controller
                     'tempat_lahir' => $data['tempat_lahir_anak'],
                     'penolong_kelahiran' => $data['penolong_kelahiran'],
                     'ibu' => $data['ibu'], // Default value if not provided
-                    'ayah' => $data['ayah']// Default value
+                    'ayah' => $data['ayah'] // Default value
                 ]);
                 break;
 
@@ -543,7 +543,7 @@ class LayananSuratController extends Controller
             case 'domisili-orang':
                 DetailDomisiliOrang::create([
                     'id_surat' => $idSurat,
-                    'purpose' => $data['keperluan'],
+                    'keperluan' => $data['keperluan'],
                 ]);
                 break;
         }
@@ -660,7 +660,7 @@ class LayananSuratController extends Controller
                 'keterangan_lokasi' => 'required|string|max:255',
             ],
             'domisili-orang' => [
-                // No additional fields needed since only id_surat is required
+                'keperluan' => 'required|string|max:255',
             ],
             default => []
         };

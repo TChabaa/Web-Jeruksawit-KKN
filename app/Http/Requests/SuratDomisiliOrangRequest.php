@@ -27,7 +27,7 @@ class SuratDomisiliOrangRequest extends FormRequest
             'agama' => 'required|string|max:50',
             'pekerjaan' => 'required|string|max:100',
             'status_perkawinan' => 'required|string|max:50',
-            'purpose' => 'required|string|max:255',
+            'keperluan' => 'required|string|max:255',
             'notes' => 'nullable|string|max:1000',
 
             // Detail Domisili Orang - no additional fields required since table only has id_surat

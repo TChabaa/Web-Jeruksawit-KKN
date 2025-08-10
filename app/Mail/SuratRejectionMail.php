@@ -17,7 +17,9 @@ class SuratRejectionMail extends Mailable implements ShouldQueue
     public $pemohon;
     public $catatan;
     public $tries = 3;
-    public $backoff = [15, 30, 60]; // Retry after 15s, 30s, 60s
+    public $timeout = 120;
+    public $retryUntil;
+    public $backoff = [30, 60, 120]; // Standard retry intervals
 
     /**
      * Create a new message instance.
@@ -27,7 +29,13 @@ class SuratRejectionMail extends Mailable implements ShouldQueue
         $this->surat = $surat;
         $this->pemohon = $pemohon;
         $this->catatan = $catatan;
-        $this->onQueue('emails'); // Use dedicated email queue
+
+        // Set queue configuration
+        $this->onQueue('emails');
+        $this->retryUntil = now()->addHours(6); // Retry for up to 6 hours
+
+        // Rate limiting - delay between emails
+        $this->delay(now()->addSeconds(rand(5, 20)));
     }
 
     /**

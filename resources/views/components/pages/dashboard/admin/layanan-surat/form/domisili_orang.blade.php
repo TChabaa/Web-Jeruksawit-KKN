@@ -7,7 +7,8 @@
             <div class="flex items-center justify-between">
                 <div>
                     <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Form {{ $title }}</h1>
-                    <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">Isi formulir permohonan surat {{ $title }}</p>
+                    <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">Isi formulir permohonan surat
+                        {{ $title }}</p>
                 </div>
                 <a href="{{ route(auth()->user()->role . '.layanan-surat.create') }}"
                     class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
@@ -35,7 +36,9 @@
                     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                         <!-- Nama Lengkap -->
                         <div>
-                            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Nama Lengkap *</label>
+                            <label for="name"
+                                class="block text-sm font-medium text-gray-700 dark:text-gray-200">Nama Lengkap
+                                *</label>
                             <input type="text" name="name" id="name" value="{{ old('name') }}" required
                                 class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
                             @error('name')
@@ -45,7 +48,8 @@
 
                         <!-- NIK -->
                         <div>
-                            <label for="nik" class="block text-sm font-medium text-gray-700 dark:text-gray-200">NIK *</label>
+                            <label for="nik" class="block text-sm font-medium text-gray-700 dark:text-gray-200">NIK
+                                *</label>
                             <input type="text" name="nik" id="nik" value="{{ old('nik') }}" required
                                 maxlength="16" pattern="[0-9]{16}"
                                 class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
@@ -56,7 +60,8 @@
 
                         <!-- Nomor KK -->
                         <div>
-                            <label for="nomor_kk" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Nomor Kartu Keluarga
+                            <label for="nomor_kk"
+                                class="block text-sm font-medium text-gray-700 dark:text-gray-200">Nomor Kartu Keluarga
                                 *</label>
                             <input type="text" name="nomor_kk" id="nomor_kk" value="{{ old('nomor_kk') }}" required
                                 maxlength="16" pattern="[0-9]{16}"
@@ -68,7 +73,8 @@
 
                         <!-- Tempat Lahir -->
                         <div>
-                            <label for="tempat_lahir" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Tempat Lahir
+                            <label for="tempat_lahir"
+                                class="block text-sm font-medium text-gray-700 dark:text-gray-200">Tempat Lahir
                                 *</label>
                             <input type="text" name="tempat_lahir" id="tempat_lahir"
                                 value="{{ old('tempat_lahir') }}" required
@@ -80,7 +86,8 @@
 
                         <!-- Tanggal Lahir -->
                         <div>
-                            <label for="tanggal_lahir" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Tanggal Lahir
+                            <label for="tanggal_lahir"
+                                class="block text-sm font-medium text-gray-700 dark:text-gray-200">Tanggal Lahir
                                 *</label>
                             <input type="date" name="tanggal_lahir" id="tanggal_lahir"
                                 value="{{ old('tanggal_lahir') }}" required
@@ -92,7 +99,8 @@
 
                         <!-- Jenis Kelamin -->
                         <div>
-                            <label for="jenis_kelamin" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Jenis Kelamin
+                            <label for="jenis_kelamin"
+                                class="block text-sm font-medium text-gray-700 dark:text-gray-200">Jenis Kelamin
                                 *</label>
                             <select name="jenis_kelamin" id="jenis_kelamin" required
                                 class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
@@ -109,7 +117,8 @@
 
                         <!-- Agama -->
                         <div>
-                            <label for="agama" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Agama *</label>
+                            <label for="agama"
+                                class="block text-sm font-medium text-gray-700 dark:text-gray-200">Agama *</label>
                             <select name="agama" id="agama" required
                                 class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
                                 <option value="">Pilih Agama</option>
@@ -130,7 +139,8 @@
 
                         <!-- Status Perkawinan -->
                         <div>
-                            <label for="status_perkawinan" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Status
+                            <label for="status_perkawinan"
+                                class="block text-sm font-medium text-gray-700 dark:text-gray-200">Status
                                 Perkawinan *</label>
                             <select name="status_perkawinan" id="status_perkawinan" required
                                 class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
@@ -154,7 +164,8 @@
 
                         <!-- Pekerjaan -->
                         <div>
-                            <label for="pekerjaan" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Pekerjaan *</label>
+                            <label for="pekerjaan"
+                                class="block text-sm font-medium text-gray-700 dark:text-gray-200">Pekerjaan *</label>
                             <input type="text" name="pekerjaan" id="pekerjaan" value="{{ old('pekerjaan') }}"
                                 required
                                 class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
@@ -165,7 +176,8 @@
 
                         <!-- Email -->
                         <div>
-                            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Email *</label>
+                            <label for="email"
+                                class="block text-sm font-medium text-gray-700 dark:text-gray-200">Email *</label>
                             <input type="email" name="email" id="email" value="{{ old('email') }}"
                                 required
                                 class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
@@ -176,7 +188,8 @@
 
                         <!-- Phone -->
                         <div>
-                            <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Nomor Telepon
+                            <label for="phone"
+                                class="block text-sm font-medium text-gray-700 dark:text-gray-200">Nomor Telepon
                                 *</label>
                             <input type="tel" name="phone" id="phone" value="{{ old('phone') }}"
                                 required
@@ -189,7 +202,8 @@
 
                     <!-- Alamat -->
                     <div class="mt-6">
-                        <label for="address" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Alamat Lengkap *</label>
+                        <label for="address"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-200">Alamat Lengkap *</label>
                         <textarea name="address" id="address" rows="3" required
                             class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white">{{ old('address') }}</textarea>
                         @error('address')
@@ -201,7 +215,8 @@
                 <!-- Detail Domisili Orang Section -->
                 <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-600">
                     <h3 class="text-lg font-medium text-gray-900 dark:text-white">Detail {{ $title }}</h3>
-                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">Permohonan surat keterangan domisili untuk keperluan
+                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">Permohonan surat keterangan domisili untuk
+                        keperluan
                         administrasi
                     </p>
                 </div>
@@ -232,27 +247,30 @@
                 <!-- Additional Information Section -->
                 <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-600">
                     <h3 class="text-lg font-medium text-gray-900 dark:text-white">Informasi Tambahan</h3>
-                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">Informasi pendukung untuk permohonan surat</p>
+                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">Informasi pendukung untuk permohonan surat
+                    </p>
                 </div>
 
                 <div class="px-6 pb-6">
                     <div class="grid grid-cols-1 gap-6">
-                        <!-- Purpose -->
+                        <!-- keperluan -->
                         <div>
-                            <label for="purpose" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Tujuan/Maksud
+                            <label for="keperluan"
+                                class="block text-sm font-medium text-gray-700 dark:text-gray-200">Tujuan/Maksud
                                 Pengajuan *</label>
-                            <input type="text" name="purpose" id="purpose" value="{{ old('purpose') }}"
+                            <input type="text" name="keperluan" id="keperluan" value="{{ old('keperluan') }}"
                                 required
                                 placeholder="Contoh: Keperluan administrasi bank, pengajuan beasiswa, keperluan kerja"
                                 class="mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
-                            @error('purpose')
+                            @error('keperluan')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <!-- Notes -->
                         <div>
-                            <label for="notes" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Catatan
+                            <label for="notes"
+                                class="block text-sm font-medium text-gray-700 dark:text-gray-200">Catatan
                                 Tambahan</label>
                             <textarea name="notes" id="notes" rows="3"
                                 placeholder="Informasi tambahan mengenai domisili atau keperluan surat"
