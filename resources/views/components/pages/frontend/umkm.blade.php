@@ -46,7 +46,7 @@
 
     <section class="px-6 mx-auto py-30 max-w-7xl font-inter">
         <div class="text-4xl font-extrabold text-center">
-            <h1 class="font-inter">UMKM Desa Wisata</h1>
+            <h1 class="font-inter">UMKM Desa Jeruksawit</h1>
         </div>
         <div class="">
 

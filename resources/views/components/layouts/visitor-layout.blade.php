@@ -271,7 +271,7 @@
 
             </div>
         </div>
-        <div class="bg-green-new">
+        <div class="bg-#A2AF9B">
             <div class="container px-5 py-4 mx-auto">
                 <p class="text-sm font-bold text-center text-white capitalize font-inter">Copyright
                     {{ date('Y') }} Desa
