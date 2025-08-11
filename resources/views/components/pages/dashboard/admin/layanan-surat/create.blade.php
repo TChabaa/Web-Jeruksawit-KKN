@@ -6,11 +6,11 @@
         <div class="mb-8">
             <div class="flex items-center justify-between">
                 <div>
-                    <h1 class="text-2xl font-bold text-gray-900">Pilih Jenis Surat</h1>
-                    <p class="mt-2 text-sm text-gray-700">Pilih jenis surat yang akan dibuat</p>
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Pilih Jenis Surat</h1>
+                    <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">Pilih jenis surat yang akan dibuat</p>
                 </div>
                 <a href="{{ route(auth()->user()->role . '.layanan-surat') }}"
-                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
                     <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
@@ -23,7 +23,8 @@
         <!-- Letter Type Grid -->
         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             <!-- SKCK -->
-            <div class="bg-white overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-200">
+            <div
+                class="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-200">
                 <div class="p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
@@ -37,16 +38,16 @@
                             </div>
                         </div>
                         <div class="ml-5 w-0 flex-1">
-                            <h3 class="text-lg font-medium text-gray-900">SKCK</h3>
+                            <h3 class="text-lg font-medium text-gray-900 dark:text-white">SKCK</h3>
                         </div>
                     </div>
-                    <p class="mt-2 text-sm text-gray-500">
+                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-300">
                         Surat Keterangan Catatan Kepolisian untuk keperluan administrasi yang memerlukan bukti tidak
                         memiliki catatan kriminal.
                     </p>
                     <div class="mt-4">
                         <a href="{{ route(auth()->user()->role . '.layanan-surat.form', 'skck') }}"
-                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
                             Buat Surat
                         </a>
                     </div>
@@ -54,7 +55,8 @@
             </div>
 
             <!-- Izin Keramaian -->
-            <div class="bg-white overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-200">
+            <div
+                class="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-200">
                 <div class="p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
@@ -68,16 +70,16 @@
                             </div>
                         </div>
                         <div class="ml-5 w-0 flex-1">
-                            <h3 class="text-lg font-medium text-gray-900">Izin Keramaian</h3>
+                            <h3 class="text-lg font-medium text-gray-900 dark:text-white">Izin Keramaian</h3>
                         </div>
                     </div>
-                    <p class="mt-2 text-sm text-gray-500">
+                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-300">
                         Surat izin untuk mengadakan acara/keramaian seperti hajatan, konser, atau acara lainnya yang
                         melibatkan banyak orang.
                     </p>
                     <div class="mt-4">
                         <a href="{{ route(auth()->user()->role . '.layanan-surat.form', 'izin-keramaian') }}"
-                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-purple-600 border border-transparent rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
+                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-purple-600 border border-transparent rounded-md hover:bg-purple-700 dark:bg-purple-700 dark:hover:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
                             Buat Surat
                         </a>
                     </div>
@@ -85,7 +87,8 @@
             </div>
 
             <!-- Keterangan Usaha -->
-            <div class="bg-white overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-200">
+            <div
+                class="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-200">
                 <div class="p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
@@ -99,16 +102,16 @@
                             </div>
                         </div>
                         <div class="ml-5 w-0 flex-1">
-                            <h3 class="text-lg font-medium text-gray-900">Keterangan Usaha</h3>
+                            <h3 class="text-lg font-medium text-gray-900 dark:text-white">Keterangan Usaha</h3>
                         </div>
                     </div>
-                    <p class="mt-2 text-sm text-gray-500">
+                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-300">
                         Surat keterangan untuk keperluan usaha yang biasanya digunakan untuk keperluan pengajuan kredit
                         atau legalitas usaha.
                     </p>
                     <div class="mt-4">
                         <a href="{{ route(auth()->user()->role . '.layanan-surat.form', 'keterangan-usaha') }}"
-                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-md hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
                             Buat Surat
                         </a>
                     </div>
@@ -116,7 +119,8 @@
             </div>
 
             <!-- SKTM -->
-            <div class="bg-white overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-200">
+            <div
+                class="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-200">
                 <div class="p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
@@ -130,16 +134,16 @@
                             </div>
                         </div>
                         <div class="ml-5 w-0 flex-1">
-                            <h3 class="text-lg font-medium text-gray-900">SKTM</h3>
+                            <h3 class="text-lg font-medium text-gray-900 dark:text-white">SKTM</h3>
                         </div>
                     </div>
-                    <p class="mt-2 text-sm text-gray-500">
+                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-300">
                         Surat Keterangan Tidak Mampu diperlukan untuk berbagai keperluan administratif, seperti bantuan
                         sosial, pembebasan biaya sekolah.
                     </p>
                     <div class="mt-4">
                         <a href="{{ route(auth()->user()->role . '.layanan-surat.form', 'sktm') }}"
-                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-yellow-600 border border-transparent rounded-md hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2">
+                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-yellow-600 border border-transparent rounded-md hover:bg-yellow-700 dark:bg-yellow-700 dark:hover:bg-yellow-800 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
                             Buat Surat
                         </a>
                     </div>
@@ -147,7 +151,8 @@
             </div>
 
             <!-- Belum Menikah -->
-            <div class="bg-white overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-200">
+            <div
+                class="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-200">
                 <div class="p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
@@ -161,16 +166,16 @@
                             </div>
                         </div>
                         <div class="ml-5 w-0 flex-1">
-                            <h3 class="text-lg font-medium text-gray-900">Belum Menikah</h3>
+                            <h3 class="text-lg font-medium text-gray-900 dark:text-white">Belum Menikah</h3>
                         </div>
                     </div>
-                    <p class="mt-2 text-sm text-gray-500">
+                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-300">
                         Surat keterangan belum menikah yang biasanya digunakan untuk keperluan administrasi, pendaftaran
                         pernikahan, atau keperluan lainnya.
                     </p>
                     <div class="mt-4">
                         <a href="{{ route(auth()->user()->role . '.layanan-surat.form', 'belum-menikah') }}"
-                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-pink-600 border border-transparent rounded-md hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2">
+                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-pink-600 border border-transparent rounded-md hover:bg-pink-700 dark:bg-pink-700 dark:hover:bg-pink-800 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
                             Buat Surat
                         </a>
                     </div>
@@ -178,7 +183,8 @@
             </div>
 
             <!-- Keterangan Kematian -->
-            <div class="bg-white overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-200">
+            <div
+                class="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-200">
                 <div class="p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
@@ -192,16 +198,16 @@
                             </div>
                         </div>
                         <div class="ml-5 w-0 flex-1">
-                            <h3 class="text-lg font-medium text-gray-900">Keterangan Kematian</h3>
+                            <h3 class="text-lg font-medium text-gray-900 dark:text-white">Keterangan Kematian</h3>
                         </div>
                     </div>
-                    <p class="mt-2 text-sm text-gray-500">
+                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-300">
                         Surat keterangan kematian yang digunakan untuk keperluan administrasi, klaim asuransi, atau
                         keperluan lainnya terkait kematian.
                     </p>
                     <div class="mt-4">
                         <a href="{{ route(auth()->user()->role . '.layanan-surat.form', 'keterangan-kematian') }}"
-                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-600 border border-transparent rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-600 border border-transparent rounded-md hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
                             Buat Surat
                         </a>
                     </div>
@@ -209,7 +215,8 @@
             </div>
 
             <!-- Keterangan Kelahiran -->
-            <div class="bg-white overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-200">
+            <div
+                class="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-200">
                 <div class="p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
@@ -223,16 +230,16 @@
                             </div>
                         </div>
                         <div class="ml-5 w-0 flex-1">
-                            <h3 class="text-lg font-medium text-gray-900">Keterangan Kelahiran</h3>
+                            <h3 class="text-lg font-medium text-gray-900 dark:text-white">Keterangan Kelahiran</h3>
                         </div>
                     </div>
-                    <p class="mt-2 text-sm text-gray-500">
+                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-300">
                         Surat keterangan kelahiran yang digunakan untuk keperluan administrasi, pembuatan akta
                         kelahiran, atau keperluan lainnya.
                     </p>
                     <div class="mt-4">
                         <a href="{{ route(auth()->user()->role . '.layanan-surat.form', 'keterangan-kelahiran') }}"
-                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-700 dark:bg-indigo-700 dark:hover:bg-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
                             Buat Surat
                         </a>
                     </div>
@@ -240,7 +247,8 @@
             </div>
 
             <!-- Orang yang Sama -->
-            <div class="bg-white overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-200">
+            <div
+                class="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-200">
                 <div class="p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
@@ -253,16 +261,16 @@
                             </div>
                         </div>
                         <div class="ml-5 w-0 flex-1">
-                            <h3 class="text-lg font-medium text-gray-900">Orang yang Sama</h3>
+                            <h3 class="text-lg font-medium text-gray-900 dark:text-white">Orang yang Sama</h3>
                         </div>
                     </div>
-                    <p class="mt-2 text-sm text-gray-500">
+                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-300">
                         Surat keterangan orang yang sama yang digunakan untuk menyatakan bahwa dua identitas yang
                         berbeda merujuk pada orang yang sama.
                     </p>
                     <div class="mt-4">
                         <a href="{{ route(auth()->user()->role . '.layanan-surat.form', 'orang-yang-sama') }}"
-                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-teal-600 border border-transparent rounded-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
+                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-teal-600 border border-transparent rounded-md hover:bg-teal-700 dark:bg-teal-700 dark:hover:bg-teal-800 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
                             Buat Surat
                         </a>
                     </div>
@@ -270,7 +278,8 @@
             </div>
 
             <!-- Pindah Keluar -->
-            <div class="bg-white overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-200">
+            <div
+                class="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-200">
                 <div class="p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
@@ -283,16 +292,16 @@
                             </div>
                         </div>
                         <div class="ml-5 w-0 flex-1">
-                            <h3 class="text-lg font-medium text-gray-900">Pindah Keluar</h3>
+                            <h3 class="text-lg font-medium text-gray-900 dark:text-white">Pindah Keluar</h3>
                         </div>
                     </div>
-                    <p class="mt-2 text-sm text-gray-500">
+                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-300">
                         Surat keterangan pindah keluar yang digunakan untuk keperluan administrasi kependudukan ketika
                         seseorang pindah dari satu daerah ke daerah lain.
                     </p>
                     <div class="mt-4">
                         <a href="{{ route(auth()->user()->role . '.layanan-surat.form', 'pindah-keluar') }}"
-                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-orange-600 border border-transparent rounded-md hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2">
+                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-orange-600 border border-transparent rounded-md hover:bg-orange-700 dark:bg-orange-700 dark:hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
                             Buat Surat
                         </a>
                     </div>
@@ -300,7 +309,8 @@
             </div>
 
             <!-- Domisili Instansi -->
-            <div class="bg-white overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-200">
+            <div
+                class="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-200">
                 <div class="p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
@@ -314,16 +324,16 @@
                             </div>
                         </div>
                         <div class="ml-5 w-0 flex-1">
-                            <h3 class="text-lg font-medium text-gray-900">Domisili Instansi</h3>
+                            <h3 class="text-lg font-medium text-gray-900 dark:text-white">Domisili Instansi</h3>
                         </div>
                     </div>
-                    <p class="mt-2 text-sm text-gray-500">
+                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-300">
                         Surat keterangan domisili instansi yang digunakan untuk menyatakan alamat resmi dari suatu
                         instansi, lembaga, atau organisasi.
                     </p>
                     <div class="mt-4">
                         <a href="{{ route(auth()->user()->role . '.layanan-surat.form', 'domisili-instansi') }}"
-                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
                             Buat Surat
                         </a>
                     </div>
@@ -331,7 +341,8 @@
             </div>
 
             <!-- Domisili Kelompok -->
-            <div class="bg-white overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-200">
+            <div
+                class="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-200">
                 <div class="p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
@@ -345,16 +356,47 @@
                             </div>
                         </div>
                         <div class="ml-5 w-0 flex-1">
-                            <h3 class="text-lg font-medium text-gray-900">Domisili Kelompok</h3>
+                            <h3 class="text-lg font-medium text-gray-900 dark:text-white">Domisili Kelompok</h3>
                         </div>
                     </div>
-                    <p class="mt-2 text-sm text-gray-500">
+                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-300">
                         Surat keterangan domisili kelompok yang digunakan untuk menyatakan alamat resmi dari suatu
                         kelompok, komunitas, atau perkumpulan.
                     </p>
                     <div class="mt-4">
                         <a href="{{ route(auth()->user()->role . '.layanan-surat.form', 'domisili-kelompok') }}"
-                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-cyan-600 border border-transparent rounded-md hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2">
+                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-cyan-600 border border-transparent rounded-md hover:bg-cyan-700 dark:bg-cyan-700 dark:hover:bg-cyan-800 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+                            Buat Surat
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Domisili Orang -->
+            <div
+                class="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-200">
+                <div class="p-6">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <div class="w-10 h-10 bg-emerald-500 rounded-md flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <h3 class="text-lg font-medium text-gray-900 dark:text-white">Domisili Orang</h3>
+                        </div>
+                    </div>
+                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-300">
+                        Surat keterangan domisili orang yang digunakan untuk menyatakan tempat tinggal/domisili
+                        seseorang untuk keperluan administrasi.
+                    </p>
+                    <div class="mt-4">
+                        <a href="{{ route(auth()->user()->role . '.layanan-surat.form', 'domisili-orang') }}"
+                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-emerald-600 border border-transparent rounded-md hover:bg-emerald-700 dark:bg-emerald-700 dark:hover:bg-emerald-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
                             Buat Surat
                         </a>
                     </div>

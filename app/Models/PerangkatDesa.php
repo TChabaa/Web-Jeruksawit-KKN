@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Storage;
 
 class PerangkatDesa extends Model
 {
@@ -21,6 +21,18 @@ class PerangkatDesa extends Model
         'created_by',
         'slug',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($perangkatDesa) {
+            // Delete associated image from storage before deleting the record
+            if ($perangkatDesa->gambar && Storage::disk('public')->exists($perangkatDesa->gambar)) {
+                Storage::disk('public')->delete($perangkatDesa->gambar);
+            }
+        });
+    }
 
     public function creator()
     {

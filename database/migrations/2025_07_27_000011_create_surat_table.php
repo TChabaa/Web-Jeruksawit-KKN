@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('nomor_surat')->nullable();
             $table->date('tanggal_surat')->nullable();
             $table->unsignedInteger('created_by');
-            $table->enum('status', ['belum_diverifikasi', 'disetujui', 'ditolak'])->default('belum_diverifikasi');
+            // $table->enum('status', ['belum_diverifikasi', 'disetujui', 'ditolak'])->default('belum_diverifikasi');
             $table->timestamps();
             $table->foreign('id_pemohon')->references('id_pemohon')->on('pemohon')->cascadeOnDelete();
             $table->foreign('id_jenis')->references('id_jenis')->on('jenis_surat')->cascadeOnDelete();

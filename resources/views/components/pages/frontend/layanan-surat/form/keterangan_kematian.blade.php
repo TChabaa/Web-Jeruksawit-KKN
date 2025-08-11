@@ -1,0 +1,537 @@
+<x-layouts.visitor-layout>
+    <x-slot:title>Form {{ $title }}</x-slot:title>
+
+    <div class="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
+        <!-- Header Section -->
+        <div class="mb-8">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900">Form {{ $title }}</h1>
+                    <p class="mt-2 text-sm text-gray-700">Isi formulir permohonan surat {{ $title }}</p>
+                </div>
+                <a href="{{ route('layanan-surat') }}"
+                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                    <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                    Kembali
+                </a>
+            </div>
+        </div>
+
+        <!-- Form Section -->
+        <div class="bg-white shadow rounded-lg">
+            <form action="{{ route('layanan-surat.submit', $type) }}" method="POST" enctype="multipart/form-data"
+                class="space-y-6">
+                @csrf
+
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-lg font-medium text-gray-900">Data Pemohon</h3>
+                    <p class="mt-1 text-sm text-gray-500">Lengkapi data pribadi pemohon surat</p>
+                </div>
+
+                <div class="px-6 pb-4">
+                    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                        <!-- Nama Lengkap -->
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700">Nama Lengkap *</label>
+                            <input type="text" name="name" id="name" value="{{ old('name') }}" required
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                            @error('name')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- NIK -->
+                        <div>
+                            <label for="nik" class="block text-sm font-medium text-gray-700">
+                                NIK Pelapor (Nomor Induk Kependudukan) *
+                            </label>
+                            <input type="text" name="nik" id="nik" value="{{ old('nik') }}" required
+                                maxlength="16" pattern="[0-9]{16}" placeholder="Masukkan 16 digit NIK sesuai KTP"
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                            <p class="mt-1 text-xs text-gray-500">
+                                Contoh: 3313110905810002 (16 digit angka sesuai KTP)
+                            </p>
+                            @error('nik')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Nomor KK -->
+                        <div>
+                            <label for="nomor_kk" class="block text-sm font-medium text-gray-700">
+                                Nomor Kartu Keluarga (KK) *
+                            </label>
+                            <input type="text" name="nomor_kk" id="nomor_kk" value="{{ old('nomor_kk') }}" required
+                                maxlength="16" pattern="[0-9]{16}" placeholder="Masukkan 16 digit nomor KK"
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                            <p class="mt-1 text-xs text-gray-500">
+                                Contoh: 3313131809130005 (16 digit angka sesuai Kartu Keluarga)
+                            </p>
+                            @error('nomor_kk')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Tempat Lahir -->
+                        <div>
+                            <label for="tempat_lahir" class="block text-sm font-medium text-gray-700">Tempat Lahir
+                                *</label>
+                            <input type="text" name="tempat_lahir" id="tempat_lahir"
+                                value="{{ old('tempat_lahir') }}" required
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                            @error('tempat_lahir')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Tanggal Lahir -->
+                        <div>
+                            <label for="tanggal_lahir" class="block text-sm font-medium text-gray-700">Tanggal Lahir
+                                *</label>
+                            <input type="date" name="tanggal_lahir" id="tanggal_lahir"
+                                value="{{ old('tanggal_lahir') }}" required
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                            @error('tanggal_lahir')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Jenis Kelamin -->
+                        <div>
+                            <label for="jenis_kelamin" class="block text-sm font-medium text-gray-700">Jenis Kelamin
+                                *</label>
+                            <select name="jenis_kelamin" id="jenis_kelamin" required
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                                <option value="">Pilih Jenis Kelamin</option>
+                                <option value="L" {{ old('jenis_kelamin') == 'L' ? 'selected' : '' }}>Laki-laki
+                                </option>
+                                <option value="P" {{ old('jenis_kelamin') == 'P' ? 'selected' : '' }}>Perempuan
+                                </option>
+                            </select>
+                            @error('jenis_kelamin')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Agama -->
+                        <div>
+                            <label for="agama" class="block text-sm font-medium text-gray-700">Agama *</label>
+                            <select name="agama" id="agama" required
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                                <option value="">Pilih Agama</option>
+                                <option value="Islam" {{ old('agama') == 'Islam' ? 'selected' : '' }}>Islam</option>
+                                <option value="Kristen" {{ old('agama') == 'Kristen' ? 'selected' : '' }}>Kristen
+                                </option>
+                                <option value="Katolik" {{ old('agama') == 'Katolik' ? 'selected' : '' }}>Katolik
+                                </option>
+                                <option value="Hindu" {{ old('agama') == 'Hindu' ? 'selected' : '' }}>Hindu</option>
+                                <option value="Buddha" {{ old('agama') == 'Buddha' ? 'selected' : '' }}>Buddha</option>
+                                <option value="Konghucu" {{ old('agama') == 'Konghucu' ? 'selected' : '' }}>Konghucu
+                                </option>
+                            </select>
+                            @error('agama')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Status Perkawinan -->
+                        <div>
+                            <label for="status_perkawinan" class="block text-sm font-medium text-gray-700">Status
+                                Perkawinan *</label>
+                            <select name="status_perkawinan" id="status_perkawinan" required
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                                <option value="">Pilih Status</option>
+                                <option value="Belum Kawin"
+                                    {{ old('status_perkawinan') == 'Belum Kawin' ? 'selected' : '' }}>Belum Kawin
+                                </option>
+                                <option value="Kawin" {{ old('status_perkawinan') == 'Kawin' ? 'selected' : '' }}>
+                                    Kawin</option>
+                                <option value="Cerai Hidup"
+                                    {{ old('status_perkawinan') == 'Cerai Hidup' ? 'selected' : '' }}>Cerai Hidup
+                                </option>
+                                <option value="Cerai Mati"
+                                    {{ old('status_perkawinan') == 'Cerai Mati' ? 'selected' : '' }}>Cerai Mati
+                                </option>
+                            </select>
+                            @error('status_perkawinan')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Pekerjaan -->
+                        <div>
+                            <label for="pekerjaan" class="block text-sm font-medium text-gray-700">Pekerjaan *</label>
+                            <input type="text" name="pekerjaan" id="pekerjaan" value="{{ old('pekerjaan') }}"
+                                required
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                            @error('pekerjaan')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Email -->
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700">Email *</label>
+                            <input type="email" name="email" id="email" value="{{ old('email') }}"
+                                required
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                            @error('email')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Phone -->
+                        <div>
+                            <label for="phone" class="block text-sm font-medium text-gray-700">Nomor Telepon
+                                *</label>
+                            <input type="tel" name="phone" id="phone" value="{{ old('phone') }}"
+                                required
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                            @error('phone')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <!-- Alamat -->
+                    <div class="mt-6">
+                        <label for="address" class="block text-sm font-medium text-gray-700">Alamat Lengkap *</label>
+                        <textarea name="address" id="address" rows="3" required
+                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">{{ old('address') }}</textarea>
+                        @error('address')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+
+                <!-- Detail Kematian Section -->
+                <div class="px-6 py-4 border-t border-gray-200">
+                    <h3 class="text-lg font-medium text-gray-900">Detail Kematian</h3>
+                    <p class="mt-1 text-sm text-gray-500">Informasi khusus tentang almarhum/almarhumah</p>
+                </div>
+
+                <div class="px-6 pb-4">
+                    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                        <!-- Nama Almarhum -->
+                        <div>
+                            <label for="nama_almarhum" class="block text-sm font-medium text-gray-700">Nama
+                                Almarhum/Almarhumah *</label>
+                            <input type="text" name="nama_almarhum" id="nama_almarhum"
+                                value="{{ old('nama_almarhum') }}" required
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                            @error('nama_almarhum')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- NIK Almarhum -->
+                        <div>
+                            <label for="nik_almarhum" class="block text-sm font-medium text-gray-700">
+                                NIK Almarhum/Almarhumah *
+                            </label>
+                            <input type="text" name="nik_almarhum" id="nik_almarhum"
+                                value="{{ old('nik_almarhum') }}" required maxlength="16" pattern="[0-9]{16}"
+                                placeholder="Masukkan 16 digit NIK almarhum sesuai KTP"
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                            <p class="mt-1 text-xs text-gray-500">
+                                Contoh: 3313110905810002 (16 digit angka sesuai KTP almarhum)
+                            </p>
+                            @error('nik_almarhum')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Jenis Kelamin Almarhum -->
+                        <div>
+                            <label for="jenis_kelamin_almarhum" class="block text-sm font-medium text-gray-700">Jenis
+                                Kelamin
+                                Almarhum/Almarhumah *</label>
+                            <select name="jenis_kelamin_almarhum" id="jenis_kelamin_almarhum" required
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                                <option value="">Pilih Jenis Kelamin</option>
+                                <option value="L" {{ old('jenis_kelamin_almarhum') == 'L' ? 'selected' : '' }}>
+                                    Laki-laki
+                                </option>
+                                <option value="P" {{ old('jenis_kelamin_almarhum') == 'P' ? 'selected' : '' }}>
+                                    Perempuan
+                                </option>
+                            </select>
+                            @error('jenis_kelamin_almarhum')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Alamat Almarhum -->
+                        <div>
+                            <label for="alamat_almarhum" class="block text-sm font-medium text-gray-700">Alamat
+                                Almarhum/Almarhumah *</label>
+                            <textarea name="alamat_almarhum" id="alamat_almarhum" rows="2" required
+                                placeholder="Alamat terakhir almarhum/almarhumah"
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">{{ old('alamat_almarhum') }}</textarea>
+                            @error('alamat_almarhum')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Umur Almarhum -->
+                        <div>
+                            <label for="umur" class="block text-sm font-medium text-gray-700">Umur
+                                Almarhum/Almarhumah *</label>
+                            <input type="number" name="umur" id="umur" value="{{ old('umur') }}"
+                                required min="0" max="150" placeholder="Tahun"
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                            @error('umur')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Hari Kematian -->
+                        <div>
+                            <label for="hari_kematian" class="block text-sm font-medium text-gray-700">Hari Kematian
+                                *</label>
+                            <select name="hari_kematian" id="hari_kematian" required
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                                <option value="">Pilih Hari</option>
+                                <option value="Senin" {{ old('hari_kematian') == 'Senin' ? 'selected' : '' }}>Senin
+                                </option>
+                                <option value="Selasa" {{ old('hari_kematian') == 'Selasa' ? 'selected' : '' }}>Selasa
+                                </option>
+                                <option value="Rabu" {{ old('hari_kematian') == 'Rabu' ? 'selected' : '' }}>Rabu
+                                </option>
+                                <option value="Kamis" {{ old('hari_kematian') == 'Kamis' ? 'selected' : '' }}>Kamis
+                                </option>
+                                <option value="Jumat" {{ old('hari_kematian') == 'Jumat' ? 'selected' : '' }}>Jumat
+                                </option>
+                                <option value="Sabtu" {{ old('hari_kematian') == 'Sabtu' ? 'selected' : '' }}>Sabtu
+                                </option>
+                                <option value="Minggu" {{ old('hari_kematian') == 'Minggu' ? 'selected' : '' }}>Minggu
+                                </option>
+                            </select>
+                            @error('hari_kematian')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Tanggal Kematian -->
+                        <div>
+                            <label for="tanggal_kematian" class="block text-sm font-medium text-gray-700">Tanggal
+                                Kematian *</label>
+                            <input type="date" name="tanggal_kematian" id="tanggal_kematian"
+                                value="{{ old('tanggal_kematian') }}" required
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                            @error('tanggal_kematian')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Tempat Kematian -->
+                        <div>
+                            <label for="tempat_kematian" class="block text-sm font-medium text-gray-700">Tempat
+                                Kematian *</label>
+                            <input type="text" name="tempat_kematian" id="tempat_kematian"
+                                value="{{ old('tempat_kematian') }}" required
+                                placeholder="Contoh: Rumah Sakit, Rumah, dll"
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                            @error('tempat_kematian')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Penyebab Kematian -->
+                        <div class="sm:col-span-2">
+                            <label for="penyebab_kematian" class="block text-sm font-medium text-gray-700">Penyebab
+                                Kematian
+                                *</label>
+                            <textarea name="penyebab_kematian" id="penyebab_kematian" rows="3" required
+                                placeholder="Jelaskan penyebab kematian (penyakit, kecelakaan, dll)"
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">{{ old('penyebab_kematian') }}</textarea>
+                            @error('penyebab_kematian')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Hubungan Pelapor -->
+                        <div class="sm:col-span-2">
+                            <label for="hubungan_pelapor" class="block text-sm font-medium text-gray-700">Hubungan
+                                Pelapor dengan
+                                Almarhum *</label>
+                            <select name="hubungan_pelapor" id="hubungan_pelapor" required
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                                <option value="">Pilih Hubungan</option>
+                                <option value="Suami" {{ old('hubungan_pelapor') == 'Suami' ? 'selected' : '' }}>
+                                    Suami
+                                </option>
+                                <option value="Istri" {{ old('hubungan_pelapor') == 'Istri' ? 'selected' : '' }}>
+                                    Istri
+                                </option>
+                                <option value="Anak" {{ old('hubungan_pelapor') == 'Anak' ? 'selected' : '' }}>Anak
+                                </option>
+                                <option value="Ayah" {{ old('hubungan_pelapor') == 'Ayah' ? 'selected' : '' }}>Ayah
+                                </option>
+                                <option value="Ibu" {{ old('hubungan_pelapor') == 'Ibu' ? 'selected' : '' }}>Ibu
+                                </option>
+                                <option value="Saudara" {{ old('hubungan_pelapor') == 'Saudara' ? 'selected' : '' }}>
+                                    Saudara</option>
+                                <option value="Keluarga"
+                                    {{ old('hubungan_pelapor') == 'Keluarga' ? 'selected' : '' }}>
+                                    Keluarga</option>
+                                <option value="Lainnya" {{ old('hubungan_pelapor') == 'Lainnya' ? 'selected' : '' }}>
+                                    Lainnya</option>
+                            </select>
+                            @error('hubungan_pelapor')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Information Section -->
+                <div class="px-6 py-4 border-t border-gray-200">
+                    <h3 class="text-lg font-medium text-gray-900">Informasi Tambahan</h3>
+                    <p class="mt-1 text-sm text-gray-500">Informasi pendukung untuk permohonan surat</p>
+                </div>
+
+                <div class="px-6 pb-6">
+                    <div class="grid grid-cols-1 gap-6">
+                        <!-- Keperluan -->
+                        <div>
+                            <label for="keperluan" class="block text-sm font-medium text-gray-700">Keperluan/Tujuan
+                                Pengajuan *</label>
+                            <input type="text" name="keperluan" id="keperluan" value="{{ old('keperluan') }}"
+                                required placeholder="Contoh: Untuk pengurusan warisan, klaim asuransi, dll"
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                            @error('keperluan')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Notes -->
+                        <div>
+                            <label for="notes" class="block text-sm font-medium text-gray-700">Catatan
+                                Tambahan</label>
+                            <textarea name="notes" id="notes" rows="3"
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">{{ old('notes') }}</textarea>
+                            @error('notes')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="px-6 py-4 bg-gray-50 rounded-b-lg">
+                    <div class="flex justify-end space-x-3">
+                        <a href="{{ route('layanan-surat') }}"
+                            class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                            Batal
+                        </a>
+                        <button type="submit"
+                            class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                            <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                            </svg>
+                            Ajukan Permohonan
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    @push('scripts')
+        <script>
+            // NIK and KK validation functions
+            function validateNIK(input) {
+                const value = input.value.replace(/\D/g, ''); // Remove non-digits
+                input.value = value; // Update input value
+
+                const warningElement = input.parentNode.querySelector('.nik-warning');
+                if (warningElement) {
+                    warningElement.remove();
+                }
+
+                if (value.length > 0 && value.length < 16) {
+                    showValidationWarning(input, 'NIK harus terdiri dari 16 digit angka', 'nik-warning');
+                } else if (value.length === 16) {
+                    removeValidationWarning(input, 'nik-warning');
+                }
+            }
+
+            function validateKK(input) {
+                const value = input.value.replace(/\D/g, ''); // Remove non-digits
+                input.value = value; // Update input value
+
+                const warningElement = input.parentNode.querySelector('.kk-warning');
+                if (warningElement) {
+                    warningElement.remove();
+                }
+
+                if (value.length > 0 && value.length < 16) {
+                    showValidationWarning(input, 'Nomor KK harus terdiri dari 16 digit angka', 'kk-warning');
+                } else if (value.length === 16) {
+                    removeValidationWarning(input, 'kk-warning');
+                }
+            }
+
+            function validateNIKAlmarhum(input) {
+                const value = input.value.replace(/\D/g, ''); // Remove non-digits
+                input.value = value; // Update input value
+
+                const warningElement = input.parentNode.querySelector('.nik-almarhum-warning');
+                if (warningElement) {
+                    warningElement.remove();
+                }
+
+                if (value.length > 0 && value.length < 16) {
+                    showValidationWarning(input, 'NIK Almarhum harus terdiri dari 16 digit angka', 'nik-almarhum-warning');
+                } else if (value.length === 16) {
+                    removeValidationWarning(input, 'nik-almarhum-warning');
+                }
+            }
+
+            function showValidationWarning(input, message, className) {
+                const warning = document.createElement('p');
+                warning.className = `mt-1 text-sm text-orange-600 ${className}`;
+                warning.textContent = message;
+                input.parentNode.appendChild(warning);
+            }
+
+            function removeValidationWarning(input, className) {
+                const warning = input.parentNode.querySelector(`.${className}`);
+                if (warning) {
+                    warning.remove();
+                }
+            }
+
+            // Add event listeners when DOM is loaded
+            document.addEventListener('DOMContentLoaded', function() {
+                const nikInput = document.getElementById('nik');
+                const kkInput = document.getElementById('nomor_kk');
+                const nikAlmarhumInput = document.getElementById('nik_almarhum');
+
+                if (nikInput) {
+                    nikInput.addEventListener('input', function() {
+                        validateNIK(this);
+                    });
+                }
+
+                if (kkInput) {
+                    kkInput.addEventListener('input', function() {
+                        validateKK(this);
+                    });
+                }
+
+                if (nikAlmarhumInput) {
+                    nikAlmarhumInput.addEventListener('input', function() {
+                        validateNIKAlmarhum(this);
+                    });
+                }
+            });
+        </script>
+    @endpush
+</x-layouts.visitor-layout>

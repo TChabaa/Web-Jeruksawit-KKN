@@ -328,7 +328,7 @@ class UmkmController extends Controller
      */
     public function destroy(string $id)
     {
-        $umkm = Umkm::where('id_umkm', $id)->firstOrFail();
+        $umkm = Umkm::with('gambarUmkm')->where('id_umkm', $id)->firstOrFail();
         $umkm->delete();
 
         Alert::toast('Berhasil menghapus data UMKM', 'success');
@@ -339,11 +339,6 @@ class UmkmController extends Controller
     {
         $umkm = Umkm::with('gambarUmkm')->where('id_umkm', $umkm)->firstOrFail();
         $galleryItem = $umkm->gambarUmkm()->where('id', $gallery)->firstOrFail();
-
-        // Delete the image file
-        if ($galleryItem->image_url && Storage::disk('public')->exists($galleryItem->image_url)) {
-            Storage::disk('public')->delete($galleryItem->image_url);
-        }
 
         $galleryItem->delete();
 

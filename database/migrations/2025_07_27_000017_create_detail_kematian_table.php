@@ -16,7 +16,6 @@ return new class extends Migration
             $table->enum('jenis_kelamin', ['L', 'P']);
             $table->text('alamat');
             $table->integer('umur');
-            $table->string('hari_kematian');
             $table->date('tanggal_kematian');
             $table->string('tempat_kematian');
             $table->string('penyebab_kematian');

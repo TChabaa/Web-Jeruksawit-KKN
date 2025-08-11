@@ -13,7 +13,6 @@ return new class extends Migration
             $table->unsignedInteger('id_surat');
             $table->string('nama_anak');
             $table->enum('jenis_kelamin_anak', ['L', 'P']);
-            $table->string('hari_lahir');
             $table->date('tanggal_lahir');
             $table->string('tempat_lahir');
             $table->string('penolong_kelahiran');

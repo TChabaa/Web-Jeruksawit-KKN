@@ -26,7 +26,7 @@ class SuratKeteranganKematianRequest extends FormRequest
             'agama' => 'required|string|max:50',
             'pekerjaan' => 'required|string|max:100',
             'status_perkawinan' => 'required|string|max:50',
-            
+
             // Detail Keterangan Kematian
             'nama_almarhum' => 'required|string|max:255',
             'nik_almarhum' => 'required|string|size:16',
@@ -38,11 +38,11 @@ class SuratKeteranganKematianRequest extends FormRequest
             'tempat_kematian' => 'required|string|max:255',
             'penyebab_kematian' => 'required|string|max:255',
             'hubungan_pelapor' => 'required|string|max:100',
-            
+
             // General
-            'purpose' => 'required|string|max:255',
+            'keperluan' => 'required|string|max:255',
             'notes' => 'nullable|string|max:1000',
-            'attachment' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'attachment' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:4146176',
         ];
     }
 

@@ -25,7 +25,7 @@
                 </label>
                 <p class="text-xs font-medium text-gray-400">* Menambahkan foto bisa lebih dari satu</p>
                 <p class="text-xs font-medium text-gray-400">* Pastikan file bertipe jpeg, jpg, png</p>
-                <p class="text-xs font-medium text-gray-400">* Maksimal file 1MB</p>
+                <p class="text-xs font-medium text-gray-400">* Maksimal file 4049MB</p>
                 <div id="imagePreviewContainer" class="flex flex-wrap gap-5 mt-3"></div>
                 <input type="file" required multiple accept="image/*" name="gambar_articles[]" id="gambar_articles"
                     class="mt-3">
@@ -33,32 +33,6 @@
             </div>
 
             <div class="px-6 py-6 mb-6 bg-white rounded-lg shadow-lg dark:bg-black">
-                @if (auth()->user()->role != 'writer')
-                    <div class="mb-4.5">
-                        <label for="author" class="block mb-3 text-sm font-medium text-black dark:text-white">
-                            Pembuat Artikel <span class="text-red-500">*</span>
-                        </label>
-                        <div x-data="{ isOptionSelected: false }" class="relative z-20 bg-transparent dark:bg-form-input">
-                            <select required id="author" name="writer"
-                                class="relative z-20 w-full px-5 py-3 transition bg-transparent border border-black rounded outline-none appearance-none focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                                :class="isOptionSelected && 'text-black dark:text-white'"
-                                @change="isOptionSelected = true">
-                                <option value="" hidden class="text-body">
-                                    Pilih Pembuat Artikel
-                                </option>
-                                @forelse ($writers as $writer)
-                                    <option value="{{ $writer->id }}" class="text-body"
-                                        {{ old('writer') == $writer->id ? 'selected' : '' }}>
-                                        {{ $writer->name }}</option>
-                                @empty
-                                    <option value="" class="text-body" selected>Belum ada Pembuat Artikel
-                                    </option>
-                                @endforelse
-                            </select>
-                            <x-partials.dashboard.input-error :messages="$errors->get('author')" />
-                        </div>
-                    </div>
-                @endif
                 <div class="mb-4.5">
                     <label for="title"
                         class="block mb-3 text-sm font-medium text-black-dashboard dark:text-white-dahsboard">
@@ -113,20 +87,77 @@
     }); // by name bukan id CKeditor 4
 </script>
 <script>
-        document.getElementById('gambar_article').addEventListener('change', function(event) {
-            const files = event.target.files;
-            const imagePreviewContainer = document.getElementById('imagePreviewContainer');
-            imagePreviewContainer.innerHTML = ''; // Clear previous images
+    // Cache for storing selected files
+    let selectedFiles = [];
+    let fileCounter = 0;
 
-            for (const file of files) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.className = 'w-32 h-32 object-cover rounded-lg';
-                    imagePreviewContainer.appendChild(img);
-                }
-                reader.readAsDataURL(file);
+    document.getElementById('gambar_articles').addEventListener('change', function(event) {
+        const newFiles = Array.from(event.target.files);
+        const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+
+        // Add new files to the cache
+        newFiles.forEach(file => {
+            const fileId = 'file_' + fileCounter++;
+            selectedFiles.push({
+                id: fileId,
+                file: file
+            });
+
+            // Create preview for new file
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imageWrapper = document.createElement('div');
+                imageWrapper.className = 'relative';
+                imageWrapper.setAttribute('data-file-id', fileId);
+
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.className = 'w-32 h-32 object-cover rounded-lg';
+
+                const removeBtn = document.createElement('button');
+                removeBtn.type = 'button';
+                removeBtn.className =
+                    'absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600';
+                removeBtn.innerHTML = '×';
+                removeBtn.onclick = function() {
+                    removeFile(fileId);
+                };
+
+                imageWrapper.appendChild(img);
+                imageWrapper.appendChild(removeBtn);
+                imagePreviewContainer.appendChild(imageWrapper);
             }
+            reader.readAsDataURL(file);
         });
+
+        // Update the file input with all selected files
+        updateFileInput();
+    });
+
+    function removeFile(fileId) {
+        // Remove from cache
+        selectedFiles = selectedFiles.filter(item => item.id !== fileId);
+
+        // Remove preview
+        const previewElement = document.querySelector(`[data-file-id="${fileId}"]`);
+        if (previewElement) {
+            previewElement.remove();
+        }
+
+        // Update file input
+        updateFileInput();
+    }
+
+    function updateFileInput() {
+        const fileInput = document.getElementById('gambar_articles');
+        const dataTransfer = new DataTransfer();
+
+        // Add all cached files to DataTransfer
+        selectedFiles.forEach(item => {
+            dataTransfer.items.add(item.file);
+        });
+
+        // Update the file input
+        fileInput.files = dataTransfer.files;
+    }
 </script>

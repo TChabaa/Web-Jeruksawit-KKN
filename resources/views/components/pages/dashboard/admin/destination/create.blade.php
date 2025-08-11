@@ -29,7 +29,7 @@
                 </label>
                 <p class="text-xs font-medium text-gray-400">* Menambahkan foto bisa lebih dari satu</p>
                 <p class="text-xs font-medium text-gray-400">* Pastikan file bertipe jpeg, jpg, png</p>
-                <p class="text-xs font-medium text-gray-400">* Maksimal file 1MB</p>
+                <p class="text-xs font-medium text-gray-400">* Maksimal file 4049MB</p>
                 <div id="imagePreviewContainer" class="flex flex-wrap gap-5 mt-3"></div>
                 <input type="file" required multiple accept="image/*" name="galleries[]" id="galleries"
                     class="mt-3">
@@ -37,32 +37,6 @@
             </div>
 
             <div class="px-6 py-6 mb-6 bg-white rounded-lg shadow-lg dark:bg-black">
-                @if (auth()->user()->role != 'owner')
-                    <div class="mb-4.5">
-                        <label for="owner" class="block mb-3 text-sm font-medium text-black dark:text-white">
-                            Penanggung Jawab Wisata <span class="text-red-500">*</span>
-                        </label>
-                        <div x-data="{ isOptionSelected: false }" class="relative z-20 bg-transparent dark:bg-form-input">
-                            <select required id="owner" name="owner"
-                                class="relative z-20 w-full px-5 py-3 transition bg-transparent border border-black rounded outline-none appearance-none focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                                :class="isOptionSelected && 'text-black dark:text-white'"
-                                @change="isOptionSelected = true">
-                                <option value="" hidden class="text-body">
-                                    Pilih Penanggung Jawab
-                                </option>
-                                @forelse ($owners as $owner)
-                                    <option value="{{ $owner->id }}" class="text-body"
-                                        {{ old('owner') == $owner->id ? 'selected' : '' }}>
-                                        {{ $owner->name }}</option>
-                                @empty
-                                    <option value="" class="text-body" selected>Belum ada pennggung jawab</option>
-                                @endforelse
-                            </select>
-                            <x-partials.dashboard.input-error :messages="$errors->get('owner')" />
-                        </div>
-                    </div>
-                @endif
-
                 <div class="w-full mb-6">
                     <label for="name_destination" class="block mb-3 text-sm font-medium text-black dark:text-white">
                         Nama Wisata <span class="text-red-500">*</span>
@@ -121,8 +95,8 @@
                         Harga Tempat Wisata <span class="text-red-500">*</span>
                     </label>
                     <p class="text-xs font-medium text-gray-400">* Jika gratis/free masukan nilai 0</p>
-                    <input id="price_range" value="{{ old('price_range') }}" required name="price_range"
-                        type="number" placeholder="Harga Tempat Wisata"
+                    <input id="price_range" value="{{ old('price_range') }}" required name="price_range" type="number"
+                        placeholder="Harga Tempat Wisata"
                         class="w-full mt-3 rounded border-[1.5px] border-black bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                 </div>
 
@@ -352,22 +326,79 @@
     </form>
 
     <script>
-        document.getElementById('galleries').addEventListener('change', function(event) {
-            const files = event.target.files;
-            const imagePreviewContainer = document.getElementById('imagePreviewContainer');
-            imagePreviewContainer.innerHTML = ''; // Clear previous images
+        // Cache for storing selected files
+        let selectedFiles = [];
+        let fileCounter = 0;
 
-            for (const file of files) {
+        document.getElementById('galleries').addEventListener('change', function(event) {
+            const newFiles = Array.from(event.target.files);
+            const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+
+            // Add new files to the cache
+            newFiles.forEach(file => {
+                const fileId = 'file_' + fileCounter++;
+                selectedFiles.push({
+                    id: fileId,
+                    file: file
+                });
+
+                // Create preview for new file
                 const reader = new FileReader();
                 reader.onload = function(e) {
+                    const imageWrapper = document.createElement('div');
+                    imageWrapper.className = 'relative';
+                    imageWrapper.setAttribute('data-file-id', fileId);
+
                     const img = document.createElement('img');
                     img.src = e.target.result;
                     img.className = 'w-32 h-32 object-cover rounded-lg';
-                    imagePreviewContainer.appendChild(img);
+
+                    const removeBtn = document.createElement('button');
+                    removeBtn.type = 'button';
+                    removeBtn.className =
+                        'absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600';
+                    removeBtn.innerHTML = '×';
+                    removeBtn.onclick = function() {
+                        removeFile(fileId);
+                    };
+
+                    imageWrapper.appendChild(img);
+                    imageWrapper.appendChild(removeBtn);
+                    imagePreviewContainer.appendChild(imageWrapper);
                 }
                 reader.readAsDataURL(file);
-            }
+            });
+
+            // Update the file input with all selected files
+            updateFileInput();
         });
+
+        function removeFile(fileId) {
+            // Remove from cache
+            selectedFiles = selectedFiles.filter(item => item.id !== fileId);
+
+            // Remove preview
+            const previewElement = document.querySelector(`[data-file-id="${fileId}"]`);
+            if (previewElement) {
+                previewElement.remove();
+            }
+
+            // Update file input
+            updateFileInput();
+        }
+
+        function updateFileInput() {
+            const fileInput = document.getElementById('galleries');
+            const dataTransfer = new DataTransfer();
+
+            // Add all cached files to DataTransfer
+            selectedFiles.forEach(item => {
+                dataTransfer.items.add(item.file);
+            });
+
+            // Update the file input
+            fileInput.files = dataTransfer.files;
+        }
     </script>
 
     <script>

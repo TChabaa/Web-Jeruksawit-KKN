@@ -26,7 +26,7 @@ class SuratDomisiliKelompokRequest extends FormRequest
             'agama' => 'required|string|max:50',
             'pekerjaan' => 'required|string|max:100',
             'status_perkawinan' => 'required|string|max:50',
-            
+
             // Detail Domisili Kelompok
             'nama_kelompok' => 'required|string|max:255',
             'email_ketua' => 'required|email|max:255',
@@ -35,11 +35,11 @@ class SuratDomisiliKelompokRequest extends FormRequest
             'sekretaris' => 'required|string|max:255',
             'bendahara' => 'required|string|max:255',
             'keterangan_lokasi' => 'required|string|max:500',
-            
+
             // General
             'purpose' => 'required|string|max:255',
             'notes' => 'nullable|string|max:1000',
-            'attachment' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'attachment' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:4146176',
         ];
     }
 

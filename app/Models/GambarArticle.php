@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Article;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class GambarArticle extends Model
 {
@@ -18,6 +19,17 @@ class GambarArticle extends Model
         'article_id',
         'image_url',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($gambar) {
+            if ($gambar->image_url && Storage::disk('public')->exists($gambar->image_url)) {
+                Storage::disk('public')->delete($gambar->image_url);
+            }
+        });
+    }
 
     public function article()
     {

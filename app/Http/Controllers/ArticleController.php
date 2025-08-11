@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use App\Models\GambarArticle;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -80,12 +79,7 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        $writers = [];
-
-        if (Auth::user()->role != 'writer') {
-            $writers = User::where('role', 'writer')->get();
-        }
-        return view('components.pages.dashboard.admin.article.create', compact('writers'));
+        return view('components.pages.dashboard.admin.article.create');
     }
 
     /**
@@ -113,7 +107,7 @@ class ArticleController extends Controller
     private function createArticle($request)
     {
         return Article::create([
-            'author_id' => Auth::user()->role != "writer" ? $request->writer : Auth::user()->id,
+            'author_id' => Auth::user()->id,
             'title' => $request->title,
             'content' => $request->content,
             'slug' => Str::slug($request->title . '-' . Str::ulid())
@@ -171,16 +165,10 @@ class ArticleController extends Controller
     {
         $article =  Article::with(["gambar_articles"])->findOrFail($id);
 
-        $admins = [];
-
-        if (Auth::user()->role != 'writer') {
-            $admins = User::where('role', 'writer')->get();
-        }
-
         $title = 'Hapus Foto Artikel!';
         $text = "Apakah Anda yakin ingin menghapus?";
         confirmDelete($title, $text);
-        return view('components.pages.dashboard.admin.article.edit', compact('article', 'admins'));
+        return view('components.pages.dashboard.admin.article.edit', compact('article'));
     }
 
     /**
@@ -195,7 +183,7 @@ class ArticleController extends Controller
             $oldTitle = $article->title;
 
             $article->update([
-                'author_id' => Auth::user()->role != "writer" ? $request->writer : Auth::user()->id,
+                'author_id' => Auth::user()->id,
                 'title' => $request->title,
                 'content' => $request->content,
                 'slug' => $request->title != $oldTitle ? Str::slug($request->title . '-' . Str::ulid()) : $article->slug
@@ -216,6 +204,8 @@ class ArticleController extends Controller
      */
     public function destroy(Article $article)
     {
+        // Load gambar_articles relationship to ensure model event can access them
+        $article->load('gambar_articles');
         $article->delete();
         Alert::toast('Sukses Menghapus Artikel', 'success');
         return redirect()->route(Auth::user()->role . '.articles.index');
@@ -224,7 +214,9 @@ class ArticleController extends Controller
     public function destroyGambar(string $article, string $gambar_article)
     {
         $article = Article::with('gambar_articles')->findOrFail($article);
-        $article->gambar_articles()->findOrFail($gambar_article)->delete();
+        $gambarItem = $article->gambar_articles()->findOrFail($gambar_article);
+
+        $gambarItem->delete();
 
         Alert::toast('Berhasil menghapus data photo', 'success');
         return redirect()->route(Auth::user()->role . '.articles.edit', $article);

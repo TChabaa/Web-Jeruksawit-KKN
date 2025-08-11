@@ -1,5 +1,55 @@
 <x-layouts.visitor-layout>
-    <x-slot:title>Artikel | </x-slot:title>
+    <x-slot:title>Artikel</x-slot:title>
+    <x-slot:pageTitle>Artikel Desa Jeruksawit - Informasi dan Berita Terkini</x-slot:pageTitle>
+    <x-slot:metaDescription>Baca artikel terbaru tentang Desa Jeruksawit, Karanganyar. Dapatkan informasi terkini tentang
+        kegiatan desa, wisata, UMKM, dan berbagai program pembangunan desa yang sedang berjalan.</x-slot:metaDescription>
+    <x-slot:metaKeywords>artikel jeruksawit, berita desa jeruksawit, informasi jeruksawit, kabar terbaru karanganyar,
+        artikel wisata jeruksawit, berita umkm jeruksawit, update desa jeruksawit</x-slot:metaKeywords>
+    <x-slot:ogTitle>Artikel Desa Jeruksawit - Informasi dan Berita Terkini</x-slot:ogTitle>
+    <x-slot:ogDescription>Ikuti perkembangan terbaru Desa Jeruksawit melalui artikel dan berita terupdate. Temukan
+        informasi menarik tentang wisata, UMKM, dan kegiatan masyarakat desa.</x-slot:ogDescription>
+
+    @push('structured-data')
+        <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Blog",
+        "name": "Artikel Desa Jeruksawit",
+        "description": "Kumpulan artikel dan berita terbaru tentang Desa Jeruksawit, Karanganyar yang membahas wisata, UMKM, dan kegiatan masyarakat desa.",
+        "url": "{{ route('articles') }}",
+        "publisher": {
+            "@type": "Organization",
+            "name": "Pemerintah Desa Jeruksawit",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "{{ asset('assets/img/Karanganyar.png') }}"
+            }
+        },
+        "isPartOf": {
+            "@type": "WebSite",
+            "name": "Desa Jeruksawit",
+            "url": "{{ url('/') }}"
+        },
+        "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Beranda",
+                    "item": "{{ route('index') }}"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Artikel",
+                    "item": "{{ route('articles') }}"
+                }
+            ]
+        }
+    }
+    </script>
+    @endpush
 
     <div class="pt-30 font-inter ">
         <div class="text-4xl font-extrabold text-center">

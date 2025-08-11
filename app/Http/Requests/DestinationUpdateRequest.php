@@ -31,9 +31,9 @@ class DestinationUpdateRequest extends FormRequest
             'status' => 'required|string|in:active,inactive',
         ];
 
-        if (Auth::user()->role !== 'owner') {
-            $rules['owner'] = 'required';
-        }
+        // if (Auth::user()->role !== 'owner') {
+        //     $rules['owner'] = 'required';
+        // }
 
         return $rules;
     }

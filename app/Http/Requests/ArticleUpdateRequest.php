@@ -27,10 +27,6 @@ class ArticleUpdateRequest extends FormRequest
             'content' => 'required|string',
         ];
 
-        if (Auth::user()->role != 'writer') {
-            $rules['writer'] = 'required';
-        }
-
         return $rules;
     }
 }

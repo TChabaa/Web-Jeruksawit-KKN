@@ -26,7 +26,7 @@ class SuratOrangYangSamaRequest extends FormRequest
             'agama' => 'required|string|max:50',
             'pekerjaan' => 'required|string|max:100',
             'status_perkawinan' => 'required|string|max:50',
-            
+
             // Detail Orang yang Sama
             'nama_2' => 'required|string|max:255',
             'tempat_lahir_2' => 'required|string|max:100',
@@ -34,11 +34,11 @@ class SuratOrangYangSamaRequest extends FormRequest
             'nama_ayah_2' => 'required|string|max:255',
             'dasar_dokumen_1' => 'required|string|max:255',
             'dasar_dokumen_2' => 'required|string|max:255',
-            
+
             // General
             'purpose' => 'required|string|max:255',
             'notes' => 'nullable|string|max:1000',
-            'attachment' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'attachment' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:4146176',
         ];
     }
 

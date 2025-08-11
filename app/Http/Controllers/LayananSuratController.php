@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 use App\Models\JenisSurat;
 use App\Models\Pemohon;
 use App\Models\Surat;
@@ -20,6 +21,7 @@ use App\Models\DetailOrangYangSama;
 use App\Models\DetailPindahKeluar;
 use App\Models\DetailDomisiliInstansi;
 use App\Models\DetailDomisiliKelompok;
+use App\Models\DetailDomisiliOrang;
 use App\Http\Requests\SuratSkckRequest;
 use App\Http\Requests\SuratIzinKeramaianRequest;
 use App\Http\Requests\SuratKeteranganUsahaRequest;
@@ -31,17 +33,37 @@ use App\Http\Requests\SuratOrangYangSamaRequest;
 use App\Http\Requests\SuratPindahKeluarRequest;
 use App\Http\Requests\SuratDomisiliInstansiRequest;
 use App\Http\Requests\SuratDomisiliKelompokRequest;
+use App\Http\Requests\SuratDomisiliOrangRequest;
+use App\Mail\SuratApprovalMail;
+use App\Mail\SuratSubmissionMail;
+use App\Mail\SuratRejectionMail;
+use App\Jobs\ProcessSuratApproval;
+use App\Jobs\ProcessSuratRejection;
+use App\Jobs\ProcessSuratSubmission;
+use RealRashid\SweetAlert\Facades\Alert;
 use Yajra\DataTables\Facades\DataTables;
 
 class LayananSuratController extends Controller
 {
+
     /**
      * Display the admin dashboard for letter services
      */
-    public function index()
+    public function index(Request $request)
     {
         if (request()->ajax()) {
-            $surat = Surat::with(['pemohon', 'jenisSurat'])->latest();
+            // Remove the ->latest() to allow DataTables to handle sorting
+            $surat = Surat::with(['pemohon', 'jenisSurat']);
+
+            // Apply status filter if provided
+            if ($request->has('status') && $request->status !== '' && $request->status !== 'all') {
+                $surat->where('status', $request->status);
+            }
+
+            // Apply jenis surat filter if provided
+            if ($request->has('jenis_surat') && $request->jenis_surat !== '' && $request->jenis_surat !== 'all') {
+                $surat->where('id_jenis', $request->jenis_surat);
+            }
 
             return DataTables::of($surat)
                 ->addColumn('no_surat', function ($item) {
@@ -54,37 +76,65 @@ class LayananSuratController extends Controller
                     return $item->jenisSurat->nama_jenis ?? '-';
                 })
                 ->addColumn('status', function ($item) {
-                    $statusClass = match($item->status) {
+                    $statusClass = match ($item->status) {
                         'belum_diverifikasi' => 'bg-yellow-100 text-yellow-800',
                         'disetujui' => 'bg-green-100 text-green-800',
                         'ditolak' => 'bg-red-100 text-red-800',
                         default => 'bg-gray-100 text-gray-800'
                     };
-                    
-                    $statusText = match($item->status) {
+
+                    $statusText = match ($item->status) {
                         'belum_diverifikasi' => 'Belum Diverifikasi',
                         'disetujui' => 'Disetujui',
                         'ditolak' => 'Ditolak',
                         default => 'Unknown'
                     };
-                    
+
                     return '<span class="px-2 py-1 text-xs font-medium rounded-full ' . $statusClass . '">' . $statusText . '</span>';
+                })
+                ->editColumn('created_at', function ($item) {
+                    return $item->created_at ? $item->created_at->format('d/m/Y H:i') : '-';
+                })
+                ->orderColumn('created_at', function ($query, $order) {
+                    return $query->orderBy('created_at', $order);
                 })
                 ->addColumn('action', function ($item) {
                     $roleName = Auth::user()->role;
                     if (!in_array($roleName, ['admin', 'owner', 'super_admin'])) {
                         $roleName = 'admin';
                     }
-                    
+
                     $detailUrl = route($roleName . '.layanan-surat.show', $item->id_surat);
-                    
+
                     return '<a href="' . $detailUrl . '" class="text-blue-600 hover:text-blue-900">Lihat Detail</a>';
                 })
                 ->rawColumns(['status', 'action'])
                 ->make(true);
         }
 
-        return view('components.pages.dashboard.admin.layanan-surat.index');
+        // Get statistics data and jenis surat for filters
+        $statistics = $this->getStatistics();
+        $jenisSurat = JenisSurat::all();
+
+        return view('components.pages.dashboard.admin.layanan-surat.index', compact('statistics', 'jenisSurat'));
+    }
+
+    /**
+     * Get statistics for dashboard cards
+     */
+    public function getStatistics()
+    {
+        $pending = Surat::where('status', 'belum_diverifikasi')->count();
+        $approved = Surat::where('status', 'disetujui')->count();
+        $rejected = Surat::where('status', 'ditolak')->count();
+        $total = Surat::count();
+
+        return [
+            'pending' => $pending,
+            'approved' => $approved,
+            'rejected' => $rejected,
+            'total' => $total
+        ];
     }
 
     /**
@@ -101,9 +151,18 @@ class LayananSuratController extends Controller
     public function showForm($type)
     {
         $validTypes = [
-            'skck', 'izin-keramaian', 'keterangan-usaha', 'sktm', 'belum-menikah',
-            'keterangan-kematian', 'keterangan-kelahiran', 'orang-yang-sama',
-            'pindah-keluar', 'domisili-instansi', 'domisili-kelompok'
+            'skck',
+            'izin-keramaian',
+            'keterangan-usaha',
+            'sktm',
+            'belum-menikah',
+            'keterangan-kematian',
+            'keterangan-kelahiran',
+            'orang-yang-sama',
+            'pindah-keluar',
+            'domisili-instansi',
+            'domisili-kelompok',
+            'domisili-orang'
         ];
 
         if (!in_array($type, $validTypes)) {
@@ -121,7 +180,8 @@ class LayananSuratController extends Controller
             'orang-yang-sama' => 'Orang yang Sama',
             'pindah-keluar' => 'Pindah Keluar',
             'domisili-instansi' => 'Domisili Instansi',
-            'domisili-kelompok' => 'Domisili Kelompok'
+            'domisili-kelompok' => 'Domisili Kelompok',
+            'domisili-orang' => 'Domisili Orang'
         ];
 
         return view('components.pages.dashboard.admin.layanan-surat.form.' . str_replace('-', '_', $type), [
@@ -138,8 +198,8 @@ class LayananSuratController extends Controller
         // Validate the basic required fields first
         $basicRules = [
             'name' => 'required|string|max:255',
-            'nik' => 'required|string|size:16',
-            'nomor_kk' => 'required|string|size:16',
+            'nik' => 'required|string|size:16|regex:/^[0-9]{16}$/',
+            'nomor_kk' => 'required|string|size:16|regex:/^[0-9]{16}$/',
             'phone' => 'required|string|max:20',
             'email' => 'required|email|max:255',
             'address' => 'required|string|max:500',
@@ -149,42 +209,63 @@ class LayananSuratController extends Controller
             'agama' => 'required|string|max:50',
             'pekerjaan' => 'required|string|max:100',
             'status_perkawinan' => 'required|string|max:50',
-            'purpose' => 'required|string|max:255',
             'notes' => 'nullable|string|max:1000',
             'attachment' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+        ];
+
+        // Custom validation messages
+        $messages = [
+            'nik.size' => 'NIK (Nomor Induk Kependudukan) harus terdiri dari 16 digit angka.',
+            'nik.regex' => 'NIK (Nomor Induk Kependudukan) hanya boleh berisi angka dan harus 16 digit.',
+            'nomor_kk.size' => 'Nomor Kartu Keluarga harus terdiri dari 16 digit angka.',
+            'nomor_kk.regex' => 'Nomor Kartu Keluarga hanya boleh berisi angka dan harus 16 digit.',
         ];
 
         // Add type-specific validation rules
         $typeSpecificRules = $this->getTypeSpecificRules($type);
         $rules = array_merge($basicRules, $typeSpecificRules);
 
-        $validatedData = $request->validate($rules);
+        $validatedData = $request->validate($rules, $messages);
 
         DB::beginTransaction();
-        
+
         try {
             // Create or find pemohon
             $pemohon = $this->createOrUpdatePemohon($validatedData);
-            
+
             // Get jenis surat
             $jenisSurat = $this->getJenisSurat($type);
-            
-            // Create surat
+
+            // Create surat without created_by (will be assigned during status update)
             $surat = $this->createSurat($pemohon->id_pemohon, $jenisSurat->id_jenis, $validatedData);
-            
+
             // Create detail surat based on type
             $this->createDetailSurat($type, $surat->id_surat, $validatedData);
-            
+
             DB::commit();
-            
-            $roleName = Auth::user()->role ?? 'admin';
-            
-            return redirect()->route($roleName . '.layanan-surat')
-                ->with('success', 'Permohonan surat berhasil diajukan.');
-                
+
+            // Queue email sending for better performance
+            ProcessSuratSubmission::dispatch($surat->id_surat, $pemohon->id_pemohon)
+                ->delay(now()->addSeconds(5)); // Small delay to ensure DB commit
+
+            Log::info('Surat submission queued for email processing', [
+                'surat_id' => $surat->id_surat,
+                'email' => $pemohon->email
+            ]);
+
+            // Handle redirect based on authentication status
+            if (Auth::check()) {
+                $roleName = Auth::user()->role ?? 'admin';
+                Alert::toast('Permohonan surat berhasil diajukan', 'success');
+                return redirect()->route($roleName . '.layanan-surat.create');
+            } else {
+                // For non-authenticated users, redirect to layanan-surat page
+                return redirect()->route('layanan-surat')
+                    ->with('success', 'Permohonan surat berhasil diajukan. Terima kasih!');
+            }
         } catch (\Exception $e) {
             DB::rollback();
-            
+
             return back()->withErrors(['error' => 'Terjadi kesalahan: ' . $e->getMessage()])->withInput();
         }
     }
@@ -195,10 +276,11 @@ class LayananSuratController extends Controller
     public function show($id)
     {
         $surat = Surat::with(['pemohon', 'jenisSurat'])->findOrFail($id);
-        
-        // Get detail based on type
-        $detail = $this->getDetailSurat($surat);
-        
+
+        // Get detail based on type using PDFController
+        $pdfController = new \App\Http\Controllers\PDFController();
+        $detail = $pdfController->getDetailSurat($surat);
+
         return view('components.pages.dashboard.admin.layanan-surat.show', compact('surat', 'detail'));
     }
 
@@ -212,25 +294,63 @@ class LayananSuratController extends Controller
             'catatan' => 'nullable|string|max:1000'
         ]);
 
-        $surat = Surat::findOrFail($id);
+        $surat = Surat::with(['pemohon', 'jenisSurat'])->findOrFail($id);
         $surat->status = $request->status;
-        
+
+        // Assign created_by when status is updated (not during form creation)
+        if (!$surat->created_by) {
+            $surat->created_by = Auth::id();
+        }
+
         if ($request->status === 'disetujui' && !$surat->nomor_surat) {
             $surat->nomor_surat = $this->generateNomorSurat($surat->jenisSurat->nama_jenis, $surat->id_surat);
             $surat->tanggal_surat = now();
         }
-        
+
         $surat->save();
 
-        $statusText = $request->status === 'disetujui' ? 'disetujui' : 'ditolak';
-        
+        // Queue PDF generation and email sending for better performance
+        if ($request->status === 'disetujui') {
+            // Queue approval processing (PDF generation + email)
+            ProcessSuratApproval::dispatch($surat->id_surat)
+                ->delay(now()->addSeconds(10)); // Small delay to ensure DB commit
+
+            $statusText = 'disetujui dan sedang diproses untuk pengiriman PDF via email';
+
+            Log::info('Surat approval queued for processing', [
+                'surat_id' => $surat->id_surat,
+                'email' => $surat->pemohon->email
+            ]);
+        } else {
+            // Queue rejection email
+            ProcessSuratRejection::dispatch($surat->id_surat, $request->catatan)
+                ->delay(now()->addSeconds(5)); // Faster processing for rejections
+
+            $statusText = 'ditolak dan sedang diproses untuk pengiriman email pemberitahuan';
+
+            Log::info('Surat rejection queued for processing', [
+                'surat_id' => $surat->id_surat,
+                'email' => $surat->pemohon->email
+            ]);
+        }
+
         return redirect()->back()->with('success', "Surat berhasil {$statusText}.");
+    }
+
+    /**
+     * Download PDF for approved surat
+     */
+    public function downloadPdf($id)
+    {
+        // Delegate to PDFController for consistent PDF generation
+        $pdfController = new \App\Http\Controllers\PDFController();
+        return $pdfController->generatePDF(new \Illuminate\Http\Request(), $id);
     }
 
     // Private helper methods
     private function getRequestClass($type)
     {
-        return match($type) {
+        return match ($type) {
             'skck' => SuratSkckRequest::class,
             'izin-keramaian' => SuratIzinKeramaianRequest::class,
             'keterangan-usaha' => SuratKeteranganUsahaRequest::class,
@@ -242,7 +362,7 @@ class LayananSuratController extends Controller
             'pindah-keluar' => SuratPindahKeluarRequest::class,
             'domisili-instansi' => SuratDomisiliInstansiRequest::class,
             'domisili-kelompok' => SuratDomisiliKelompokRequest::class,
-            default => throw new \Exception('Invalid surat type')
+            'domisili-orang' => SuratDomisiliOrangRequest::class,
         };
     }
 
@@ -279,7 +399,8 @@ class LayananSuratController extends Controller
             'orang-yang-sama' => 'Orang yang Sama',
             'pindah-keluar' => 'Pindah Keluar',
             'domisili-instansi' => 'Domisili Instansi',
-            'domisili-kelompok' => 'Domisili Kelompok'
+            'domisili-kelompok' => 'Domisili Kelompok',
+            'domisili-orang' => 'Domisili Orang'
         ];
 
         return JenisSurat::where('nama_jenis', $typeMapping[$type])->firstOrFail();
@@ -290,7 +411,6 @@ class LayananSuratController extends Controller
         return Surat::create([
             'id_pemohon' => $idPemohon,
             'id_jenis' => $idJenis,
-            'created_by' => Auth::id(),
             'status' => 'belum_diverifikasi'
         ]);
     }
@@ -318,7 +438,7 @@ class LayananSuratController extends Controller
                     'jumlah_undangan' => $data['jumlah_undangan']
                 ]);
                 break;
-                
+
             case 'keterangan-usaha':
                 DetailKeteranganUsaha::create([
                     'id_surat' => $idSurat,
@@ -327,21 +447,23 @@ class LayananSuratController extends Controller
                     'alamat_usaha' => $data['alamat_usaha']
                 ]);
                 break;
-                
+
             case 'sktm':
                 DetailSktm::create([
                     'id_surat' => $idSurat,
-                    'pendidikan' => $data['pendidikan']
+                    'pendidikan' => $data['pendidikan'],
+                    'penghasilan' => $data['penghasilan'],
+                    'jumlah_tanggungan' => $data['jumlah_tanggungan'],
                 ]);
                 break;
-                
+
             case 'belum-menikah':
                 DetailBelumMenikah::create([
                     'id_surat' => $idSurat,
                     'keperluan' => $data['keperluan']
                 ]);
                 break;
-                
+
             case 'keterangan-kematian':
                 DetailKematian::create([
                     'id_surat' => $idSurat,
@@ -357,7 +479,7 @@ class LayananSuratController extends Controller
                     'hubungan_pelapor' => $data['hubungan_pelapor']
                 ]);
                 break;
-                
+
             case 'keterangan-kelahiran':
                 DetailKelahiran::create([
                     'id_surat' => $idSurat,
@@ -366,10 +488,12 @@ class LayananSuratController extends Controller
                     'hari_lahir' => $data['hari_lahir'],
                     'tanggal_lahir' => $data['tanggal_lahir_anak'],
                     'tempat_lahir' => $data['tempat_lahir_anak'],
-                    'penolong_kelahiran' => $data['penolong_kelahiran']
+                    'penolong_kelahiran' => $data['penolong_kelahiran'],
+                    'ibu' => $data['ibu'], // Default value if not provided
+                    'ayah' => $data['ayah'] // Default value
                 ]);
                 break;
-                
+
             case 'orang-yang-sama':
                 DetailOrangYangSama::create([
                     'id_surat' => $idSurat,
@@ -381,7 +505,7 @@ class LayananSuratController extends Controller
                     'dasar_dokumen_2' => $data['dasar_dokumen_2']
                 ]);
                 break;
-                
+
             case 'pindah-keluar':
                 DetailPindahKeluar::create([
                     'id_surat' => $idSurat,
@@ -390,7 +514,7 @@ class LayananSuratController extends Controller
                     'tanggal_pindah' => $data['tanggal_pindah']
                 ]);
                 break;
-                
+
             case 'domisili-instansi':
                 DetailDomisiliInstansi::create([
                     'id_surat' => $idSurat,
@@ -399,12 +523,10 @@ class LayananSuratController extends Controller
                     'nip_pimpinan' => $data['nip_pimpinan'],
                     'email_pimpinan' => $data['email_pimpinan'],
                     'alamat_instansi' => $data['alamat_instansi'],
-                    'bidang_usaha' => $data['bidang_usaha'],
-                    'jabatan' => $data['jabatan'],
                     'keterangan_lokasi' => $data['keterangan_lokasi']
                 ]);
                 break;
-                
+
             case 'domisili-kelompok':
                 DetailDomisiliKelompok::create([
                     'id_surat' => $idSurat,
@@ -414,59 +536,51 @@ class LayananSuratController extends Controller
                     'ketua' => $data['ketua'],
                     'sekretaris' => $data['sekretaris'],
                     'bendahara' => $data['bendahara'],
-                    'jenis_kelompok' => $data['jenis_kelompok'],
-                    'jumlah_anggota' => $data['jumlah_anggota'],
                     'keterangan_lokasi' => $data['keterangan_lokasi'],
-                    'tujuan_pembentukan' => $data['tujuan_pembentukan']
+                ]);
+                break;
+
+            case 'domisili-orang':
+                DetailDomisiliOrang::create([
+                    'id_surat' => $idSurat,
+                    'keperluan' => $data['keperluan'],
                 ]);
                 break;
         }
-    }
-
-    private function getDetailSurat($surat)
-    {
-        $jenis = $surat->jenisSurat->nama_jenis;
-        
-        return match($jenis) {
-            'SKCK' => DetailSkck::where('id_surat', $surat->id_surat)->first(),
-            'Izin Keramaian' => DetailIzinKeramaian::where('id_surat', $surat->id_surat)->first(),
-            'Keterangan Usaha' => DetailKeteranganUsaha::where('id_surat', $surat->id_surat)->first(),
-            'SKTM' => DetailSktm::where('id_surat', $surat->id_surat)->first(),
-            'Belum Menikah' => DetailBelumMenikah::where('id_surat', $surat->id_surat)->first(),
-            'Keterangan Kematian' => DetailKematian::where('id_surat', $surat->id_surat)->first(),
-            'Keterangan Kelahiran' => DetailKelahiran::where('id_surat', $surat->id_surat)->first(),
-            'Orang yang Sama' => DetailOrangYangSama::where('id_surat', $surat->id_surat)->first(),
-            'Pindah Keluar' => DetailPindahKeluar::where('id_surat', $surat->id_surat)->first(),
-            'Domisili Instansi' => DetailDomisiliInstansi::where('id_surat', $surat->id_surat)->first(),
-            'Domisili Kelompok' => DetailDomisiliKelompok::where('id_surat', $surat->id_surat)->first(),
-            default => null
-        };
     }
 
     private function generateNomorSurat($jenisSurat, $idSurat = null)
     {
         $tahun = date('Y');
         $bulan = date('n'); // Get numeric month (1-12)
-        
+
         // Convert month to Roman numerals
         $romanMonths = [
-            1 => 'I', 2 => 'II', 3 => 'III', 4 => 'IV', 5 => 'V', 6 => 'VI',
-            7 => 'VII', 8 => 'VIII', 9 => 'IX', 10 => 'X', 11 => 'XI', 12 => 'XII'
+            1 => 'I',
+            2 => 'II',
+            3 => 'III',
+            4 => 'IV',
+            5 => 'V',
+            6 => 'VI',
+            7 => 'VII',
+            8 => 'VIII',
+            9 => 'IX',
+            10 => 'X',
+            11 => 'XI',
+            12 => 'XII'
         ];
         $bulanRoman = $romanMonths[$bulan];
-        
-        // Use the provided id_surat or get the latest one
-        if (!$idSurat) {
-            $lastSurat = Surat::latest('id_surat')->first();
-            $idSurat = $lastSurat ? $lastSurat->id_surat : 1;
-        }
-        
-        return sprintf('474/%d/%s/%s', $idSurat, $bulanRoman, $tahun);
+
+        // Count approved letters (disetujui) to generate sequential number
+        $approvedCount = Surat::where('status', 'disetujui')->count();
+        $nomorUrut = $approvedCount + 1; // Next sequential number
+
+        return sprintf('474/%d/%s/%s', $nomorUrut, $bulanRoman, $tahun);
     }
 
     private function getTypeSpecificRules($type)
     {
-        return match($type) {
+        return match ($type) {
             'skck' => [
                 'keperluan' => 'required|string|max:255',
                 'tanggal_mulai_berlaku' => 'required|date',
@@ -487,6 +601,8 @@ class LayananSuratController extends Controller
             ],
             'sktm' => [
                 'pendidikan' => 'required|string|max:100',
+                'penghasilan' => 'required|numeric|min:0',
+                'jumlah_tanggungan' => 'required|integer|min:0',
             ],
             'belum-menikah' => [
                 'keperluan' => 'required|string|max:255',
@@ -510,6 +626,8 @@ class LayananSuratController extends Controller
                 'tanggal_lahir_anak' => 'required|date',
                 'tempat_lahir_anak' => 'required|string|max:255',
                 'penolong_kelahiran' => 'required|string|max:100',
+                'ibu' => 'required|string|max:255',
+                'ayah' => 'required|string|max:255',
             ],
             'orang-yang-sama' => [
                 'nama_2' => 'required|string|max:255',
@@ -523,9 +641,6 @@ class LayananSuratController extends Controller
                 'alamat_tujuan' => 'required|string|max:500',
                 'alasan_pindah' => 'required|string|max:255',
                 'tanggal_pindah' => 'required|date',
-                'jenis_kepindahan' => 'required|string|max:100',
-                'status_kk' => 'required|string|max:100',
-                'klasifikasi_pindah' => 'required|string|max:100',
             ],
             'domisili-instansi' => [
                 'nama_instansi' => 'required|string|max:255',
@@ -533,8 +648,6 @@ class LayananSuratController extends Controller
                 'nip_pimpinan' => 'required|string|max:50',
                 'email_pimpinan' => 'required|email|max:255',
                 'alamat_instansi' => 'required|string|max:500',
-                'bidang_usaha' => 'required|string|max:100',
-                'jabatan' => 'required|string|max:100',
                 'keterangan_lokasi' => 'required|string|max:255',
             ],
             'domisili-kelompok' => [
@@ -544,10 +657,10 @@ class LayananSuratController extends Controller
                 'email_ketua' => 'required|email|max:255',
                 'sekretaris' => 'required|string|max:255',
                 'bendahara' => 'required|string|max:255',
-                'jenis_kelompok' => 'required|string|max:100',
-                'jumlah_anggota' => 'required|integer|min:3',
                 'keterangan_lokasi' => 'required|string|max:255',
-                'tujuan_pembentukan' => 'required|string|max:1000',
+            ],
+            'domisili-orang' => [
+                'keperluan' => 'required|string|max:255',
             ],
             default => []
         };

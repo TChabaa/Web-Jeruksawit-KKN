@@ -34,7 +34,7 @@ class DestinationCreateRequest extends FormRequest
             'opening_hours.last_day' => 'required|string|in:senin,selasa,rabu,kamis,jumat,sabtu,minggu',
             'opening_hours.open' => 'required|string|date_format:H:i',
             'opening_hours.close' => 'required|string|date_format:H:i',
-            'galleries.*' => 'required|image|mimes:jpeg,png,jpg|max:1048|',
+            'galleries.*' => 'required|image|mimes:jpeg,png,jpg|max:4146176|',
             'facilities' => 'array',
             'facilities.*' => 'nullable|string',
             'accommodations' => 'array',
@@ -44,10 +44,6 @@ class DestinationCreateRequest extends FormRequest
             'contact_details.email' => 'nullable|string|max:50',
             'contact_details.social_media' => 'nullable|string|max:100',
         ];
-
-        if (Auth::user()->role !== 'owner') {
-            $rules['owner'] = 'required';
-        }
 
         return $rules;
     }

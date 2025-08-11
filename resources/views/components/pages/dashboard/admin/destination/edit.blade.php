@@ -28,31 +28,6 @@
 
 
             <div class="px-6 py-6 mb-6 bg-white rounded-lg shadow-lg dark:bg-black">
-                @if (auth()->user()->role != 'owner')
-                    <div class="mb-4.5">
-                        <label for="owner" class="block mb-3 text-sm font-medium text-black dark:text-white">
-                            Penanggung Jawab Wisata <span class="text-red-500">*</span>
-                        </label>
-                        <div x-data="{ isOptionSelected: false }" class="relative z-20 bg-transparent dark:bg-form-input">
-                            <select required id="owner" name="owner"
-                                class="relative z-20 w-full px-5 py-3 transition bg-transparent border border-black rounded outline-none appearance-none focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                                :class="isOptionSelected && 'text-black dark:text-white'"
-                                @change="isOptionSelected = true">
-                                <option value="" hidden class="text-body">
-                                    Pilih Penanggung Jawab
-                                </option>
-                                @forelse ($owners as $owner)
-                                    <option value="{{ $owner->id }}" class="text-body"
-                                        {{ $destination->owner_id == $owner->id ? 'selected' : '' }}>
-                                        {{ $owner->name }}</option>
-                                @empty
-                                    <option value="" class="text-body" selected>Belum ada pennggung jawab</option>
-                                @endforelse
-                            </select>
-                            <x-partials.dashboard.input-error :messages="$errors->get('owner')" />
-                        </div>
-                    </div>
-                @endif
                 <div class="w-full mb-6">
                     <label for="name_destination" class="block mb-3 text-sm font-medium text-black dark:text-white">
                         Nama Wisata <span class="text-red-500">*</span>
@@ -258,7 +233,7 @@
                                             satu</p>
                                         <p class="text-xs font-medium text-red-500">* Pastikan file bertipe jpeg, jpg,
                                             png</p>
-                                        <p class="text-xs font-medium text-red-500">* Maksimal file 1MB</p>
+                                        <p class="text-xs font-medium text-red-500">* Maksimal file 4049MB</p>
                                         <input type="file" required multiple accept="image/*" name="galleries[]"
                                             id="galleries" class="mt-3">
                                         <x-partials.dashboard.input-error :messages="$errors->get('galleries.')" />

@@ -1,7 +1,7 @@
 <div>
-    <div id="deleteModal" tabindex="-1" class="fixed   inset-0 z-50 flex items-center justify-center hidden">
+    <div id="deleteModal" tabindex="-1" class="fixed inset-0 z-[9999] hidden bg-black bg-opacity-50">
         <div
-            class="bg-white dark:bg-black rounded-lg space-y-4 shadow-2xl dark:shadow-gray-500 dark:shadow-md border p-6">
+            class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-black rounded-lg space-y-4 shadow-2xl dark:shadow-gray-500 dark:shadow-md border p-6 max-w-md mx-4">
             <div class="flex justify-center items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" width="86" height="86" viewBox="0 0 24 24"
                     style="fill: rgb(220 80 80);transform: ;msFilter:;">
@@ -31,5 +31,9 @@
 <script>
     function closeModal() {
         $('#deleteModal').addClass('hidden');
+    }
+
+    function openModal() {
+        $('#deleteModal').removeClass('hidden');
     }
 </script>
