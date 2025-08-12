@@ -4,7 +4,9 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class AutoQueueWorkerCommand extends Command
 {
@@ -20,42 +22,56 @@ class AutoQueueWorkerCommand extends Command
         $maxRuntime = (int) $this->option('max-runtime');
         $startTime = time();
 
-        $this->info('🚀 Starting Auto Queue Worker for cPanel Environment');
-        $this->info('📧 Processing email queue without terminal dependency...');
+        // Prevent duplicate workers using cache lock
+        if (!Cache::add('queue_auto_worker_lock', true, 60)) {
+            $this->info('⚠ Another worker is already running. Exiting.');
+            return 0;
+        }
 
-        while (true) {
-            try {
-                // Process jobs one by one
-                $result = Artisan::call('queue:work', [
-                    '--once' => true,
+        $this->info('🚀 Starting Auto Queue Worker');
+        $this->info('📧 Will process until queue is empty.');
+
+        try {
+            while (true) {
+                // Stop if max runtime exceeded
+                if ((time() - $startTime) > $maxRuntime) {
+                    $this->info('⏱ Max runtime reached, stopping worker.');
+                    break;
+                }
+
+                // Check if there are any pending jobs in the database
+                $jobCount = DB::table('jobs')
+                    ->where('queue', 'emails')
+                    ->count();
+
+                if ($jobCount === 0) {
+                    $this->info('✅ Queue is empty.');
+                    if (!$isDaemon) break;
+
+                    sleep(5);
+                    continue;
+                }
+
+                // Process all jobs until queue is empty
+                $this->info("📦 Found {$jobCount} jobs. Processing...");
+                Artisan::call('queue:work', [
                     '--queue' => 'emails',
                     '--timeout' => 120,
                     '--memory' => 256,
                     '--sleep' => 3,
+                    '--stop-when-empty' => true, // Laravel will process until empty
                 ]);
 
-                // Log successful processing
-                if ($result === 0) {
-                    Log::info('Queue worker processed job successfully');
-                } else {
-                    Log::warning('Queue worker completed with status: ' . $result);
-                }
+                Log::info("Queue worker processed {$jobCount} jobs.");
 
-                // Check if we should stop (for non-daemon mode or time limit)
-                if (!$isDaemon || (time() - $startTime) > $maxRuntime) {
-                    $this->info('✅ Auto queue worker completed');
-                    break;
-                }
-
-                // Small delay between iterations to prevent resource overload
-                sleep(5);
-            } catch (\Exception $e) {
-                Log::error('Queue worker error: ' . $e->getMessage());
-                $this->error('Queue worker error: ' . $e->getMessage());
-
-                // Don't exit on error, just log it and continue
-                sleep(10);
+                if (!$isDaemon) break;
             }
+        } catch (\Exception $e) {
+            Log::error('Queue worker error: ' . $e->getMessage());
+            $this->error('Queue worker error: ' . $e->getMessage());
+        } finally {
+            // Release lock
+            Cache::forget('queue_auto_worker_lock');
         }
 
         return 0;
