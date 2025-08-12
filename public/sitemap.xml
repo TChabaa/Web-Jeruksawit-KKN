@@ -1,159 +1,115 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
     <url>
-    <loc>http://desa-wisata.test</loc>
+    <loc>http://desa-wisata</loc>
     <lastmod>2025-08-10T13:16:54+07:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
             </url>
     <url>
-    <loc>http://desa-wisata.test/destinations</loc>
+    <loc>http://desa-wisata/destinations</loc>
     <lastmod>2025-08-10T13:16:54+07:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
             </url>
     <url>
-    <loc>http://desa-wisata.test/umkm</loc>
+    <loc>http://desa-wisata/umkm</loc>
     <lastmod>2025-08-10T13:16:54+07:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
             </url>
     <url>
-    <loc>http://desa-wisata.test/articles</loc>
+    <loc>http://desa-wisata/articles</loc>
     <lastmod>2025-08-10T13:16:54+07:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://desa-wisata.test/galleries</loc>
+    <loc>http://desa-wisata/galleries</loc>
     <lastmod>2025-08-10T13:16:54+07:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://desa-wisata.test/about-us</loc>
+    <loc>http://desa-wisata/about-us</loc>
     <lastmod>2025-08-10T13:16:54+07:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
             </url>
     <url>
-    <loc>http://desa-wisata.test/layanan-surat</loc>
+    <loc>http://desa-wisata/layanan-surat</loc>
     <lastmod>2025-08-10T13:16:54+07:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://desa-wisata.test/destinations/lake-makenzieside-01k213q51tef6yc005hjcbtcjv/show</loc>
-    <lastmod>2025-08-07T08:53:19+07:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-    <image:image>
-    <image:loc>http://desa-wisata.test/storage</image:loc>
-    <image:caption>Lake Makenzieside</image:caption>
-</image:image>
-        </url>
-    <url>
-    <loc>http://desa-wisata.test/destinations/east-conrad-01k213q54r0jewrqna7nw27b9g/show</loc>
-    <lastmod>2025-08-08T14:00:20+07:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-    <image:image>
-    <image:loc>http://desa-wisata.test/storage</image:loc>
-    <image:caption>East Conrad</image:caption>
-</image:image>
-        </url>
-    <url>
-    <loc>http://desa-wisata.test/umkm/fsesfsf-01k21pbpj4jhf79avk3mdw4g6v/show</loc>
-    <lastmod>2025-08-07T14:19:07+07:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-    <image:image>
-    <image:loc>http://desa-wisata.test/storage/gambar_umkm/skYK8wFsaLoUesYrteQDiP3A8LZtnDP8fm2yaKlX.jpg</image:loc>
-    <image:caption>UMKM Desa Jeruksawit</image:caption>
-</image:image>
-        </url>
-    <url>
-    <loc>http://desa-wisata.test/articles/dwdad-01k21pjgafj2p6mt6w47344fke/show</loc>
-    <lastmod>2025-08-07T14:22:50+07:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-    <image:image>
-    <image:loc>http://desa-wisata.test/storage/gambar_article/S9RBzvnUDPyZXUVt0UVcUrq2VfPDt2YOQomLeBNe.jpg</image:loc>
-    <image:caption>dwdad</image:caption>
-</image:image>
-<image:image>
-    <image:loc>http://desa-wisata.test/storage/gambar_article/jETE1ZBVcVrgyXFU7vaRuy90WnpEu0eDsXhz6cin.jpg</image:loc>
-    <image:caption>dwdad</image:caption>
-</image:image>
-        </url>
-    <url>
-    <loc>http://desa-wisata.test/layanan-surat/skck/form</loc>
+    <loc>http://desa-wisata/layanan-surat/skck/form</loc>
     <lastmod>2025-08-10T13:16:54+07:00</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
             </url>
     <url>
-    <loc>http://desa-wisata.test/layanan-surat/sktm/form</loc>
+    <loc>http://desa-wisata/layanan-surat/sktm/form</loc>
     <lastmod>2025-08-10T13:16:54+07:00</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
             </url>
     <url>
-    <loc>http://desa-wisata.test/layanan-surat/belum-menikah/form</loc>
+    <loc>http://desa-wisata/layanan-surat/belum-menikah/form</loc>
     <lastmod>2025-08-10T13:16:54+07:00</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
             </url>
     <url>
-    <loc>http://desa-wisata.test/layanan-surat/izin-keramaian/form</loc>
+    <loc>http://desa-wisata/layanan-surat/izin-keramaian/form</loc>
     <lastmod>2025-08-10T13:16:54+07:00</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
             </url>
     <url>
-    <loc>http://desa-wisata.test/layanan-surat/keterangan-usaha/form</loc>
+    <loc>http://desa-wisata/layanan-surat/keterangan-usaha/form</loc>
     <lastmod>2025-08-10T13:16:54+07:00</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
             </url>
     <url>
-    <loc>http://desa-wisata.test/layanan-surat/keterangan-kematian/form</loc>
+    <loc>http://desa-wisata/layanan-surat/keterangan-kematian/form</loc>
     <lastmod>2025-08-10T13:16:54+07:00</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
             </url>
     <url>
-    <loc>http://desa-wisata.test/layanan-surat/keterangan-kelahiran/form</loc>
+    <loc>http://desa-wisata/layanan-surat/keterangan-kelahiran/form</loc>
     <lastmod>2025-08-10T13:16:54+07:00</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
             </url>
     <url>
-    <loc>http://desa-wisata.test/layanan-surat/orang-yang-sama/form</loc>
+    <loc>http://desa-wisata/layanan-surat/orang-yang-sama/form</loc>
     <lastmod>2025-08-10T13:16:54+07:00</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
             </url>
     <url>
-    <loc>http://desa-wisata.test/layanan-surat/pindah-keluar/form</loc>
+    <loc>http://desa-wisata/layanan-surat/pindah-keluar/form</loc>
     <lastmod>2025-08-10T13:16:54+07:00</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
             </url>
     <url>
-    <loc>http://desa-wisata.test/layanan-surat/domisili-instansi/form</loc>
+    <loc>http://desa-wisata/layanan-surat/domisili-instansi/form</loc>
     <lastmod>2025-08-10T13:16:54+07:00</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
             </url>
     <url>
-    <loc>http://desa-wisata.test/layanan-surat/domisili-kelompok/form</loc>
+    <loc>http://desa-wisata/layanan-surat/domisili-kelompok/form</loc>
     <lastmod>2025-08-10T13:16:54+07:00</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
             </url>
     <url>
-    <loc>http://desa-wisata.test/layanan-surat/domisili-orang/form</loc>
+    <loc>http://desa-wisata/layanan-surat/domisili-orang/form</loc>
     <lastmod>2025-08-10T13:16:54+07:00</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>

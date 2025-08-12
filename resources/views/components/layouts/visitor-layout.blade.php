@@ -185,98 +185,56 @@
         {{ $slot }}
     </section>
 
-    <footer class="w-full mt-20 text-gray-700 bg-gray-100 body-font">
-        <div class="flex flex-col items-center px-5 py-5 md:flex-row ">
-            <div class="mx-auto text-center lg:w-1/2 md:mx-0 ">
-                <a class="flex items-center justify-center font-medium text-gray-900 title-font ">
-                    <img class="w-20" src="{{ asset('assets/img/Karanganyar.png') }}" alt="">
-                </a>
-                <p class="mt-2 text-sm text-gray-500">Repeh Rapih Kerta Raharja</p>
-                <div class="mt-4">
-                    <span class="inline-flex justify-center mt-2 sm:ml-auto sm:mt-0 sm:justify-start">
-                        <a href="https://web.facebook.com/rakutakside"
-                            class="text-gray-500 cursor-pointer hover:text-green-new">
-                            <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                class="w-5 h-5" viewBox="0 0 24 24">
-                                <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"></path>
-                            </svg>
-                        </a>
-                        <a href="https://www.youtube.com/@sukarame.Info77"
-                            class="ml-3 text-gray-500 cursor-pointer hover:text-green-new">
-                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                fill="currentColor" viewBox="0 0 24 24">
-                                <path fill-rule="evenodd"
-                                    d="M21.7 8.037a4.26 4.26 0 0 0-.789-1.964 2.84 2.84 0 0 0-1.984-.839c-2.767-.2-6.926-.2-6.926-.2s-4.157 0-6.928.2a2.836 2.836 0 0 0-1.983.839 4.225 4.225 0 0 0-.79 1.965 30.146 30.146 0 0 0-.2 3.206v1.5a30.12 30.12 0 0 0 .2 3.206c.094.712.364 1.39.784 1.972.604.536 1.38.837 2.187.848 1.583.151 6.731.2 6.731.2s4.161 0 6.928-.2a2.844 2.844 0 0 0 1.985-.84 4.27 4.27 0 0 0 .787-1.965 30.12 30.12 0 0 0 .2-3.206v-1.516a30.672 30.672 0 0 0-.202-3.206Zm-11.692 6.554v-5.62l5.4 2.819-5.4 2.801Z"
-                                    clip-rule="evenodd" />
-                            </svg>
+    <footer class="bg-gray-100 border-t border-gray-200">
+        <div
+            class="max-w-screen-xl mx-auto px-5 py-12 grid grid-cols-1 lg:grid-cols-5 gap-y-10 lg:gap-x-6 font-semibold">
 
-                        </a>
-                        <a href="https://www.instagram.com/desasukarame2022?igsh=MW55enJkcndiNzNxaw"
-                            class="ml-3 text-gray-500 cursor-pointer hover:text-green-new">
-                            <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                stroke-width="2" class="w-5 h-5" viewBox="0 0 24 24">
-                                <rect width="20" height="20" x="2" y="2" rx="5" ry="5">
-                                </rect>
-                                <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zm1.5-4.87h.01"></path>
-                            </svg>
-                        </a>
-
-                    </span>
-                </div>
+            <!-- 1. Logo -->
+            <div class="flex justify-center lg:justify-start lg:mr-8">
+                <img class="w-32 lg:w-40" src="{{ asset('assets/img/logo.png') }}" alt="Logo Desa Jeruksawit">
             </div>
-            <div class="flex flex-wrap flex-grow mt-10 -mb-10 text-center md:pl-20 md:mt-0 md:text-left">
 
-                <div class="w-full px-4 md:w-1/2">
-
-                    <nav class="mb-10 list-none text-md">
-                        <li class="mt-3">
-                            <a href="{{ route('index') }}"
-                                class="text-gray-500 cursor-pointer hover:text-green-new {{ Route::current()->getName() == 'index' ? 'text-green-new' : '' }}">Beranda</a>
-                        </li>
-                        <li class="mt-3">
-                            <a href="{{ route('destinations') }}"
-                                class="text-gray-500 cursor-pointer hover:text-green-new {{ in_array(Route::current()->getName(), ['destinations', 'destinations.show']) ? 'text-green-new' : '' }}">Wisata</a>
-                        </li>
-                        <li class="mt-3">
-                            <a href="{{ route('umkm') }}"
-                                class="text-gray-500 cursor-pointer hover:text-green-new {{ in_array(Route::current()->getName(), ['umkm', 'umkm.show']) ? 'text-green-new' : '' }}">UMKM</a>
-                        </li>
-                        <li class="mt-3">
-                            <a href="{{ route('galleries') }}"
-                                class="text-gray-500 cursor-pointer hover:text-green-new {{ Route::current()->getName() == 'galleries' ? 'text-green-new' : '' }}">Galeri</a>
-                        </li>
-                    </nav>
-                </div>
-                <div class="w-full px-4 md:w-1/2">
-
-                    <nav class="mb-10 list-none text-md">
-
-                        <li class="mt-3">
-                            <a href="{{ route('articles') }}"
-                                class=" cursor-pointer hover:text-green-new {{ in_array(Route::current()->getName(), ['articles', 'articles.show']) ? 'text-green-new' : '' }}">Artikel</a>
-                        </li>
-                        <li class="mt-3">
-                            <a href="{{ route('about-us') }}"
-                                class=" cursor-pointer hover:text-green-new {{ Route::current()->getName() == 'about-us' ? 'text-green-new' : '' }}">Tentang
-                                Kami</a>
-                        </li>
-                        <li class="mt-3">
-                            <a href="{{ route('layanan-surat') }}"
-                                class=" cursor-pointer hover:text-green-new {{ Route::current()->getName() == 'layanan-surat' || str_starts_with(Route::current()->getName(), 'layanan-surat.') ? 'text-green-new' : '' }}">Layanan
-                                Surat</a>
-                        </li>
-                    </nav>
-                </div>
-
-
+            <!-- 2. Kontak Kami -->
+            <div class="text-center lg:text-left lg:mr-12 mb-8 lg:mb-0">
+                <h3 class="text-lg font-bold mb-2">Kontak Kami</h3>
+                <p class="flex items-center justify-center lg:justify-left">
+                    <a href="https://wa.me/6282134352060"
+                        class="ml-2 text-blue-600 hover:underline">+62821-3435-2060</a>
+                </p>
+                <p class="flex items-center justify-center lg:justify-start mb-2 break-all">
+                    <a href="mailto:kantordesajeruksawit@gmail.com" class="ml-2 text-blue-600 hover:underline">
+                        kantordesajeruksawit@gmail.com
+                    </a>
+                </p>
             </div>
-        </div>
-        <div class="bg-#A2AF9B">
-            <div class="container px-5 py-4 mx-auto">
-                <p class="text-sm font-bold text-center text-white capitalize font-inter">Copyright
-                    {{ date('Y') }} Desa
-                    Jeruksawit </p>
+
+            <!-- 3. Jam Kerja -->
+            <div class="text-center lg:text-left lg:mr-1 lg:ml-6"> <!-- lg:ml-6 adds space between table 2 & 3 -->
+                <h3 class="text-lg font-bold mb-2">Jam Kerja</h3>
+                <p>Senin - Jumat: 08.00 - 16.00</p>
+                <p>Sabtu: 08.00 - 12.00</p>
+                <p>Minggu & Hari Libur: Tutup</p>
             </div>
+
+            <!-- 4. Navigasi Utama -->
+            <div class="text-center lg:text-left lg:ml-15">
+                <ul>
+                    <li><a href="/" class="hover:underline">Beranda</a></li>
+                    <li><a href="/wisata" class="hover:underline">Wisata</a></li>
+                    <li><a href="/umkm" class="hover:underline">UMKM</a></li>
+                    <li><a href="/galeri" class="hover:underline">Galeri</a></li>
+                </ul>
+            </div>
+
+            <!-- 5. Navigasi Lain -->
+            <div class="text-center lg:text-left">
+                <ul>
+                    <li><a href="/artikel" class="hover:underline">Artikel</a></li>
+                    <li><a href="/tentang" class="hover:underline">Tentang Kami</a></li>
+                    <li><a href="/layanan-surat" class="hover:underline">Layanan Surat Menyurat</a></li>
+                </ul>
+            </div>
+
         </div>
     </footer>
 
@@ -298,11 +256,11 @@
 
         // // Tambahkan event listener untuk klik pada tombol toggle
         // toggleButton.addEventListener('click', function() {
-        //     // Toggle kelas 'hidden' pada menu mobile
-        //     mobileMenu.classList.toggle('hidden');
-        //     // Toggle atribut 'aria-expanded' untuk aksesibilitas
-        //     const isOpen = mobileMenu.classList.contains('hidden') ? 'false' : 'true';
-        //     toggleButton.setAttribute('aria-expanded', isOpen);
+        // // Toggle kelas 'hidden' pada menu mobile
+        // mobileMenu.classList.toggle('hidden');
+        // // Toggle atribut 'aria-expanded' untuk aksesibilitas
+        // const isOpen = mobileMenu.classList.contains('hidden') ? 'false' : 'true';
+        // toggleButton.setAttribute('aria-expanded', isOpen);
 
         // });
     </script>

@@ -1,12 +1,14 @@
 <x-Layouts.visitor-layout>
     <x-slot:title>Beranda</x-slot:title>
-    <x-slot:pageTitle>Portal Resmi Desa Jeruksawit Karanganyar - Desa Wisata Terbaik</x-slot:pageTitle>
-    <x-slot:metaDescription>Selamat datang di portal resmi Desa Jeruksawit, Karanganyar. Temukan pesona wisata desa, produk
-        UMKM unggulan, layanan surat online, dan informasi terkini tentang desa wisata terbaik di Jawa Tengah.</x-slot:metaDescription>
+    <x-slot:pageTitle>Portal Resmi Website ProfilDesa Jeruksawit Karanganyar</x-slot:pageTitle>
+    <x-slot:metaDescription>Selamat datang di portal resmi Website Profil Desa Jeruksawit, Karanganyar. Temukan pesona
+        wisata desa, produk UMKM unggulan, layanan surat online, dan informasi terkini tentang desa wisata terbaik di
+        Jawa Tengah.</x-slot:metaDescription>
     <x-slot:metaKeywords>desa jeruksawit, karanganyar, beranda, wisata desa, umkm jeruksawit, layanan surat online, desa
         wisata karanganyar, wisata jawa tengah, pemerintah desa jeruksawit</x-slot:metaKeywords>
-    <x-slot:ogTitle>Beranda - Portal Resmi Desa Jeruksawit Karanganyar</x-slot:ogTitle>
-    <x-slot:ogDescription>Portal resmi Desa Jeruksawit yang menyediakan informasi wisata, UMKM, layanan administrasi, dan
+    <x-slot:ogTitle>Beranda - Portal Resmi Website Profil Desa Jeruksawit Karanganyar</x-slot:ogTitle>
+    <x-slot:ogDescription>Portal resmi Website Profil Desa Jeruksawit yang menyediakan informasi wisata, UMKM, layanan
+        administrasi, dan
         berbagai fasilitas untuk masyarakat dan wisatawan.</x-slot:ogDescription>
 
     @push('structured-data')
@@ -15,7 +17,7 @@
         "@context": "https://schema.org",
         "@type": "WebPage",
         "name": "Beranda Desa Jeruksawit",
-        "description": "Portal resmi Desa Jeruksawit yang menyediakan informasi wisata, UMKM, layanan administrasi, dan berbagai fasilitas untuk masyarakat dan wisatawan.",
+        "description": "Portal resmi Website Profil Desa Jeruksawit yang menyediakan informasi wisata, UMKM, layanan administrasi, dan berbagai fasilitas untuk masyarakat dan wisatawan.",
         "url": "{{ route('index') }}",
         "isPartOf": {
             "@type": "WebSite",

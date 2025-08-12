@@ -9,14 +9,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('surat', function (Blueprint $table) {
-            $table->date('tanggal_disetujui')->nullable()->after('tanggal_surat');
+            $table->text('catatan')->nullable()->after('created_by'); // Add catatan field for rejection notes
         });
     }
 
     public function down(): void
     {
         Schema::table('surat', function (Blueprint $table) {
-            $table->dropColumn('tanggal_disetujui');
+            $table->dropColumn('catatan');
         });
     }
 };

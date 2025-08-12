@@ -23,7 +23,7 @@
                     <img src="{{ $logoBase64 }}" alt="Logo Karanganyar" width="80"
                         style="max-width: 80px; height: auto; margin: 0; padding: 0;">
                 @else
-                    <div sstyle="width: 120px; height: auto; display: block; margin: 0 auto;">
+                    <div style="width: 120px; height: auto; display: block; margin: 0 auto;">
                         LOGO
                     </div>
                 @endif
