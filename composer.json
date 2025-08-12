@@ -7,10 +7,12 @@
     "require": {
         "php": "^8.2",
         "barryvdh/laravel-dompdf": "^3.1",
+        "endroid/qr-code": "^5.0",
         "illuminate/http": "*",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
         "realrashid/sweet-alert": "^7.2",
+        "simplesoftwareio/simple-qrcode": "^4.2",
         "spatie/laravel-sitemap": "^7.3",
         "yajra/laravel-datatables-oracle": "^11.1"
     },

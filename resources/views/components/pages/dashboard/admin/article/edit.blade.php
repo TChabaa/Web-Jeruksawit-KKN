@@ -122,7 +122,7 @@
                             satu</p>
                         <p class="text-xs font-medium text-red-500">* Pastikan file bertipe jpeg, jpg,
                             png</p>
-                        <p class="text-xs font-medium text-red-500">* Maksimal file 4049MB</p>
+                        <p class="text-xs font-medium text-red-500">* Maksimal file 4146MB</p>
                         <div id="imagePreviewContainer" class="flex flex-wrap gap-5 mt-3"></div>
                         <input type="file" required multiple accept="image/*" name="gambar_articles[]"
                             id="gambar_articles" class="mt-3">

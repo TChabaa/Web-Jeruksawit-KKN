@@ -1,10 +1,10 @@
 <aside :class="sidebarToggle ? 'translate-x-0' : '-translate-x-full'"
-    class="absolute font-inter left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-[#A2AF9B] duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0"
+    class="absolute font-inter left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-boxdark duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0"
     @click.outside="sidebarToggle = false">
     <!-- SIDEBAR HEADER -->
     <div class="flex items-center justify-between lg:justify-center gap-2 px-6 py-5.5 lg:py-6.5">
         <a href="#">
-            <img class="w-20" src="{{ asset('assets/img/Karanganyar.png') }}" alt="Logo" />
+            <img class="w-20" src="{{ asset('assets/img/logo.png') }}" alt="Logo" />
         </a>
 
         <button class="block lg:hidden" @click.stop="sidebarToggle = !sidebarToggle">

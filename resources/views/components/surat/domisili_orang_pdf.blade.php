@@ -182,6 +182,7 @@
                 </td>
             </tr>
         </table>
+        <x-surat.qr_verification :qrCodePath="$qr_code_path ?? null" />
     </div>
 </body>
 

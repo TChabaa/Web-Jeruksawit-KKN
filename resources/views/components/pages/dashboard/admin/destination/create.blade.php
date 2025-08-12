@@ -29,7 +29,7 @@
                 </label>
                 <p class="text-xs font-medium text-gray-400">* Menambahkan foto bisa lebih dari satu</p>
                 <p class="text-xs font-medium text-gray-400">* Pastikan file bertipe jpeg, jpg, png</p>
-                <p class="text-xs font-medium text-gray-400">* Maksimal file 4049MB</p>
+                <p class="text-xs font-medium text-gray-400">* Maksimal file 4146MB</p>
                 <div id="imagePreviewContainer" class="flex flex-wrap gap-5 mt-3"></div>
                 <input type="file" required multiple accept="image/*" name="galleries[]" id="galleries"
                     class="mt-3">

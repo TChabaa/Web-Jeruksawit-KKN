@@ -25,7 +25,7 @@ class ArticleCreateRequest extends FormRequest
         $rules = [
             'title' => 'required|string|max:75',
             'content' => 'required|string',
-            'gambar_articles.*' => 'image|mimes:jpg,jpeg,png|max:4146176' // Validate each item in the array
+            'gambar_articles.*' => 'image|mimes:jpg,jpeg,png|max:4146' // Validate each item in the array
         ];
 
         return $rules;

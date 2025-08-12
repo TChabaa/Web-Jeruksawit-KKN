@@ -18,8 +18,14 @@ class Surat extends Model
         'id_jenis',
         'nomor_surat',
         'tanggal_surat',
+        'catatan', // New field for approval date
         'created_by',
-        'status', // Added status field
+        'status',
+         // Added status field
+    ];
+
+    protected $casts = [
+        'tanggal_surat' => 'date',
     ];
 
     public function pemohon()

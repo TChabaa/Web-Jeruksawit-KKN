@@ -24,7 +24,7 @@ class PerangkatDesaCreateRequest extends FormRequest
         return [
             'nama' => ['required', 'string', 'max:255'],
             'jabatan' => ['required', 'string', 'max:255'],
-            'gambar' => ['nullable', 'image', 'mimes:jpeg,jpg,png', 'max:4146176'], // 4049MB max
+            'gambar' => ['nullable', 'image', 'mimes:jpeg,jpg,png', 'max:4146'], // 4049MB max
         ];
     }
 

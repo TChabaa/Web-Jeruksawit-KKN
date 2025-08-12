@@ -28,7 +28,7 @@ class SuratRejectionMail extends Mailable implements ShouldQueue
     {
         $this->surat = $surat;
         $this->pemohon = $pemohon;
-        $this->catatan = $catatan;
+        $this->catatan = $surat->catatan ?? ''; // Use the catatan field from the surat model
 
         // Set queue configuration
         $this->onQueue('emails');

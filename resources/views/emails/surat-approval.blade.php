@@ -12,7 +12,6 @@
         cellspacing="0" role="presentation">
         <tr>
             <td style="padding: 40px 20px 20px 20px; text-align: center;">
-
                 @php
                     $logoPath = public_path('assets/img/logo.png');
                     $logoBase64 = '';

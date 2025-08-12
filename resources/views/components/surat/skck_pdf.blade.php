@@ -169,26 +169,28 @@
                 <td width="50%">
                     <p>Jeruksawit, {{ $tanggal ?? '12 Juni 2025' }}</p>
                     <p>Kepala Desa Jeruksawit</p>
-                     @php
-                $logoPath = public_path('assets/img/ttd.jpg');
-                $logoBase64 = '';
-                if (file_exists($logoPath)) {
-                    $logoBase64 = 'data:image/jpg;base64,' . base64_encode(file_get_contents($logoPath));
-                }
-            @endphp
-            @if ($logoBase64)
-                <img src="{{ $logoBase64 }}" alt="Logo Karanganyar"
-                    style="margin-top:15px; max-width: 150px; height: auto; margin: 0; padding: 0;">
-            @else
-                <div
-                    style="width: 150px; height: 150px; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; font-size: 8pt; margin: 0; padding: 0;">
-                    LOGO
-                </div>
-            @endif
+                    @php
+                        $logoPath = public_path('assets/img/ttd.jpg');
+                        $logoBase64 = '';
+                        if (file_exists($logoPath)) {
+                            $logoBase64 = 'data:image/jpg;base64,' . base64_encode(file_get_contents($logoPath));
+                        }
+                    @endphp
+                    @if ($logoBase64)
+                        <img src="{{ $logoBase64 }}" alt="Logo Karanganyar"
+                            style="margin-top:15px; max-width: 150px; height: auto; margin: 0; padding: 0;">
+                    @else
+                        <div
+                            style="width: 150px; height: 150px; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; font-size: 8pt; margin: 0; padding: 0;">
+                            LOGO
+                        </div>
+                    @endif
                     <p><strong>{{ $nama_kepala ?? 'MIDI' }}</strong></p>
                 </td>
             </tr>
         </table>
+
+        <x-surat.qr_verification :qrCodePath="$qr_code_path ?? null" />
     </div>
 
 </body>

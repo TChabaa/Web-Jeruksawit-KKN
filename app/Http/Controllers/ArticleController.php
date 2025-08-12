@@ -130,7 +130,7 @@ class ArticleController extends Controller
     {
         try {
             $request->validate([
-                'gambar_articles.*' => 'required|image|mimes:jpeg,png,jpg|max:1048|',
+                'gambar_articles.*' => 'required|image|mimes:jpeg,png,jpg|max:4146|',
             ]);
 
             DB::beginTransaction();
@@ -213,12 +213,28 @@ class ArticleController extends Controller
 
     public function destroyGambar(string $article, string $gambar_article)
     {
-        $article = Article::with('gambar_articles')->findOrFail($article);
-        $gambarItem = $article->gambar_articles()->findOrFail($gambar_article);
+        try {
+            DB::beginTransaction();
 
-        $gambarItem->delete();
+            $article = Article::with('gambar_articles')->findOrFail($article);
+            $gambarItem = $article->gambar_articles()->findOrFail($gambar_article);
 
-        Alert::toast('Berhasil menghapus data photo', 'success');
-        return redirect()->route(Auth::user()->role . '.articles.edit', $article);
+            // Check if this is the last image (optional - you can remove this if you want to allow deleting all images)
+            if ($article->gambar_articles->count() <= 1) {
+                Alert::toast('Tidak dapat menghapus foto. Setidaknya harus ada 1 foto untuk artikel.', 'error');
+                return redirect()->route(Auth::user()->role . '.articles.edit', $article);
+            }
+
+            $gambarItem->delete();
+
+            DB::commit();
+
+            Alert::toast('Berhasil menghapus foto artikel', 'success');
+            return redirect()->route(Auth::user()->role . '.articles.edit', $article);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Alert::toast('Gagal menghapus foto: ' . $e->getMessage(), 'error');
+            return redirect()->route(Auth::user()->role . '.articles.edit', $article);
+        }
     }
 }

@@ -296,6 +296,7 @@ class LayananSuratController extends Controller
 
         $surat = Surat::with(['pemohon', 'jenisSurat'])->findOrFail($id);
         $surat->status = $request->status;
+        $surat->catatan = $request->catatan;
 
         // Assign created_by when status is updated (not during form creation)
         if (!$surat->created_by) {
@@ -368,22 +369,32 @@ class LayananSuratController extends Controller
 
     private function createOrUpdatePemohon($data)
     {
-        return Pemohon::updateOrCreate(
-            ['nik' => $data['nik']],
-            [
-                'nomor_kk' => $data['nomor_kk'],
-                'nama_lengkap' => $data['name'],
-                'email' => $data['email'],
-                'tempat_lahir' => $data['tempat_lahir'],
-                'tanggal_lahir' => $data['tanggal_lahir'],
-                'jenis_kelamin' => $data['jenis_kelamin'],
-                'kewarganegaraan' => 'Indonesia',
-                'agama' => $data['agama'],
-                'status_perkawinan' => $data['status_perkawinan'],
-                'pekerjaan' => $data['pekerjaan'],
-                'alamat' => $data['address'],
-            ]
-        );
+        $pemohonData = [
+            'nik' => $data['nik'],
+            'nomor_kk' => $data['nomor_kk'],
+            'nama_lengkap' => $data['name'],
+            'email' => $data['email'],
+            'tempat_lahir' => $data['tempat_lahir'],
+            'tanggal_lahir' => $data['tanggal_lahir'],
+            'jenis_kelamin' => $data['jenis_kelamin'],
+            'kewarganegaraan' => 'Indonesia',
+            'agama' => $data['agama'],
+            'status_perkawinan' => $data['status_perkawinan'],
+            'pekerjaan' => $data['pekerjaan'],
+            'alamat' => $data['address'],
+        ];
+
+        // Check if exact same pemohon already exists (all fields match)
+        $existingPemohon = Pemohon::where($pemohonData)->first();
+
+        if ($existingPemohon) {
+            // All fields match, reuse existing pemohon
+            return $existingPemohon;
+        }
+
+        // Either no pemohon with this NIK exists, or some fields are different
+        // Create a new pemohon record
+        return Pemohon::create($pemohonData);
     }
 
     private function getJenisSurat($type)

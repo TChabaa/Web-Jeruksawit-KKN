@@ -7,6 +7,11 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel;
+use Endroid\QrCode\RoundBlockSizeMode;
 use App\Models\Surat;
 use App\Models\DetailSkck;
 use App\Models\DetailIzinKeramaian;
@@ -251,6 +256,10 @@ class PDFController extends Controller
 
         $tanggalSurat = $surat->tanggal_surat ? \Carbon\Carbon::parse($surat->tanggal_surat)->format('d F Y') : now()->format('d F Y');
 
+        // Generate QR code for verification
+        $verificationUrl = route('qr.verify', $surat->id_surat);
+        $qrCodePath = $this->generateQRCode($surat->id_surat, $verificationUrl);
+
         // Base data for all surat types (minimized)
         $data = [
             'nomor' => $surat->nomor_surat ?? '474/001/I/' . date('Y'),
@@ -266,8 +275,16 @@ class PDFController extends Controller
             'alamat' => $pemohon->alamat ?? '',
             'status' => $pemohon->status_perkawinan ?? '',
             'kewarganegaraan' => 'Indonesia',
-            'tanggal' => $tanggalSurat
+            'tanggal' => $tanggalSurat,
+            'qr_code_path' => $qrCodePath // Add QR code path
         ];
+
+        // Log QR code path for debugging
+        Log::info('PDF data prepared with QR code', [
+            'surat_id' => $surat->id_surat,
+            'qr_code_path' => $qrCodePath,
+            'qr_exists' => $qrCodePath ? file_exists($qrCodePath) : false
+        ]);
 
         // Add specific data based on surat type (only if detail exists)
         if ($detail) {
@@ -396,20 +413,107 @@ class PDFController extends Controller
     }
 
     /**
-     * Extract number from surat number format (474/123/XII/2025)
+     * View PDF in browser for QR verification
      */
-    private function extractNomorFromSurat($nomorSurat)
+    public function viewPdf($suratId)
     {
-        if (empty($nomorSurat)) {
-            return '1';
-        }
+        try {
+            // Find the surat
+            $surat = Surat::with(['pemohon', 'jenisSurat'])->findOrFail($suratId);
 
-        if (preg_match('/474\/(\d+)\//', $nomorSurat, $matches)) {
-            return $matches[1];
+            // Only show PDF for approved surat
+            if ($surat->status !== 'disetujui') {
+                abort(403, 'PDF hanya dapat dilihat untuk surat yang telah disetujui.');
+            }
+
+            $pdfPath = $this->generateSuratPdf($surat);
+
+            // Return PDF for inline viewing with CORS headers
+            return response()->file($pdfPath, [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="surat_' . $surat->id_surat . '.pdf"',
+                'Access-Control-Allow-Origin' => '*',
+                'Access-Control-Allow-Methods' => 'GET, HEAD, OPTIONS',
+                'Access-Control-Allow-Headers' => 'Content-Type, Authorization',
+                'Cross-Origin-Embedder-Policy' => 'require-corp',
+                'Cross-Origin-Opener-Policy' => 'same-origin'
+            ]);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            abort(404, 'Surat tidak ditemukan.');
+        } catch (\Exception $e) {
+            Log::error('PDF Viewer Error', [
+                'surat_id' => $suratId,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            abort(500, 'Terjadi kesalahan saat menampilkan PDF.');
         }
-        return '1';
     }
 
+    /**
+     * Generate QR code for surat verification
+     */
+    private function generateQRCode($suratId, $verificationUrl)
+    {
+        try {
+            Log::info('Starting QR code generation', [
+                'surat_id' => $suratId,
+                'verification_url' => $verificationUrl
+            ]);
+
+            // Ensure QR codes directory exists
+            if (!Storage::exists('public/qr-codes')) {
+                Storage::makeDirectory('public/qr-codes');
+                Log::info('Created QR codes directory');
+            }
+
+            $qrFileName = 'qr_surat_' . $suratId . '.png';
+            $qrFilePath = storage_path('app/public/qr-codes/' . $qrFileName);
+
+            Log::info('Generating QR code', [
+                'file_path' => $qrFilePath,
+                'url' => $verificationUrl
+            ]);
+
+            // Generate QR code using Endroid QR Code (PNG format for DomPDF compatibility)
+            $qrCode = QrCode::create($verificationUrl)
+                ->setEncoding(new Encoding('UTF-8'))
+                ->setErrorCorrectionLevel(ErrorCorrectionLevel::Medium)
+                ->setSize(120)
+                ->setMargin(5)
+                ->setRoundBlockSizeMode(RoundBlockSizeMode::Margin);
+
+            $writer = new PngWriter();
+            $result = $writer->write($qrCode);
+
+            // Save QR code to file
+            file_put_contents($qrFilePath, $result->getString());
+
+            // Check if file was created
+            if (file_exists($qrFilePath)) {
+                Log::info('QR code generated successfully', [
+                    'surat_id' => $suratId,
+                    'file_size' => filesize($qrFilePath),
+                    'path' => $qrFilePath
+                ]);
+                return $qrFilePath;
+            } else {
+                Log::error('QR code file was not created', ['expected_path' => $qrFilePath]);
+                return null;
+            }
+        } catch (\Exception $e) {
+            Log::error('QR Code generation failed', [
+                'surat_id' => $suratId,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return null;
+        }
+    }
+
+    /**
+     * Extract number from surat number format (474/123/XII/2025)
+     */
     /**
      * Get detail data for specific surat type (public method for external use)
      */

@@ -11,6 +11,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\UmkmController;
 use App\Http\Controllers\EmailQueueController;
+use App\Http\Controllers\QRCodeController;
 
 
 // Route untuk melihat bentuk PDF
@@ -125,6 +126,8 @@ Route::get('/view-pdf/{type}', function ($type) {
 
     return view('components.surat.' . $templateName, $sampleData);
 })->name('view-pdf');
+
+Route::get('/verify/{suratId}', [QRCodeController::class, 'show'])->name('verify.qr');
 
 Route::get('/articles', [FrontendController::class, 'articles'])->name('articles');
 Route::get('/articles/{slug}/show', [ArticleController::class, 'show'])->name('articles.show');
@@ -253,7 +256,7 @@ Route::middleware([
             'show'
         ]);
         Route::post('/articles/{article}/gambar_articles', [ArticleController::class, 'addGambar'])->name('articles.addGambar');
-        Route::delete('/articles/{article}/gambar_articles/{gambar_article}', [ArticleController::class, 'destroyGambar'])->middleware('check.remaining.images')->name('articles.destroyGambar');
+        Route::delete('/articles/{article}/gambar_articles/{gambar_article}', [ArticleController::class, 'destroyGambar'])->middleware('check.remaining.images.article')->name('articles.destroyGambar');
 
 
         Route::resource('umkm', UmkmController::class)->except([
@@ -343,7 +346,7 @@ Route::middleware([
             'show'
         ]);
         Route::post('/articles/{article}/gambar_articles', [ArticleController::class, 'addGambar'])->name('articles.addGambar');
-        Route::delete('/articles/{article}/gambar_articles/{gambar_article}', [ArticleController::class, 'destroyGambar'])->middleware('check.remaining.images')->name('articles.destroyGambar');
+        Route::delete('/articles/{article}/gambar_articles/{gambar_article}', [ArticleController::class, 'destroyGambar'])->middleware('check.remaining.images.article')->name('articles.destroyGambar');
 
 
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -356,6 +359,10 @@ Route::middleware([
         Route::post('/layanan-surat/{type}/submit', [\App\Http\Controllers\LayananSuratController::class, 'submitForm'])->name('layanan-surat.submit');
     });
 });
+
+// QR Code verification routes (public access)
+Route::get('/verify/{suratId}', [QRCodeController::class, 'show'])->name('qr.verify');
+Route::get('/pdf/viewer/{suratId}', [PDFController::class, 'viewPdf'])->name('pdf.viewer');
 
 // SEO Routes
 Route::get('/sitemap.xml', [FrontendController::class, 'sitemap'])->name('sitemap');

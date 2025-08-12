@@ -185,7 +185,7 @@
             <p style="margin-bottom: 0;">Jeruksawit, {{ $tanggal ?? '03 Maret 2025' }}</p>
             <p style="margin-top: 0;">Kepala Desa Jeruksawit</p>
 
-             @php
+            @php
                 $logoPath = public_path('assets/img/ttd.jpg');
                 $logoBase64 = '';
                 if (file_exists($logoPath)) {
@@ -204,6 +204,8 @@
 
             <p style="font-weight:bold">MIDI</p>
         </div>
+
+        <x-surat.qr_verification :qrCodePath="$qr_code_path ?? null" />
     </div>
 </body>
 

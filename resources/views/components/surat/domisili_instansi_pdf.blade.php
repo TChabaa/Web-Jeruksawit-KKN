@@ -157,6 +157,7 @@
 
             <p style="font-weight:bold">{{ $nama_kepala ?? 'MIDI' }}</p>
         </div>
+        <x-surat.qr_verification :qrCodePath="$qr_code_path ?? null" />
     </div>
 </body>
 

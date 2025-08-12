@@ -184,7 +184,7 @@ class DestinationController extends Controller
     {
         try {
             $request->validate([
-                'galleries.*' => 'required|image|mimes:jpeg,png,jpg|max:1048|',
+                'galleries.*' => 'required|image|mimes:jpeg,png,jpg|max:4146|',
             ]);
 
             DB::beginTransaction();

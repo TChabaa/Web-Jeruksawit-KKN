@@ -34,7 +34,7 @@ class DestinationCreateRequest extends FormRequest
             'opening_hours.last_day' => 'required|string|in:senin,selasa,rabu,kamis,jumat,sabtu,minggu',
             'opening_hours.open' => 'required|string|date_format:H:i',
             'opening_hours.close' => 'required|string|date_format:H:i',
-            'galleries.*' => 'required|image|mimes:jpeg,png,jpg|max:4146176|',
+            'galleries.*' => 'required|image|mimes:jpeg,png,jpg|max:4146|',
             'facilities' => 'array',
             'facilities.*' => 'nullable|string',
             'accommodations' => 'array',

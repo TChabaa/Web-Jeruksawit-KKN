@@ -31,7 +31,7 @@
                     Foto Perangkat Desa
                 </label>
                 <p class="text-xs font-medium text-gray-400">* Format yang didukung: jpeg, jpg, png</p>
-                <p class="text-xs font-medium text-gray-400">* Maksimal ukuran file 4049MB</p>
+                <p class="text-xs font-medium text-gray-400">* Maksimal ukuran file 4146MB</p>
                 <p class="text-xs font-medium text-gray-400">* Biarkan kosong jika tidak ingin mengubah foto</p>
 
                 @if ($perangkat_desa->gambar)
